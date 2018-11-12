@@ -1,10 +1,10 @@
 # FABOP directory
 
-Application de gestion d'annuaire de l'association [La Fabrique Opéra Val de Loire](http://www.lafabriqueopera-valdeloire.com/) sous licence Apache 2.0.
+Directory management application of the organization [La Fabrique Opéra Val de Loire](http://www.lafabriqueopera-valdeloire.com/) under Apache 2.0 license.
 
 ## Technicals details
 
-The project is maintained under Django Frameworks and using Python as back-end main language.
+The project is maintained under Symfony Frameworks and is using php as back-end main language.
 
 Front-end is maintained with npm modules as gulp-sass, bootstrap and jquery.
 
@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-1. Make sure you have php7.2, Symfony 4.1 installed.
+1. Make sure you have php7.2, composer installed.
 
     **Install PHP 7.2**
     
@@ -26,7 +26,15 @@ These instructions will get you a copy of the project up and running on your loc
     
     `apt-get install php7.2`
     
-    **Install Symfony 4.1**
+    **Install composer**
+    
+    `php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"`
+    
+    `php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"`
+    
+    `sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer`
+    
+    `php -r "unlink('composer-setup.php');"`
 
 2. Install git for being able to clone the project, make commits and push, etc...
 
