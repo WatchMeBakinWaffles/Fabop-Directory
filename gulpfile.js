@@ -8,21 +8,24 @@ gulp.task('styles', function() {
 });
 
 gulp.task('js', function() {
-    gulp.src('node_modules/jquery/jquery.min.js')
+    gulp.src('node_modules/jquery/dist/jquery.min.js')
     .pipe(gulp.dest('assets/static/js/'));
     gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
     .pipe(gulp.dest('assets/static/js/'));
     gulp.src('node_modules/popper.js/dist/umd/popper.min.js')
     .pipe(gulp.dest('assets/static/js/'));
+    gulp.src('assets/js/scripts.js')
+    .pipe(gulp.dest('assets/static/js/'));
 });
 
 gulp.task('fa', function() {
-    gulp.src('assets/scss/fontawesome.scss')
-    .pipe(sass())
-    .pipe(gulp.dest('assets/static/css/'));
+    gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.css')
+    .pipe(gulp.dest('assets/static/css/fontawesome'));
+    gulp.src('node_modules/@fortawesome/fontawesome-free/js/all.js')
+    .pipe(gulp.dest('assets/static/js/fontawesome'));
 });
 
-gulp.task('icons', function() {
-    gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
-    .pipe(gulp.dest('assets/static/webfonts/'));
+gulp.task('animations', function() {
+    gulp.src('node_modules/animate.css/animate.css')
+    .pipe(gulp.dest('assets/static/css/'));
 });
