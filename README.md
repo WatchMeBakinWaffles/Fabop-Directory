@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
     
     `apt-get install php-cli`
     
-    `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip php-mysql php-mysqli php-mongodb`
+    `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip php-mysql php-mongodb`
     
     **Install composer**
     
