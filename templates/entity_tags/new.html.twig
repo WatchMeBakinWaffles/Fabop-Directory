@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EntityTags{% endblock %}
+
+{% block body %}
+    <h1>Create new EntityTags</h1>
+
+    {{ include('entity_tags/_form.html.twig') }}
+
+    <a href="{{ path('entity_tags_index') }}">back to list</a>
+{% endblock %}

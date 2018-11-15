@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EntityTags index{% endblock %}
+
+{% block body %}
+    <h1>EntityTags index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity_tag in entity_tags %}
+            <tr>
+                <td>{{ entity_tag.id }}</td>
+                <td>{{ entity_tag.name }}</td>
+                <td>
+                    <a href="{{ path('entity_tags_show', {'id': entity_tag.id}) }}">show</a>
+                    <a href="{{ path('entity_tags_edit', {'id': entity_tag.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_tags_new') }}">Create new</a>
+{% endblock %}

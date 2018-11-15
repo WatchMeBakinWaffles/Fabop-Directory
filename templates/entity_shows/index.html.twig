@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EntityShows index{% endblock %}
+
+{% block body %}
+    <h1>EntityShows index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Sheet_id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity_show in entity_shows %}
+            <tr>
+                <td>{{ entity_show.id }}</td>
+                <td>{{ entity_show.name }}</td>
+                <td>{{ entity_show.year }}</td>
+                <td>{{ entity_show.sheetId }}</td>
+                <td>
+                    <a href="{{ path('entity_shows_show', {'id': entity_show.id}) }}">show</a>
+                    <a href="{{ path('entity_shows_edit', {'id': entity_show.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_shows_new') }}">Create new</a>
+{% endblock %}
