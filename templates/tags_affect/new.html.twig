@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New TagsAffect{% endblock %}
+
+{% block body %}
+    <h1>Create new TagsAffect</h1>
+
+    {{ include('tags_affect/_form.html.twig') }}
+
+    <a href="{{ path('tags_affect_index') }}">back to list</a>
+{% endblock %}

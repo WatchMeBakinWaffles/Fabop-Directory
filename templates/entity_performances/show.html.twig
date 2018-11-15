@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EntityPerformances{% endblock %}
+
+{% block body %}
+    <h1>EntityPerformances</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity_performance.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ entity_performance.date ? entity_performance.date|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_performances_index') }}">back to list</a>
+
+    <a href="{{ path('entity_performances_edit', {'id': entity_performance.id}) }}">edit</a>
+
+    {{ include('entity_performances/_delete_form.html.twig') }}
+{% endblock %}

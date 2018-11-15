@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EntityPeople index{% endblock %}
+
+{% block body %}
+    <h1>EntityPeople index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Firstname</th>
+                <th>Birthdate</th>
+                <th>Newsletter</th>
+                <th>Postal_code</th>
+                <th>City</th>
+                <th>Add_date</th>
+                <th>Sheet_id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity_person in entity_peoples %}
+            <tr>
+                <td>{{ entity_person.id }}</td>
+                <td>{{ entity_person.name }}</td>
+                <td>{{ entity_person.firstname }}</td>
+                <td>{{ entity_person.birthdate ? entity_person.birthdate|date('Y-m-d') : '' }}</td>
+                <td>{{ entity_person.newsletter ? 'Yes' : 'No' }}</td>
+                <td>{{ entity_person.postalCode }}</td>
+                <td>{{ entity_person.city }}</td>
+                <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
+                <td>{{ entity_person.sheetId }}</td>
+                <td>
+                    <a href="{{ path('entity_people_show', {'id': entity_person.id}) }}">show</a>
+                    <a href="{{ path('entity_people_edit', {'id': entity_person.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_people_new') }}">Create new</a>
+{% endblock %}

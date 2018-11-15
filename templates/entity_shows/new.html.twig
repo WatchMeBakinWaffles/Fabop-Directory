@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EntityShows{% endblock %}
+
+{% block body %}
+    <h1>Create new EntityShows</h1>
+
+    {{ include('entity_shows/_form.html.twig') }}
+
+    <a href="{{ path('entity_shows_index') }}">back to list</a>
+{% endblock %}
