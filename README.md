@@ -53,6 +53,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 2. Then, when cloning is complete, you can run migrations and gulp routines to make front-end and back-end working.
 
+    `yarn run gulp styles`
+    
+    `yarn run gulp js`
+    
+    `yarn run gulp fa`
+    
+    `yarn run gulp animations`
+
 ### Running the tests
 
 *Will come later*
