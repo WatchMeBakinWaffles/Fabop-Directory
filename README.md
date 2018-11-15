@@ -18,13 +18,11 @@ These instructions will get you a copy of the project up and running on your loc
 
     **Install PHP 7.2**
     
-    `apt-get install software-properties-common`
-    
-    `add-apt-repository ppa:ondrej/php`
-    
     `apt-get update`
     
-    `apt-get install php7.2`
+    `apt-get install php-cli`
+    
+    `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip`
     
     **Install composer**
     
