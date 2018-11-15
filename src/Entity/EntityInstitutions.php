@@ -24,12 +24,17 @@ class EntityInstitutions
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $role;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\EntityPeople", mappedBy="institutions_id", orphanRemoval=true)
+     * @ORM\Column(type="integer")
+     */
+    private $sheet_id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EntityPeople", mappedBy="institution", orphanRemoval=true)
      */
     private $entityPeople;
 
@@ -38,6 +43,10 @@ class EntityInstitutions
         $this->entityPeople = new ArrayCollection();
     }
 
+    public function __toString() {
+        return $this->name;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -60,9 +69,21 @@ class EntityInstitutions
         return $this->role;
     }
 
-    public function setRole(?string $role): self
+    public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getSheetId(): ?int
+    {
+        return $this->sheet_id;
+    }
+
+    public function setSheetId(int $sheet_id): self
+    {
+        $this->sheet_id = $sheet_id;
 
         return $this;
     }
@@ -79,7 +100,7 @@ class EntityInstitutions
     {
         if (!$this->entityPeople->contains($entityPerson)) {
             $this->entityPeople[] = $entityPerson;
-            $entityPerson->setInstitutionsId($this);
+            $entityPerson->setInstitution($this);
         }
 
         return $this;
@@ -90,8 +111,8 @@ class EntityInstitutions
         if ($this->entityPeople->contains($entityPerson)) {
             $this->entityPeople->removeElement($entityPerson);
             // set the owning side to null (unless already changed)
-            if ($entityPerson->getInstitutionsId() === $this) {
-                $entityPerson->setInstitutionsId(null);
+            if ($entityPerson->getInstitution() === $this) {
+                $entityPerson->setInstitution(null);
             }
         }
 

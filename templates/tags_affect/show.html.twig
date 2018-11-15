@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TagsAffect{% endblock %}
+
+{% block body %}
+    <h1>TagsAffect</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tags_affect.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tags_affect_index') }}">back to list</a>
+
+    <a href="{{ path('tags_affect_edit', {'id': tags_affect.id}) }}">edit</a>
+
+    {{ include('tags_affect/_delete_form.html.twig') }}
+{% endblock %}

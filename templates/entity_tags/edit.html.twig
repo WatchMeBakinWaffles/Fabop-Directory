@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EntityTags{% endblock %}
+
+{% block body %}
+    <h1>Edit EntityTags</h1>
+
+    {{ include('entity_tags/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('entity_tags_index') }}">back to list</a>
+
+    {{ include('entity_tags/_delete_form.html.twig') }}
+{% endblock %}

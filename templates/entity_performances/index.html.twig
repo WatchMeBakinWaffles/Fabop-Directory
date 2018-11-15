@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EntityPerformances index{% endblock %}
+
+{% block body %}
+    <h1>EntityPerformances index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity_performance in entity_performances %}
+            <tr>
+                <td>{{ entity_performance.id }}</td>
+                <td>{{ entity_performance.date ? entity_performance.date|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('entity_performances_show', {'id': entity_performance.id}) }}">show</a>
+                    <a href="{{ path('entity_performances_edit', {'id': entity_performance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_performances_new') }}">Create new</a>
+{% endblock %}

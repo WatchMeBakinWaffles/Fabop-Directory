@@ -59,15 +59,15 @@ class EntityPeople
     private $sheet_id;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TagsAffect", mappedBy="person", orphanRemoval=true)
+     */
+    private $tagsAffects;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EntityInstitutions", inversedBy="entityPeople")
      * @ORM\JoinColumn(nullable=false)
      */
     private $institution;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TagsAffect", mappedBy="person", orphanRemoval=true)
-     */
-    private $tagsAffects;
 
     public function __construct()
     {
@@ -175,18 +175,6 @@ class EntityPeople
         return $this;
     }
 
-    public function getInstitutions(): ?EntityInstitutions
-    {
-        return $this->institutions;
-    }
-
-    public function setInstitutionsId(?EntityInstitutions $institutions): self
-    {
-        $this->institutions = $institutions;
-
-        return $this;
-    }
-
     /**
      * @return Collection|TagsAffect[]
      */
@@ -214,6 +202,18 @@ class EntityPeople
                 $tagsAffect->setPerson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInstitution(): ?EntityInstitutions
+    {
+        return $this->institution;
+    }
+
+    public function setInstitution(?EntityInstitutions $institution): self
+    {
+        $this->institution = $institution;
 
         return $this;
     }
