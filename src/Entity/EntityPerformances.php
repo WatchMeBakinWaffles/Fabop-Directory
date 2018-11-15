@@ -39,6 +39,10 @@ class EntityPerformances
         $this->tagsAffects = new ArrayCollection();
     }
 
+    public function __toString() {
+        return strval($this->shows);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
