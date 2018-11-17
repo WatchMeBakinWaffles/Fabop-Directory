@@ -20,7 +20,7 @@ class MongoManagerTest extends TestCase
         // $manager->debug();
     }
 
-    public function test_RetrieveDocument_ExistingDocument_DocumentBSONObject(){
+    public function test_RetrieveDocument_ExistingDocument_JSONStringOfTheBSONObject(){
         $manager=new MongoManager();
         $this->assertEquals('{ "_id" : { "$oid" : "5bf015a4b96e4020ec3f3983" }, "name" : "John" }',$manager->get_doc("Entity_person_sheet","5bf015a4b96e4020ec3f3983"));
         // $manager->debug();
