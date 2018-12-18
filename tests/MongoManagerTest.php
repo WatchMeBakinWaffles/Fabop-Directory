@@ -16,59 +16,32 @@ class MongoManagerTest extends TestCase
     public function test_RetrieveDocument_NotExistingDocument_Exception(){
         $this->expectException(DocumentNotFoundException::class);
         $manager=new MongoManager();
-        $doc=$manager->get_doc('Entity_person_sheet','5bf015a4b96e4020ec3f3984');
+        $doc=$manager->get_doc_by_id('Entity_person_sheet','5bf015a4b96e4020ec3f3984');
         // $manager->debug();
     }
 
-    public function test_RetrieveDocument_ExistingDocument_JSONStringOfTheBSONObject(){
+    public function test_RetrieveDocument_ExistingDocumentById_JSONStringOfTheBSONObject(){
         $manager=new MongoManager();
-        $this->assertEquals('{ "_id" : { "$oid" : "5bf015a4b96e4020ec3f3983" }, "name" : "John" }',$manager->get_doc("Entity_person_sheet","5bf015a4b96e4020ec3f3983"));
+        $this->assertEquals(
+            '{ "_id" : { "$oid" : "5bf015a4b96e4020ec3f3983" }, "name" : "John" }',
+            $manager->get_doc_by_id("Entity_person_sheet","5bf015a4b96e4020ec3f3983"));
         // $manager->debug();
     }
 
-    // public function test_ConvertToRoman_0_nulla(){
-    //     $this->expectException(InvalidNumberException::class);
-    //     $conv=new Converter();
-    //     $conv->convert_toRomans("5000");
-    // }
+    public function test_RetrieveDocument_ExistingDocumentByMail_JSONStringOfTheBSONObject(){
+        $manager=new MongoManager();
+        $this->assertEquals(
+            '{ "_id" : { "$oid" : "5c18e4529d01a864bce4be3a" }, "name" : "machin", "emails" : [ "1@gmail.com", "2@gmail.com", "3@gmail.com" ] }',
+            $manager->get_doc_by_mail("Entity_person_sheet","1@gmail.com"));
+        // $manager->debug();
+    }
 
-    // public function test_ConvertToRoman_RoundNumber_RoundNumberInRomanNumeral(){
-    //     $conv=new Converter();
-    //     $this->assertEquals("I",$conv->convert_toRomans("1"));
-    //     $this->assertEquals("X",$conv->convert_toRomans("10"));
-    //     $this->assertEquals("L",$conv->convert_toRomans("50"));
-    //     $this->assertEquals("C",$conv->convert_toRomans("100"));
-    //     $this->assertEquals("D",$conv->convert_toRomans("500"));
-    //     $this->assertEquals("M",$conv->convert_toRomans("1000"));
-    // }
+    public function test_RetrieveDocument_ExistingDocumentByPhone_JSONStringOfTheBSONObject(){
+        $manager=new MongoManager();
+        $this->assertEquals(
+            '{ "_id" : { "$oid" : "5c18eddd9d01a864bce4be3e" }, "name" : "truc", "phones" : [ "0698995173", "0605487915", "0739425487" ] }',
+            $manager->get_doc_by_phone("Entity_person_sheet","0739425487"));
+        // $manager->debug();
+    }
 
-    // public function test_ConvertToRoman_NegativeRoundNumber_NegativeRoundNumberInRomanNumeral(){
-    //     $conv=new Converter();
-    //     $this->assertEquals("-I",$conv->convert_toRomans("-1"));
-    //     $this->assertEquals("-X",$conv->convert_toRomans("-10"));
-    //     $this->assertEquals("-L",$conv->convert_toRomans("-50"));
-    //     $this->assertEquals("-C",$conv->convert_toRomans("-100"));
-    //     $this->assertEquals("-D",$conv->convert_toRomans("-500"));
-    //     $this->assertEquals("-M",$conv->convert_toRomans("-1000"));
-    // }
-
-    // public function test_ConvertToRoman_Number_NumberInRomanNumeral(){
-    //     $conv=new Converter();
-    //     $this->assertEquals("VII",$conv->convert_toRomans("7"));
-    //     $this->assertEquals("XIII",$conv->convert_toRomans("13"));
-    //     $this->assertEquals("LXVII",$conv->convert_toRomans("67"));
-    //     $this->assertEquals("CXLIII",$conv->convert_toRomans("143"));
-    //     $this->assertEquals("DCLVIII",$conv->convert_toRomans("658"));
-    //     $this->assertEquals("MMMMCDLXXXIX",$conv->convert_toRomans("4489"));
-    // }
-
-    // public function test_ConvertToRoman_NegativeNumber_NegativeNumberInRomanNumeral(){
-    //     $conv=new Converter();
-    //     $this->assertEquals("-VII",$conv->convert_toRomans("-7"));
-    //     $this->assertEquals("-XIII",$conv->convert_toRomans("-13"));
-    //     $this->assertEquals("-LXVII",$conv->convert_toRomans("-67"));
-    //     $this->assertEquals("-CXLIII",$conv->convert_toRomans("-143"));
-    //     $this->assertEquals("-DCLVIII",$conv->convert_toRomans("-658"));
-    //     $this->assertEquals("-MMMMCDLXXXIX",$conv->convert_toRomans("-4489"));
-    // }
 }
