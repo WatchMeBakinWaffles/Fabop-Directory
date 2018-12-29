@@ -14,6 +14,7 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
+        <env name="DATABASE_URL" value="mysql://db_access:MgWhXBaBm9QvMucX2GQNkyzJdMNcS3Ftj6WhU9n3P3uc6TF3aMpvfHLr6jCkTQ8e@127.0.0.1:3306/fabop_directory" />
         <env name="MONGODB_URL" value="mongodb://app_access:3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug@127.0.0.1:27017/fabop_directory" />
         <!-- define your env variables for the test env here -->
     </php>
