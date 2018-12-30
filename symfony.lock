@@ -1,7 +1,4 @@
 {
-    "alcaeus/mongo-php-adapter": {
-        "version": "1.1.5"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -88,9 +85,6 @@
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
-    },
-    "mongodb/mongodb": {
-        "version": "1.2.0"
     },
     "monolog/monolog": {
         "version": "1.24.0"
