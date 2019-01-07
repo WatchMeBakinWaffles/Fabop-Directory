@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\MongoManager;
 
 /**
  * @Route("/entity/people")
@@ -34,6 +35,8 @@ class EntityPeopleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            // Mise en bdd Mongo de l fiche doc --> return IdMongo
+            // $entityPerson->setSheetId(IdMongo);
             $em->persist($entityPerson);
             $em->flush();
 
@@ -51,6 +54,7 @@ class EntityPeopleController extends AbstractController
      */
     public function show(EntityPeople $entityPerson): Response
     {
+
         return $this->render('entity_people/show.html.twig', ['entity_person' => $entityPerson]);
     }
 
