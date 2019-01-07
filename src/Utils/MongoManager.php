@@ -3,8 +3,7 @@
 namespace App\Utils;
 
 use MongoDB;
-use App\Exceptions\DocumentNotFoundException;
-use PHPUnit\Framework\MockObject\Stub\Exception;
+use App\Exception\DocumentNotFoundException;
 
 class MongoManager
 {
