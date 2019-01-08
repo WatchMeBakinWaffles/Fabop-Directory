@@ -13,7 +13,7 @@ class MongoManager
     private $doc;
 
     /*
-    Entity_person_sheet
+    Entity_institution_sheet
     Entity_model_sheet
     Entity_person_sheet
     Entity_show_sheet
@@ -75,15 +75,25 @@ class MongoManager
         }
     }
 
-    function updateSingleValueById($collection,$id,$value,$data){
+    function updateSingleValueById($collection,$id,$key,$data){
         $collection= $this->db->selectCollection($collection);
-        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$value=>$data]]);
+        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$key=>$data]]);
         if ($result_count>0){
             return $result_count;
         } else {
             throw new DocumentNotFoundException;
         }
         
+    }
+
+    function unsetSingleValueById($collection,$id,$key){
+        $collection= $this->db->selectCollection($collection);
+        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$unset'=>[$key=>""]]);
+        if ($result_count>0){
+            return $result_count;
+        } else {
+            throw new Exception;
+        }
     }
 
     // debug functions
