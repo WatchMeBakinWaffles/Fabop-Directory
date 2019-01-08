@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
 
 /**
- * @Route("/entity/people")
+ * @Route("/manager/people")
  */
 class EntityPeopleController extends AbstractController
 {
@@ -21,6 +21,7 @@ class EntityPeopleController extends AbstractController
      */
     public function index(EntityPeopleRepository $entityPeopleRepository): Response
     {
+        //filtres à appliquer ici
         return $this->render('entity_people/index.html.twig', ['entity_peoples' => $entityPeopleRepository->findAll()]);
     }
 
@@ -32,11 +33,21 @@ class EntityPeopleController extends AbstractController
         $entityPerson = new EntityPeople();
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);
+        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
             // Mise en bdd Mongo de l fiche doc --> return IdMongo
-            // $entityPerson->setSheetId(IdMongo);
+            if (null != $request->request->get('person_data')){
+                $sheetId=$mongoman->insertSingle("Entity_person_sheet",$request->request->get('person_data'));
+            }else{
+                $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
+            }
+
+            // Mise en bdd MySQL de l'ID de fiche de données
+            $entityPerson->setSheetId($sheetId);
+
             $em->persist($entityPerson);
             $em->flush();
 
@@ -65,8 +76,20 @@ class EntityPeopleController extends AbstractController
     {
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);
+        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (null != $request->request->get('person_data')){
+                $dataId=$entityPerson->getSheetId();
+                foreach( $request->request->get('person_data') as $key->$value){
+                    if ($value!=''){
+                        $mongoman->updateSingleValueById("Entity_person_sheet",$dataId,$key,$value);
+                    }else{
+                        $mongoman->unsetSingleValueById("Entity_person_sheet",$dataId,$key);
+                    }
+                }
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
@@ -75,6 +98,7 @@ class EntityPeopleController extends AbstractController
         return $this->render('entity_people/edit.html.twig', [
             'entity_person' => $entityPerson,
             'form' => $form->createView(),
+            'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
         ]);
     }
 
@@ -85,6 +109,8 @@ class EntityPeopleController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$entityPerson->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
+            $mongoman = new MongoManager();
+            $mongoman->deleteSingleById("Entity_person_sheet",$entityPerson->getSheetId());
             $em->remove($entityPerson);
             $em->flush();
         }

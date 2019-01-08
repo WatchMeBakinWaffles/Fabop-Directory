@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use App\Utils\MongoManager;
-use App\Exceptions\DocumentNotFoundException;
+use App\Exception\DocumentNotFoundException;
 use Symfony\Component\Validator\Tests\Fixtures\ToString;
 
 class MongoManagerTest extends TestCase
@@ -98,18 +98,29 @@ class MongoManagerTest extends TestCase
         $manager->deleteSingleById("Entity_person_sheet","5c1bd8936e7dcf0149085eb7");
     }
 
-    public function test_UpdateDocument_ExistentDocument_BooleanTrue(){
+    public function test_UpdateDocument_ExistentDocument_DocumentUpdated(){
         $manager= new MongoManager();
         $this->assertEquals(1,
             $manager->updateSingleValueById("Entity_person_sheet","5c1bd8936e7dcf0149085eb2","emails.0","sample3@mail.com")
         );
     }
 
-    public function test_UpdateDocument_InexistentDocument_BooleanTrue(){
+    public function test_UpdateDocument_InexistentDocument_Exception(){
+        $this->expectException(DocumentNotFoundException::class);
         $manager= new MongoManager();
-        $this->assertEquals(1,
-            $manager->updateSingleValueById("Entity_person_sheet","5c1bd8936e7dcf0149085eb9","emails.0","sample3@mail.com")
-        );
+        $manager->updateSingleValueById("Entity_person_sheet","5c1bd8936e7dcf0149085eb9","emails.0","sample3@mail.com");
+    }
+
+    public function test_UnsetSingleValue_ExistentDocument_Exception(){
+        $manager= new MongoManager();
+        $manager->unsetSingleValueById("Entity_person_sheet","5c337c725464de34c86873e6","name");
+        $this->assertTrue(true);
+    }
+
+    public function test_UnsetSingleValue_InexistentDocument_Exception(){
+        $manager= new MongoManager();
+        $manager->unsetSingleValueById("Entity_person_sheet","5c337c725464de34c86873e0","name");
+        $this->assertTrue(true);
     }
 
 }
