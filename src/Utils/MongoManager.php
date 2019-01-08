@@ -77,7 +77,7 @@ class MongoManager
 
     function updateSingleValueById($collection,$id,$key,$data){
         $collection= $this->db->selectCollection($collection);
-        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$key=>$data]]);
+        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$key=>$data]])->getModifiedCount();
         if ($result_count>0){
             return $result_count;
         } else {
@@ -88,11 +88,11 @@ class MongoManager
 
     function unsetSingleValueById($collection,$id,$key){
         $collection= $this->db->selectCollection($collection);
-        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$unset'=>[$key=>""]]);
+        $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$unset'=>[$key=>""]])->getModifiedCount();
         if ($result_count>0){
             return $result_count;
         } else {
-            throw new Exception;
+            throw new DocumentNotFoundException;
         }
     }
 
