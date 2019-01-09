@@ -1,43 +1,47 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <nav class="nav-side-menu col col-md-2 row-12 m-0 p-0">
+            <div class="brand p-2">
+                <img width="70px" height="70px" src="{{ asset('static/images/favicon.png') }}">&nbsp; FABOP Directory
+            </div>
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out show">
+                    <li>
+                        <a href="#">
+                        <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
+                        </a>
+                    </li>
 
-<div class="nav-side-menu">
-    <div class="brand">
-        <img width="70px" height="70px" src="{{ asset('static/images/favicon.png') }}">&nbsp; FABOP Directory
-    </div>
-    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-    
-    <div class="menu-list">
-
-        <ul id="menu-content" class="menu-content collapse out show">
-            <li>
-                <a href="#">
-                <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
-                </a>
-            </li>
-
-            <li  data-toggle="collapse" data-target="#directory" class="collapsed active">
-                <a href="#"><i class="fa fa-globe"></i> &nbsp; Annuaire<span class="arrow"></span></a>
-            </li>
-            <ul class="sub-menu collapse show" id="directory">
-                <li class="active"><a href="#">Personnes</a></li>
-                <li><a href="#">Institutions</a></li>
-                <li><a href="#">TAGs</a></li>
-            </ul>
+                    <li  data-toggle="collapse" data-target="#directory" class="collapsed active">
+                        <a href="#"><i class="fa fa-globe"></i> &nbsp; Annuaire<span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse show" id="directory">
+                        <li class="{{ app.request.get('_route') matches '{entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
+                        <li class="{{ app.request.get('_route') matches '{entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
+                        <li class="{{ app.request.get('_route') matches '{entity_tags(.+)}' ? 'active' }}"><a href="/manager/tags">TAGs</a></li>
+                    </ul>
 
 
-            <li data-toggle="collapse" data-target="#config" class="collapsed">
-                <a href="#"><i class="fa fa-hammer"></i> &nbsp; Administration <span class="arrow"></span></a>
-            </li>  
-            <ul class="sub-menu collapse" id="config">
-                <li><a href="#">Gestion des utilisateurs et rôles</a></li>
-                <li><a href="#">Gestion des modèles</a></li>
-                <li><a href="#">Configuration</a></li>
-                <li><a href="#">Sauvegardes / restaurations</a></li>
-            </ul>
-        </ul>
+                    <li data-toggle="collapse" data-target="#config" class="collapsed">
+                        <a href="#"><i class="fa fa-wrench"></i> &nbsp; Administration <span class="arrow"></span></a>
+                    </li>  
+                    <ul class="sub-menu collapse" id="config">
+                        <li><a href="#">Gestion des utilisateurs et rôles</a></li>
+                        <li><a href="#">Gestion des modèles</a></li>
+                        <li><a href="#">Configuration</a></li>
+                        <li><a href="#">Sauvegardes / restaurations</a></li>
+                    </ul>
+                </ul>
+            </div>
+        </nav>
+{% block content %}
     </div>
 </div>
+{% endblock content %}
 
 {% endblock body %}

@@ -1,11 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
 {% block title %}New EntityTags{% endblock %}
 
-{% block body %}
+{% block content %}
+<div class="col">
     <h1>Create new EntityTags</h1>
 
     {{ include('entity_tags/_form.html.twig') }}
 
     <a href="{{ path('entity_tags_index') }}">back to list</a>
+</div>
 {% endblock %}

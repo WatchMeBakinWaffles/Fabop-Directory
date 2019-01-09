@@ -1,21 +1,19 @@
 // SIDEMENU ******************************************************//
 
 .nav-side-menu {
-    overflow: auto;
+    // overflow: auto;
     font-family: Staatliches;
     font-size: 17px;
     font-weight: 200;
     background-color: #2e353d;
-    position: fixed;
     // top: 0px;
-    width: 300px;
-    height: 100%;
+    // width: 300px;
+    // height: 100%;
     color: #e1ffff;
   }
   .nav-side-menu .brand {
     // background-color: #23282e;
     line-height: 50px;
-    width: 90%;
     display: block;
     text-align: left;
     font-size: 22px;
@@ -135,8 +133,6 @@
       text-align: left !important;
       font-size: 22px;
       padding-left: 20px;
-      margin-top: 10px;
-      margin-bottom: 10px;
       line-height: 50px !important;
     }
   }
@@ -144,15 +140,20 @@
     .nav-side-menu .menu-list .menu-content {
       display: block;
     }
-    .brand {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      margin-left: 10px;
-    }
   }
   body {
     margin: 0px;
     padding: 0px;
+    height: 100%;
+    min-height: 100%;
+  }
+
+  html {
+    height: 100%;
   }
   
 // SIDEMENU END ******************************************************//
+
+.container-fluid{
+  height: 100%;
+}

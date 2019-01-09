@@ -22,7 +22,7 @@ class EntityPeopleController extends AbstractController
     public function index(EntityPeopleRepository $entityPeopleRepository): Response
     {
         //filtres à appliquer ici
-        return $this->render('entity_people/index.html.twig', ['entity_peoples' => $entityPeopleRepository->findAll()]);
+        return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
     }
 
     /**

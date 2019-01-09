@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
 {% block title %}EntityPeople{% endblock %}
 
-{% block body %}
+{% block content %}
+<div class="col">
     <h1>EntityPeople</h1>
 
     <table class="table">
@@ -51,4 +52,5 @@
     <a href="{{ path('entity_people_edit', {'id': entity_person.id}) }}">edit</a>
 
     {{ include('entity_people/_delete_form.html.twig') }}
+</div>
 {% endblock %}

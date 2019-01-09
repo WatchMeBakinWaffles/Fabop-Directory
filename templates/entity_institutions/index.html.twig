@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
 {% block title %}EntityInstitutions index{% endblock %}
 
-{% block body %}
+{% block content %}
+<div class="col">
     <h1>EntityInstitutions index</h1>
 
     <table class="table">
@@ -36,4 +37,5 @@
     </table>
 
     <a href="{{ path('entity_institutions_new') }}">Create new</a>
+</div>
 {% endblock %}
