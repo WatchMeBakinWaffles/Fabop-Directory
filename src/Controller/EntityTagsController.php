@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/entity/tags")
+ * @Route("/manager/tags")
  */
 class EntityTagsController extends AbstractController
 {
@@ -20,6 +20,7 @@ class EntityTagsController extends AbstractController
      */
     public function index(EntityTagsRepository $entityTagsRepository): Response
     {
+        //filtres à appliquer ici
         return $this->render('entity_tags/index.html.twig', ['entity_tags' => $entityTagsRepository->findAll()]);
     }
 
@@ -31,9 +32,17 @@ class EntityTagsController extends AbstractController
         $entityTag = new EntityTags();
         $form = $this->createForm(EntityTagsType::class, $entityTag);
         $form->handleRequest($request);
+        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            // Mise en bdd Mongo de l fiche doc --> return IdMongo
+            $sheetId=$mongoman->insertSingle("Entity_person_sheet",$request->request->$person_data);
+
+            // Mise en bdd MySQL de l'ID de fiche de données
+            $entityPerson->setSheetId($sheetId);
+
             $em->persist($entityTag);
             $em->flush();
 

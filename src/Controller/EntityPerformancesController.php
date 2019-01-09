@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/entity/performances")
+ * @Route("/manager/performances")
  */
 class EntityPerformancesController extends AbstractController
 {
@@ -20,6 +20,7 @@ class EntityPerformancesController extends AbstractController
      */
     public function index(EntityPerformancesRepository $entityPerformancesRepository): Response
     {
+        //filtres à appliquer ici
         return $this->render('entity_performances/index.html.twig', ['entity_performances' => $entityPerformancesRepository->findAll()]);
     }
 

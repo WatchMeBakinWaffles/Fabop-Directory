@@ -9,9 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\MongoManager;
 
 /**
- * @Route("/entity/institutions")
+ * @Route("/manager/institutions")
  */
 class EntityInstitutionsController extends AbstractController
 {
@@ -20,6 +21,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function index(EntityInstitutionsRepository $entityInstitutionsRepository): Response
     {
+        //filtres à appliquer ici
         return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $entityInstitutionsRepository->findAll()]);
     }
 
@@ -31,9 +33,21 @@ class EntityInstitutionsController extends AbstractController
         $entityInstitution = new EntityInstitutions();
         $form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
         $form->handleRequest($request);
+        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            // Mise en bdd Mongo de l fiche doc --> return IdMongo
+            if (null != $request->request->get('institution_data')){
+                $sheetId=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
+            }else{
+                $sheetId=$mongoman->insertSingle("Entity_institution_sheet",[]);
+            }
+
+            // Mise en bdd MySQL de l'ID de fiche de données
+            $entityInstitution->setSheetId($sheetId);
+
             $em->persist($entityInstitution);
             $em->flush();
 
@@ -63,6 +77,18 @@ class EntityInstitutionsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if (null != $request->request->get('institution_data')){
+                $dataId=$entityInstitution->getSheetId();
+                foreach( $request->request->get('institution_data') as $key->$value){
+                    if ($value!=''){
+                        $mongoman->updateSingleValueById("Entity_institution_sheet",$dataId,$key,$value);
+                    }else{
+                        $mongoman->unsetSingleValueById("Entity_institution_sheet",$dataId,$key);
+                    }
+                }
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('entity_institutions_index', ['id' => $entityInstitution->getId()]);
@@ -71,6 +97,7 @@ class EntityInstitutionsController extends AbstractController
         return $this->render('entity_institutions/edit.html.twig', [
             'entity_institution' => $entityInstitution,
             'form' => $form->createView(),
+            'entity_institution_data' => $mongoman->getDocById("Entity_institution_sheet",$entityInstitution->getSheetId()),
         ]);
     }
 
@@ -81,6 +108,8 @@ class EntityInstitutionsController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$entityInstitution->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
+            $mongoman = new MongoManager();
+            $mongoman->deleteSingleById("Entity_institution_sheet",$entityInstitution->getSheetId());
             $em->remove($entityInstitution);
             $em->flush();
         }

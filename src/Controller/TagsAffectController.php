@@ -20,6 +20,7 @@ class TagsAffectController extends AbstractController
      */
     public function index(TagsAffectRepository $tagsAffectRepository): Response
     {
+        //filtres à appliquer ici
         return $this->render('tags_affect/index.html.twig', ['tags_affects' => $tagsAffectRepository->findAll()]);
     }
 

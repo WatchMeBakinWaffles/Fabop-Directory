@@ -29,7 +29,7 @@ class EntityShows
     private $year;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=24)
      */
     private $sheet_id;
 
@@ -76,12 +76,12 @@ class EntityShows
         return $this;
     }
 
-    public function getSheetId(): ?int
+    public function getSheetId(): ?string
     {
         return $this->sheet_id;
     }
 
-    public function setSheetId(int $sheet_id): self
+    public function setSheetId(string $sheet_id): self
     {
         $this->sheet_id = $sheet_id;
 
