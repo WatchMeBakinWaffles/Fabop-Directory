@@ -47,6 +47,7 @@ class EntityPeopleController extends AbstractController
 
             // Mise en bdd MySQL de l'ID de fiche de données
             $entityPerson->setSheetId($sheetId);
+            $entityPerson->setAddDate(new \DateTime("now"));
 
             $em->persist($entityPerson);
             $em->flush();

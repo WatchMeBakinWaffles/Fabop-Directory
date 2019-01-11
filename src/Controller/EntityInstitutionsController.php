@@ -75,6 +75,7 @@ class EntityInstitutionsController extends AbstractController
     {
         $form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
         $form->handleRequest($request);
+        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
 

@@ -12,15 +12,13 @@ class EntityPeopleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('firstname')
-            ->add('birthdate')
-            ->add('newsletter')
-            ->add('postal_code')
-            ->add('city')
-            ->add('add_date')
-            ->add('sheet_id')
-            ->add('institution')
+            ->add('name',null,array('label' => 'Nom'))
+            ->add('firstname', null,array('label' => 'Prénom'))
+            ->add('birthdate', null,array('label' => 'Date de naissance'))
+            ->add('newsletter', null,array('label' => 'Abonnement Newsletter'))
+            ->add('postal_code', null,array('label' => 'Code postal'))
+            ->add('city', null,array('label' => 'Ville'))
+            ->add('institution', null,array('label' => 'Institution'))
         ;
     }
 

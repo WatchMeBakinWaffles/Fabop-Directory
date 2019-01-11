@@ -1,41 +1,58 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}EntityInstitutions index{% endblock %}
+{% block title %}Annuaire{% endblock %}
 
 {% block content %}
-<div class="col">
-    <h1>EntityInstitutions index</h1>
-
-    <table class="table">
-        <thead>
+    <h2><i class="fas fa-university"></i> Liste des institutions</h2>
+    <div class="row m-3">
+        <a class="btn btn-primary mr-2" href="{{ path('entity_institutions_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+    </div>
+    <table class="table table-striped">
+        <thead class="bg-secondary text-white">
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Sheet_id</th>
-                <th>actions</th>
+                <th><input type="checkbox" id="select-all"></th>
+                <th>Nom</th>
+                <th>Rôle</th>
+                <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for entity_institution in entity_institutions %}
             <tr>
-                <td>{{ entity_institution.id }}</td>
+                <td id="{{ entity_institution.id }}"><input type="checkbox" name="selected[{{ entity_institution.id }}]"></td> <!--VALUE !-->
                 <td>{{ entity_institution.name }}</td>
                 <td>{{ entity_institution.role }}</td>
-                <td>{{ entity_institution.sheetId }}</td>
                 <td>
-                    <a href="{{ path('entity_institutions_show', {'id': entity_institution.id}) }}">show</a>
-                    <a href="{{ path('entity_institutions_edit', {'id': entity_institution.id}) }}">edit</a>
+                    <a href="{{ path('entity_institutions_show', {'id': entity_institution.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('entity_institutions_edit', {'id': entity_institution.id}) }}"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucune entrée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <nav class="row justify-content-center" aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+            <a class="page-link" href="#!" aria-label="Previous">
+                <span aria-hidden="true"><i class="fas fa-arrow-circle-left"></i></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="#!" aria-label="Next">
+                <span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span>
+                <span class="sr-only">Next</span>
+            </a>
+            </li>
+        </ul>
+    </nav>
 
-    <a href="{{ path('entity_institutions_new') }}">Create new</a>
 </div>
 {% endblock %}
