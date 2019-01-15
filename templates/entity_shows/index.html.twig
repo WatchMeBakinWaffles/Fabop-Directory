@@ -1,39 +1,58 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}EntityShows index{% endblock %}
+{% block title %}Annuaire{% endblock %}
 
 {% block content %}
-    <h1>EntityShows index</h1>
+    <h2><i class="fas fa-theater-masks"></i> Liste des spectacles</h2>
+    <div class="row m-3">
+        <a class="btn btn-primary mr-2" href="{{ path('manager/entity_shows_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+    </div>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="bg-secondary text-white">
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Year</th>
-                <th>Sheet_id</th>
-                <th>actions</th>
+                <th><input type="checkbox" id="select-all"></th>
+                <th>Nom</th>
+                <th>Année</th>
+                <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for entity_show in entity_shows %}
             <tr>
-                <td>{{ entity_show.id }}</td>
+                <td id="{{ entity_show.id }}"><input type="checkbox" name="selected[{{ entity_show.id }}]"></td>
                 <td>{{ entity_show.name }}</td>
                 <td>{{ entity_show.year }}</td>
-                <td>{{ entity_show.sheetId }}</td>
                 <td>
-                    <a href="{{ path('entity_shows_show', {'id': entity_show.id}) }}">show</a>
-                    <a href="{{ path('entity_shows_edit', {'id': entity_show.id}) }}">edit</a>
+                    <a href="{{ path('manager/entity_shows_show', {'id': entity_show.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('manager/entity_shows_edit', {'id': entity_show.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucune entrée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('entity_shows_new') }}">Create new</a>
+    <nav class="row justify-content-center" aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+            <a class="page-link" href="#!" aria-label="Previous">
+                <span aria-hidden="true"><i class="fas fa-arrow-circle-left"></i></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#!">1</a></li>
+            <li class="page-item"><a class="page-link" href="#!">2</a></li>
+            <li class="page-item"><a class="page-link" href="#!">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="#!" aria-label="Next">
+                <span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span>
+                <span class="sr-only">Next</span>
+            </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 {% endblock %}

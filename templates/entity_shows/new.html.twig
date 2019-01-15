@@ -1,11 +1,12 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}New EntityShows{% endblock %}
+{% block title %}Ajouter un spectale{% endblock %}
 
 {% block content %}
-    <h1>Create new EntityShows</h1>
+<div class="col">
+    <h2><i class="fas fa-theater-masks"></i> Ajouter un spectale</h2>
 
     {{ include('entity_shows/_form.html.twig') }}
-
-    <a href="{{ path('entity_shows_index') }}">back to list</a>
+    <br/>
+</div>
 {% endblock %}

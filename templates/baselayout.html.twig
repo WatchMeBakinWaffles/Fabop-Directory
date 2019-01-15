@@ -17,20 +17,20 @@
             
             <div class="menu-list">
                     <ul id="menu-content" class="menu-content collapse out show">
-                        <li>
-                            <a href="#">
+                        <li class="{{ app.request.get('_route') matches '{dashboard}' ? 'active' }}">
+                            <a href="/dashboard">
                             <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
                             </a>
                         </li>
 
-                        <li  data-toggle="collapse" data-target="#directory" class="collapsed active">
+                        <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{manager/(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-atlas"></i> &nbsp; Annuaire<span class="arrow"></span></a>
                         </li>
                         <ul class="sub-menu collapse show" id="directory">
-                            <li class="{{ app.request.get('_route') matches '{entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
-                            <li class="{{ app.request.get('_route') matches '{entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
-                            <li class="{{ app.request.get('_route') matches '{entity_shows(.+)}' ? 'active' }}"><a href="/manager/shows">Spectacles</a></li>
-                            <li class="{{ app.request.get('_route') matches '{entity_tags(.+)}' ? 'active' }}"><a href="/manager/tags">TAGs</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_shows(.+)}' ? 'active' }}"><a href="/manager/shows">Spectacles</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_tags(.+)}' ? 'active' }}"><a href="/manager/tags">TAGs</a></li>
                         </ul>
 
 
@@ -47,7 +47,7 @@
                 </div>
         </aside>
 
-        <div class="overflow-auto pre-scrollable col col-md-10 pt-3 pb-3 mh-100">
+        <div class="overflow-auto pre-scrollable col col-lg-10 pt-3 pb-3 mh-100">
 
 {% block content %}
     </div>

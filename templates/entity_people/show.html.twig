@@ -47,9 +47,9 @@
         </tbody>
     </table>
 
-    <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+    <a class="btn btn-light m-1" href="{{ path('manager/entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
 
-    <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+    <a class="btn btn-success m-1" href="{{ path('manager/entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
 
     {{ include('entity_people/_delete_form.html.twig') }}
 </div>

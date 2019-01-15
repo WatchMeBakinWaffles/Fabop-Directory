@@ -14,11 +14,10 @@ use App\Utils\MongoManager;
 class BaseController extends AbstractController
 {
     /**
-     * @Route("/", name="index", methods="GET")
+     * @Route("/dashboard", name="dashboard", methods="GET")
      */
     public function index(): Response
     {
-        //filtres à appliquer ici
         return $this->render('baselayout.html.twig');
     }
 

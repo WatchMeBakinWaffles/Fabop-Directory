@@ -40,7 +40,7 @@ class EntityPerformances
     }
 
     public function __toString() {
-        return strval($this->shows);
+        return strval($this->shows." ".$this->date->format('d/M/Y'));
     }
 
     public function getId(): ?int

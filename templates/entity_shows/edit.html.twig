@@ -1,13 +1,11 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}Edit EntityShows{% endblock %}
+{% block title %}Édition du spectacle "{{ entity_show.name }}"{% endblock %}
 
 {% block content %}
-    <h1>Edit EntityShows</h1>
+    <h2><i class="fas fa-edit"></i> Édition du spectacle "{{ entity_show.name }}"</h2>
 
-    {{ include('entity_shows/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('entity_shows_index') }}">back to list</a>
+    {{ include('entity_shows/_form.html.twig', {'button_label': 'Valider'}) }}
 
     {{ include('entity_shows/_delete_form.html.twig') }}
 {% endblock %}
