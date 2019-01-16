@@ -8,4 +8,60 @@
     {{ include('entity_people/_form.html.twig', {'button_label': 'Valider'}) }}
 
     {{ include('entity_people/_delete_form.html.twig') }}
+
+    <hr/>
+    <h4><i class="fas fa-tags"></i> Affectation de TAGs</h4>
+    <i class="text-danger">Tableau temporaire d'exemple non fonctionnel à modifier</i>
+    <!--Tableau des tags affect existant récupéré via AJAX-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Personne</th>
+                <th>Représentation</th>
+                <th>TAG</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+                    <tr>
+                <td>1</td>
+                <td>Test test</td>
+                <td>Faust 15/Apr/2019</td>
+                <td>guitariste</td>
+                <td>
+                    <a href="#"><i class="fas fa-times text-danger"></i></a>
+                </td>
+            </tr>
+                </tbody>
+    </table>
+    <i class="text-danger">Formulaire temporaire d'exemple non fonctionnel à modifier</i>
+    <!--Duplication pour chaque tags affect avec un form dynamique AJAX-->
+    <form name="tags_affect" method="post">
+        <div id="tags_affect">
+            <div class="form-group"><label class="required" for="tags_affect_tag">Tag</label>
+                <select id="tags_affect_tag" name="tags_affect[tag]" class="form-control">
+                    <option value="1">guitariste</option>
+                </select>
+            </div>
+            <div class="form-group"><label class="required" for="tags_affect_performance">Performance</label>
+                <select id="tags_affect_performance" name="tags_affect[performance]" class="form-control">
+                    <option value="1">Faust 15/Apr/2019</option>
+                    <option value="2">Faust 01/Jan/2014</option>
+                </select>
+            </div>
+            <i class="fas fa-exclamation-triangle text-danger"></i><i class="text-danger"> Ne pas inclure cet élément en tant que CHOIX dans le formulaire !!! C'est automatiquement la personne de référence de cette page</i>
+            <div class="form-group"><label class="required" for="tags_affect_person">Person</label>
+                <select id="tags_affect_person" name="tags_affect[person]" class="form-control">
+                    <option value="1">Test test</option>
+                    <option value="2">Test1 Test1</option>
+                    <option value="3">Test3 Test3</option>
+                    <option value="4">FAURIE Thibaud</option>
+                </select>
+            </div>
+            <input type="hidden" id="tags_affect__token" name="tags_affect[_token]" value="IwTHZI-zwMrt8mrsU9zal4_KzuFCeICimEB5Gj59b5Y">
+        </div>
+        <span class="not-allowed"><a class="btn text-primary mr-2 disabled dotted" href="#"><i class="fas fa-check"></i> Ajouter</a></span>
+    </form>
+    <br/>
 {% endblock %}

@@ -6,7 +6,10 @@
         <div class="navbar-brand p-2 text-light font-staatliches">
             <img width="70px" height="70px" src="{{ asset('static/images/favicon.png') }}">&nbsp; FABOP Directory
         </div>
-        <p>{{ 'now'|date('d - m -Y') }}</p>
+        <p class="text-right text-light font-staatliches">
+            <span>{{ 'now'|localizeddate('none', 'none', 'fr', null,'d MMMM Y') }}</span>
+            <br/><span id="date_time"></span>
+        </p>
         <i class="fa fa-bars fa-2x toggle-btn text-primary d-block d-lg-none" data-toggle="collapse" data-target="#menu-content">
             </i>
     </nav>
@@ -26,7 +29,7 @@
                         <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{manager/(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-atlas"></i> &nbsp; Annuaire<span class="arrow"></span></a>
                         </li>
-                        <ul class="sub-menu collapse show" id="directory">
+                        <ul class="sub-menu collapse {{ app.request.get('_route') matches '{manager/(.+)}' ? 'show' }}" id="directory">
                             <li class="{{ app.request.get('_route') matches '{manager/entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
                             <li class="{{ app.request.get('_route') matches '{manager/entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
                             <li class="{{ app.request.get('_route') matches '{manager/entity_shows(.+)}' ? 'active' }}"><a href="/manager/shows">Spectacles</a></li>
@@ -50,8 +53,9 @@
         <div class="overflow-auto pre-scrollable col col-lg-10 pt-3 pb-3 mh-100">
 
 {% block content %}
-    </div>
-</div>
 {% endblock content %}
+
+        </div>
+    </div>
 
 {% endblock body %}

@@ -98,12 +98,18 @@
   display: inline-block;
   height: 100%;
   width: 80%;
+  outline: none;
+}
+
+.nav-side-menu li a:active, .nav-side-menu li a:focus {
+  outline: none;
 }
 
 .nav-side-menu li a i {
   padding-left: 10px;
   width: 20px;
   padding-right: 20px;
+  outline: none;
 }
 
 .nav-side-menu li:hover {
@@ -189,6 +195,13 @@ $theme-colors: (
   "dark": #272a2e,
   "warning": #9124b3,
 );
+
+// DASHBOARD CARDS
+
+a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
 
 // BUTTONS
 

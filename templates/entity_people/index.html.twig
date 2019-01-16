@@ -3,66 +3,66 @@
 {% block title %}Annuaire{% endblock %}
 
 {% block content %}
-    <h2><i class="fas fa-atlas"></i> Liste des personnes</h2>
+    <h2><i class="fas fa-users"></i> Liste des personnes</h2>
     <div class="row m-3">
         <a class="btn btn-primary mr-2" href="{{ path('manager/entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
         <span class="not-allowed"><a class="btn text-warning mr-2 disabled dotted" href=""><i class="fas fa-upload"></i> Importer des données</a></span>
     </div>
-    <table class="table table-striped">
-        <thead class="bg-secondary text-white">
-            <tr>
-                <th><input type="checkbox" id="select-all"></th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Date de naissance</th>
-                <th>Abonnement à la newsletter</th>
-                <th>Code postal</th>
-                <th>Ville</th>
-                <th>Date d'ajout</th>
-                <th><i class="fas fa-cog"></i></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity_person in entity_people %}
-            <tr>
-                <td id="{{ entity_person.id }}"><input type="checkbox" name="selected[{{ entity_person.id }}]"></td> <!--VALUE !-->
-                <td>{{ entity_person.name }}</td>
-                <td>{{ entity_person.firstname }}</td>
-                <td>{{ entity_person.birthdate ? entity_person.birthdate|date('Y-m-d') : '' }}</td>
-                <td>{{ entity_person.newsletter ? 'Oui' : 'Non' }}</td>
-                <td>{{ entity_person.postalCode }}</td>
-                <td>{{ entity_person.city }}</td>
-                <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('manager/entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('manager/entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">Aucune entrée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <nav class="row justify-content-center" aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item">
-            <a class="page-link" href="#!" aria-label="Previous">
-                <span aria-hidden="true"><i class="fas fa-arrow-circle-left"></i></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#!">1</a></li>
-            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-            <li class="page-item">
-            <a class="page-link" href="#!" aria-label="Next">
-                <span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span>
-                <span class="sr-only">Next</span>
-            </a>
-            </li>
-        </ul>
-    </nav>
-</div>
+        <table class="table table-striped">
+            <thead class="bg-secondary text-white">
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de naissance</th>
+                    <th>Abonnement à la newsletter</th>
+                    <th>Code postal</th>
+                    <th>Ville</th>
+                    <th>Date d'ajout</th>
+                    <th><i class="fas fa-cog"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity_person in entity_people %}
+                <tr>
+                    <td id="{{ entity_person.id }}"><input type="checkbox" name="selected[{{ entity_person.id }}]"></td> <!--VALUE !-->
+                    <td>{{ entity_person.name }}</td>
+                    <td>{{ entity_person.firstname }}</td>
+                    <td>{{ entity_person.birthdate ? entity_person.birthdate|date('Y-m-d') : '' }}</td>
+                    <td>{{ entity_person.newsletter ? 'Oui' : 'Non' }}</td>
+                    <td>{{ entity_person.postalCode }}</td>
+                    <td>{{ entity_person.city }}</td>
+                    <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <a href="{{ path('manager/entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('manager/entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">Aucune entrée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <nav class="row justify-content-center" aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                <a class="page-link" href="#!" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fas fa-arrow-circle-left"></i></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#!">1</a></li>
+                <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#!" aria-label="Next">
+                    <span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 {% endblock %}

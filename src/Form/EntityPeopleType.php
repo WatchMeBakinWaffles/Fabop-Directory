@@ -6,6 +6,7 @@ use App\Entity\EntityPeople;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Form\TagsAffectType;
 
 class EntityPeopleType extends AbstractType
 {

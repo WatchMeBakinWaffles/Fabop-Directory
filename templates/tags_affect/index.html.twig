@@ -9,6 +9,9 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Personne</th>
+                <th>Représentation</th>
+                <th>TAG</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -16,6 +19,9 @@
         {% for tags_affect in tags_affects %}
             <tr>
                 <td>{{ tags_affect.id }}</td>
+                <td>{{ tags_affect.person }}</td>
+                <td>{{ tags_affect.performance }}</td>
+                <td>{{ tags_affect.tag }}</td>
                 <td>
                     <a href="{{ path('manager/tags_affect_show', {'id': tags_affect.id}) }}">show</a>
                     <a href="{{ path('manager/tags_affect_edit', {'id': tags_affect.id}) }}">edit</a>
