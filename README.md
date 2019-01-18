@@ -51,6 +51,8 @@ These instructions will get you a copy of the project up and running on your loc
     `cd fabop-directory`
     
     `yarn install`
+    
+    `composer install`
 
 2. Then, when cloning is complete, you can run migrations and gulp routines to make front-end and back-end working.
 
@@ -61,10 +63,24 @@ These instructions will get you a copy of the project up and running on your loc
     `yarn run gulp fa`
     
     `yarn run gulp animations`
+    
+    `yarn run gulp images`
+    
+    `yarn run gulp fonts`
 
 ### Running the tests
 
-*Will come later*
+1. Test mongodb manager (custom data retriever) :
+
+    You can run tests with :
+    
+    `php ./bin/phpunit tests/MongoManagerTest.php --testdox`
+    
+    OR
+    
+    `php ./bin/phpunit tests/MongoManagerTest.php` if you want to check details and errors.
+    
+    Those tests may not pass if some database's data are not basicaly set.
 
 ## Deployment / production server installation
 
@@ -72,7 +88,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Built With
 
-* Symfony - The web framework used
+* Symfony - The web framework used (PHP)
 * npm/yarn - Dependency Management
 * Bootstrap - CSS framework
 * jquery - JS framework
