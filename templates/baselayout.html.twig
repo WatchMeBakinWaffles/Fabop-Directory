@@ -1,0 +1,61 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<header>
+    <nav class="navbar navbar-dark bg-dark border-bottom border-primary">
+        <div class="navbar-brand p-2 text-light font-staatliches">
+            <img width="70px" height="70px" src="{{ asset('static/images/favicon.png') }}">&nbsp; FABOP Directory
+        </div>
+        <p class="text-right text-light font-staatliches">
+            <span>{{ 'now'|localizeddate('none', 'none', 'fr', null,'d MMMM Y') }}</span>
+            <br/><span id="date_time"></span>
+        </p>
+        <i class="fa fa-bars fa-2x toggle-btn text-primary d-block d-lg-none" data-toggle="collapse" data-target="#menu-content">
+            </i>
+    </nav>
+</header>
+<div class="container-fluid h-80">
+    <div class="row content-wrapper position-relative">
+        <aside class="nav-side-menu col col-12 col-lg-2 p-0 font-staatliches">
+            
+            <div class="menu-list">
+                    <ul id="menu-content" class="menu-content collapse out show">
+                        <li class="{{ app.request.get('_route') matches '{dashboard}' ? 'active' }}">
+                            <a href="/dashboard">
+                            <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
+                            </a>
+                        </li>
+
+                        <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{manager/(.+)}' ? 'active' }}">
+                            <a class="w-100" href="#"><i class="fa fa-atlas"></i> &nbsp; Annuaire<span class="arrow"></span></a>
+                        </li>
+                        <ul class="sub-menu collapse {{ app.request.get('_route') matches '{manager/(.+)}' ? 'show' }}" id="directory">
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_shows(.+)}' ? 'active' }}"><a href="/manager/shows">Spectacles</a></li>
+                            <li class="{{ app.request.get('_route') matches '{manager/entity_tags(.+)}' ? 'active' }}"><a href="/manager/tags">TAGs</a></li>
+                        </ul>
+
+
+                        <li data-toggle="collapse" data-target="#config" class="collapsed">
+                            <a class="w-100" href="#"><i class="fa fa-wrench"></i> &nbsp; Administration <span class="arrow"></span></a>
+                        </li>  
+                        <ul class="sub-menu collapse" id="config">
+                            <li><a href="#">Gestion des utilisateurs et rôles</a></li>
+                            <li><a href="#">Gestion des modèles</a></li>
+                            <li><a href="#">Configuration</a></li>
+                            <li><a href="#">Sauvegardes / restaurations</a></li>
+                        </ul>
+                    </ul>
+                </div>
+        </aside>
+
+        <div class="overflow-auto pre-scrollable col col-lg-10 pt-3 pb-3 mh-100">
+
+{% block content %}
+{% endblock content %}
+
+        </div>
+    </div>
+
+{% endblock body %}

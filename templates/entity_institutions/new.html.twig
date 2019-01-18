@@ -1,11 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
-{% block title %}New EntityInstitutions{% endblock %}
+{% block title %}Ajouter une institution{% endblock %}
 
-{% block body %}
-    <h1>Create new EntityInstitutions</h1>
+{% block content %}
+<div class="col">
+    <h2><i class="fas fa-university"></i> Ajouter une institution</h2>
 
     {{ include('entity_institutions/_form.html.twig') }}
-
-    <a href="{{ path('entity_institutions_index') }}">back to list</a>
+    <br/>
+</div>
 {% endblock %}

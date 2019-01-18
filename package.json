@@ -1,5 +1,7 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "font-awesome": "^4.7.0"
+  },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
     "animate.css": "^3.7.0",
