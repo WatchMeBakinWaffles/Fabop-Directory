@@ -1,34 +1,36 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
-{% block title %}EntityInstitutions{% endblock %}
+{% block title %}Fiche de l'institution {{ entity_institution.name }}{% endblock %}
 
-{% block body %}
-    <h1>EntityInstitutions</h1>
+{% block content %}
+<div class="col">
+    <h2><i class="fas fa-university"></i> Fiche de l'institution {{ entity_institution.name }}</h2>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>ID</th>
                 <td>{{ entity_institution.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <td>{{ entity_institution.name }}</td>
             </tr>
             <tr>
-                <th>Role</th>
+                <th>Rôle</th>
                 <td>{{ entity_institution.role }}</td>
             </tr>
             <tr>
-                <th>Sheet_id</th>
+                <th>Identifiant de données dynamiques</th>
                 <td>{{ entity_institution.sheetId }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('entity_institutions_index') }}">back to list</a>
+    <a class="btn btn-light m-1" href="{{ path('manager/entity_institutions_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
 
-    <a href="{{ path('entity_institutions_edit', {'id': entity_institution.id}) }}">edit</a>
+    <a class="btn btn-success m-1" href="{{ path('manager/entity_institutions_edit', {'id': entity_institution.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
 
     {{ include('entity_institutions/_delete_form.html.twig') }}
+</div>
 {% endblock %}

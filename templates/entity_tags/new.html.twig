@@ -1,11 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
-{% block title %}New EntityTags{% endblock %}
+{% block title %}Ajouter un TAG{% endblock %}
 
-{% block body %}
-    <h1>Create new EntityTags</h1>
+{% block content %}
+<div class="col">
+    <h2><i class="fas fa-tag"></i> Ajouter un TAG</h2>
 
     {{ include('entity_tags/_form.html.twig') }}
-
-    <a href="{{ path('entity_tags_index') }}">back to list</a>
+    <br/>
+</div>
 {% endblock %}

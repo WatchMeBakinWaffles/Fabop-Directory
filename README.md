@@ -18,23 +18,15 @@ These instructions will get you a copy of the project up and running on your loc
 
     **Install PHP 7.2**
     
-    `apt-get install software-properties-common`
-    
-    `add-apt-repository ppa:ondrej/php`
-    
     `apt-get update`
     
-    `apt-get install php7.2`
+    `apt-get install php-cli`
+    
+    `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip php-mysql php-mongodb`
     
     **Install composer**
     
-    `php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"`
-    
-    `php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"`
-    
-    `sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer`
-    
-    `php -r "unlink('composer-setup.php');"`
+    `apt install composer`
 
 2. Install git for being able to clone the project, make commits and push, etc...
 
@@ -44,10 +36,11 @@ These instructions will get you a copy of the project up and running on your loc
 
     `apt-get install nodejs npm`
     
-    `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
+    `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
     
-    `apt-get update | apt-get install yarn`
+    `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
+    
+    `apt-get update && apt-get install yarn`
 
 ### Installing
 
@@ -60,6 +53,14 @@ These instructions will get you a copy of the project up and running on your loc
     `yarn install`
 
 2. Then, when cloning is complete, you can run migrations and gulp routines to make front-end and back-end working.
+
+    `yarn run gulp styles`
+    
+    `yarn run gulp js`
+    
+    `yarn run gulp fa`
+    
+    `yarn run gulp animations`
 
 ### Running the tests
 

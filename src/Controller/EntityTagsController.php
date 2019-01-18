@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityTagsController extends AbstractController
 {
     /**
-     * @Route("/", name="entity_tags_index", methods="GET")
+     * @Route("/", name="manager/entity_tags_index", methods="GET")
      */
     public function index(EntityTagsRepository $entityTagsRepository): Response
     {
@@ -25,24 +25,16 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="entity_tags_new", methods="GET|POST")
+     * @Route("/new", name="manager/entity_tags_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
         $entityTag = new EntityTags();
         $form = $this->createForm(EntityTagsType::class, $entityTag);
         $form->handleRequest($request);
-        $mongoman = new MongoManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            // Mise en bdd Mongo de l fiche doc --> return IdMongo
-            $sheetId=$mongoman->insertSingle("Entity_person_sheet",$request->request->$person_data);
-
-            // Mise en bdd MySQL de l'ID de fiche de données
-            $entityPerson->setSheetId($sheetId);
-
             $em->persist($entityTag);
             $em->flush();
 
@@ -56,7 +48,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="entity_tags_show", methods="GET")
+     * @Route("/{id}", name="manager/entity_tags_show", methods="GET")
      */
     public function show(EntityTags $entityTag): Response
     {
@@ -64,7 +56,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="entity_tags_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="manager/entity_tags_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityTags $entityTag): Response
     {
@@ -84,7 +76,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="entity_tags_delete", methods="DELETE")
+     * @Route("/{id}", name="manager/entity_tags_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityTags $entityTag): Response
     {

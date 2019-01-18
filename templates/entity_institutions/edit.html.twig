@@ -1,13 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'baselayout.html.twig' %}
 
-{% block title %}Edit EntityInstitutions{% endblock %}
+{% block title %}Édition de {{ entity_institution.name }}{% endblock %}
 
-{% block body %}
-    <h1>Edit EntityInstitutions</h1>
+{% block content %}
+    <h2><i class="fas fa-edit"></i> Édition de {{ entity_institution.name }}</h2>
 
-    {{ include('entity_institutions/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('entity_institutions_index') }}">back to list</a>
+    {{ include('entity_institutions/_form.html.twig', {'button_label': 'Valider'}) }}
 
     {{ include('entity_institutions/_delete_form.html.twig') }}
 {% endblock %}

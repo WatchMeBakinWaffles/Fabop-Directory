@@ -2,11 +2,23 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}FABOP directory{% endblock %}</title>
+        <link rel="icon" href="{{ asset('static/images/favicon.png') }}">
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('static/fonts/Staatliches/staatliches.css') }}">
+        <link rel="stylesheet" href="{{ asset('static/css/animate.css') }}">
+        <link rel="stylesheet" href="{{ asset('static/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('static/css/fontawesome/all.min.css') }}">
+        {% endblock %}
     </head>
-    <body>
+    <body onload="startTime()">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('static/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('static/js/fontawesome/all.js') }}"></script>
+        <script src="{{ asset('static/js/popper.min.js') }}"></script>
+        <script src="{{ asset('static/js/scripts.js') }}"></script>
+        <script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
