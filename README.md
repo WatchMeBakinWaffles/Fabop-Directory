@@ -73,9 +73,13 @@ These instructions will get you a copy of the project up and running on your loc
 4. Docker dependencies
 
     Ubuntu : https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
     Debian : https://docs.docker.com/install/linux/docker-ce/debian/
+
     Fedora : https://docs.docker.com/install/linux/docker-ce/fedora/
+    
     CentOS : https://docs.docker.com/install/linux/docker-ce/centos/
+
 
     Windows : https://docs.docker.com/docker-for-windows/install/
 
