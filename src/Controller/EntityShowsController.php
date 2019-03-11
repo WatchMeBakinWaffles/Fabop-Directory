@@ -51,7 +51,7 @@ class EntityShowsController extends AbstractController
             $em->persist($entityShow);
             $em->flush();
 
-            return $this->redirectToRoute('entity_shows_index');
+            return $this->redirectToRoute('manager/entity_shows_index');
         }
 
         return $this->render('entity_shows/new.html.twig', [
@@ -91,7 +91,7 @@ class EntityShowsController extends AbstractController
             
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_shows_index', ['id' => $entityShow->getId()]);
+            return $this->redirectToRoute('manager/entity_shows_index', ['id' => $entityShow->getId()]);
         }
 
         return $this->render('entity_shows/edit.html.twig', [
@@ -114,6 +114,6 @@ class EntityShowsController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('entity_shows_index');
+        return $this->redirectToRoute('manager/entity_shows_index');
     }
 }

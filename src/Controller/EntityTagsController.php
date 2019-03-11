@@ -38,7 +38,7 @@ class EntityTagsController extends AbstractController
             $em->persist($entityTag);
             $em->flush();
 
-            return $this->redirectToRoute('entity_tags_index');
+            return $this->redirectToRoute('manager/entity_tags_index');
         }
 
         return $this->render('entity_tags/new.html.twig', [
@@ -66,7 +66,7 @@ class EntityTagsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_tags_index', ['id' => $entityTag->getId()]);
+            return $this->redirectToRoute('manager/entity_tags_index', ['id' => $entityTag->getId()]);
         }
 
         return $this->render('entity_tags/edit.html.twig', [
@@ -86,6 +86,6 @@ class EntityTagsController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('entity_tags_index');
+        return $this->redirectToRoute('manager/entity_tags_index');
     }
 }

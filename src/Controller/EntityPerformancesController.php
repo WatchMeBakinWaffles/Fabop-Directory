@@ -38,7 +38,7 @@ class EntityPerformancesController extends AbstractController
             $em->persist($entityPerformance);
             $em->flush();
 
-            return $this->redirectToRoute('entity_performances_index');
+            return $this->redirectToRoute('manager/entity_performances_index');
         }
 
         return $this->render('entity_performances/new.html.twig', [
@@ -66,7 +66,7 @@ class EntityPerformancesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_performances_index', ['id' => $entityPerformance->getId()]);
+            return $this->redirectToRoute('manager/entity_performances_index', ['id' => $entityPerformance->getId()]);
         }
 
         return $this->render('entity_performances/edit.html.twig', [
@@ -86,6 +86,6 @@ class EntityPerformancesController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('entity_performances_index');
+        return $this->redirectToRoute('manager/entity_performances_index');
     }
 }
