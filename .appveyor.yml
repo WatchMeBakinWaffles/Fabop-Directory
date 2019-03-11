@@ -57,4 +57,4 @@ test_script:
     - php phpunit src\Symfony --exclude-group benchmark,intl-data || SET X=!errorlevel!
     - copy /Y c:\php\php.ini-max c:\php\php.ini
     - php phpunit src\Symfony --exclude-group benchmark,intl-data || SET X=!errorlevel!
-- exit %X%
+    - exit %X%
