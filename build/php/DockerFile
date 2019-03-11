@@ -1,0 +1,61 @@
+FROM php:7.2-fpm-alpine
+
+RUN apk add --update icu icu-dev $PHPIZE_DEPS \
+    php7-fpm \
+    php7-apcu \
+    php7-ctype \
+    php7-curl \
+    php7-dom \
+    php7-gd \
+    php7-iconv \
+    php7-imagick \
+    php7-json \
+    php7-intl \
+    php7-mcrypt \
+    php7-fileinfo\
+    php7-mbstring \
+    php7-opcache \
+    php7-openssl \
+    php7-pdo \
+    php7-pdo_mysql \
+    php7-mysqli \
+    php7-xml \
+    php7-zlib \
+    php7-phar \
+    php7-tokenizer \
+    php7-session \
+    php7-simplexml \
+    php7-xdebug \
+    php7-zip \
+    php7-intl \
+    php7-mongodb \
+    openssl-dev \
+    libintl \
+    make \
+    curl
+
+# ENV PHP_CPPFLAGS="$PHP_CPPFLAGS -std=c++11"
+
+RUN pecl install mongodb xdebug apcu opcache libmongoc openssl-dev
+
+RUN docker-php-ext-enable mongodb xdebug apcu opcache
+
+RUN docker-php-ext-install pdo pdo_mysql intl
+
+RUN mkdir /run/php
+
+ADD conf/www.conf /etc/php/7.2/fpm/pool.d/www.conf
+ADD conf/php-fpm.conf /etc/php/7.2/fpm/php7-fpm.conf
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php
+RUN php -r "unlink('composer-setup.php');"
+RUN mv composer.phar /usr/local/bin/composer
+RUN chmod +x /usr/local/bin/composer
+RUN ln -snf /usr/share/zoneinfo/Europe/Lisbon /etc/localtime
+
+WORKDIR /var/www/html/symfony
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
