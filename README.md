@@ -1,6 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-![AppVeyor](https://img.shields.io/appveyor/ci/moulagofre/fabop-directory.svg)
-[![pipeline status](https://gitlab.com/user/userproject/badges/master/pipeline.svg)](https://gitlab.com/moulagofre/fabop-directory/commits/master)
+[![AppVeyor](https://img.shields.io/appveyor/ci/moulagofre/fabop-directory.svg)]()
 
 # FABOP directory
 
