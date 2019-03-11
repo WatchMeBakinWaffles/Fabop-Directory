@@ -30,7 +30,7 @@ services:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: fabop_directory
         MYSQL_USER: app_access
-        MYSQL_PASSWORD: 3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug
+        MYSQL_PASSWORD: <SET PASSWORD HERE>
   mongodb:
     image: mongo
     restart: always
@@ -38,6 +38,6 @@ services:
         - "27017:27017"
     environment:
         MONGO_INITDB_ROOT_USERNAME: app_access
-        MONGO_INITDB_ROOT_PASSWORD: 3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug
+        MONGO_INITDB_ROOT_PASSWORD: <SET PASSWORD HERE>
         MONGO_INITDB_DATABASE: admin
     build: build/mongodb
