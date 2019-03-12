@@ -1,10 +1,10 @@
-db.auth('app_access', '3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug')
+db.auth('app_access', '<SET PASSWORD HERE>')
 
 db = db.getSiblingDB('fabop_directory')
 
 db.createUser({
   user: 'app_access',
-  pwd: '3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug',
+  pwd: '<SET PASSWORD HERE>',
   roles: [
     {
       role: 'readWrite',

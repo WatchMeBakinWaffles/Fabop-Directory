@@ -1,7 +1,9 @@
 version: '3'
 services:
   php:
-    build: build/php
+    build: 
+      context: build/php
+      dockerfile: DockerFile
     expose:
       - '9000'
     depends_on:
@@ -12,7 +14,9 @@ services:
       - ./logs:/var/log
       - /var/www/symfony/vendor
   web:
-    build: build/nginx
+    build: 
+      context: build/nginx
+      dockerfile: DockerFile
     restart: always
     ports:
         - '80:80'
@@ -31,8 +35,11 @@ services:
         MYSQL_DATABASE: fabop_directory
         MYSQL_USER: app_access
         MYSQL_PASSWORD: <SET PASSWORD HERE>
+
   mongodb:
-    image: mongo
+    build: 
+      context: build/mongodb
+      dockerfile: DockerFile
     restart: always
     ports:
         - "27017:27017"
@@ -40,4 +47,3 @@ services:
         MONGO_INITDB_ROOT_USERNAME: app_access
         MONGO_INITDB_ROOT_PASSWORD: <SET PASSWORD HERE>
         MONGO_INITDB_DATABASE: admin
-    build: build/mongodb

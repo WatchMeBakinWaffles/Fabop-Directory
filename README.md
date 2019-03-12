@@ -116,7 +116,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. Edit app/.env and set `APP_ENV` to `dev`
 
-4. Set DB passwords in docker-compose and copy them into app/.env by replacing `<SET PASSWORD HERE>` placeholders
+4. Set DB passwords in `docker-compose.yml` and copy them into `app/.env` by replacing `<SET PASSWORD HERE>` placeholders. Set also mongodb password in `build/mongodb/mongo-init.js`.
 
 5. Now, build docker images and start it :
 
