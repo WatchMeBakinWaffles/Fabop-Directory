@@ -124,6 +124,78 @@ $(document).on("submit", "#form_tags_affect_new", function(e){
     });
 });
 
+$(document).ready(function() {
+    $('#table-view').DataTable({
+        buttons: [
+            'csv', 'excel', 'pdf'
+        ],
+        order:[],
+        'columnDefs': [{
+            'orderable': false,
+            'targets': [0]
+        },
+        {
+            'orderable': false,
+            'targets': [8]
+        }],
+        language: {
+            url:'//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json'
+        }
+        
+    });
+});
+
+/*
+function supp_accents( data ) {
+    return ! data ?
+        '' :
+        typeof data === 'string' ?
+            data
+                .replace( /έ/g, 'ε' )
+                .replace( /[ύϋΰ]/g, 'υ' )
+                .replace( /ό/g, 'ο' )
+                .replace( /ώ/g, 'ω' )
+                .replace( /ά/g, 'α' )
+                .replace( /[ίϊΐ]/g, 'ι' )
+                .replace( /ή/g, 'η' )
+                .replace( /\n/g, ' ' )
+                .replace( /á/g, 'a' )
+                .replace( /é/g, 'e' )
+                .replace( /í/g, 'i' )
+                .replace( /ó/g, 'o' )
+                .replace( /ú/g, 'u' )
+                .replace( /ê/g, 'e' )
+                .replace( /î/g, 'i' )
+                .replace( /ô/g, 'o' )
+                .replace( /è/g, 'e' )
+                .replace( /ï/g, 'i' )
+                .replace( /ü/g, 'u' )
+                .replace( /ã/g, 'a' )
+                .replace( /õ/g, 'o' )
+                .replace( /ç/g, 'c' )
+                .replace( /ì/g, 'i' ):
+            data;
+};
+
+jQuery.extend( jQuery.fn.dataTableExt.oSort,
+{
+    "french-string-asc"  : function (s1, s2) { return s1.localCompare(s2); },
+    "french-string-desc" : function (s1, s2) { return s2.localCompare(s1); }
+});
+
+jQuery.fn.DataTable.ext.type.search['string'] = function (data) {
+    return supp_accents(data);
+}
+
+$('#table-view_filter input[type=search]').keyup( function() {
+    var table = $('#table-view').DataTable();
+    table.search(
+        jQuery.fn.DataTable.ext.type.search.string(this.value)
+        ).draw();
+});
+*/
+
+
 // Select all function in index tables
 $('#select-all').click(function(event) {   
     if(this.checked) {

@@ -3,13 +3,18 @@
 {% block title %}Annuaire{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
     <h2><i class="fas fa-users"></i> Liste des personnes</h2>
     <div class="row m-3">
         <a class="btn btn-primary mr-2" href="{{ path('manager/entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+        <a class="btn btn-primary mr-2 content-grey" href="#"><i class="fas fa-download"></i> Export</a>
         <span class="not-allowed"><a class="btn text-warning mr-2 disabled dotted" href=""><i class="fas fa-upload"></i> Importer des données</a></span>
     </div>
-        <table class="table table-striped">
-            <thead class="bg-secondary text-white">
+        <table id="table-view" class="table table-striped">
+            <thead class="bg-secondary text-white" >
                 <tr>
                     <th><input type="checkbox" id="select-all"></th>
                     <th>Nom</th>
@@ -23,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for entity_person in entity_people %}
+            {% for entity_person in entity_people | sort %}
                 <tr>
                     <td id="{{ entity_person.id }}"><input type="checkbox" name="selected[{{ entity_person.id }}]"></td> <!--VALUE !-->
                     <td>{{ entity_person.name }}</td>
@@ -45,7 +50,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <nav class="row justify-content-center" aria-label="Page navigation">
+        {#<nav class="row justify-content-center" aria-label="Page navigation">
             <ul class="pagination">
                 <li class="page-item">
                 <a class="page-link" href="#!" aria-label="Previous">
@@ -63,6 +68,6 @@
                 </a>
                 </li>
             </ul>
-        </nav>
+        </nav>#}
     </div>
 {% endblock %}
