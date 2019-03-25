@@ -1,11 +1,10 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}New TagsAffect{% endblock %}
+{% block title %}Ajouter une nouvelle affectation de TAGs{% endblock %}
 
 {% block content %}
-    <h1>Create new TagsAffect</h1>
+    <h1>Ajouter une nouvelle affectation de TAGs</h1>
 
     {{ include('tags_affect/_form.html.twig') }}
 
-    <a href="{{ path('manager/tags_affect_index') }}">back to list</a>
 {% endblock %}

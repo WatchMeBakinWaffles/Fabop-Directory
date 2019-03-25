@@ -1,35 +1,39 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}EntityPerformances index{% endblock %}
+{% block title %}Liste des représentations{% endblock %}
 
 {% block content %}
-    <h1>EntityPerformances index</h1>
+    <h2><i class="fas fa-theater-masks"></i> Liste des représentations</h2>
 
-    <table class="table">
-        <thead>
+    <div class="row m-3">
+        <a class="btn btn-primary mr-2" href="{{ path('manager/entity_performances_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="bg-secondary text-white">
             <tr>
+                <th><input type="checkbox" id="select-all"></th>
                 <th>Id</th>
                 <th>Date</th>
-                <th>actions</th>
+                <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
         <tbody>
         {% for entity_performance in entity_performances %}
             <tr>
+                <td id="{{ entity_performance.id }}"><input type="checkbox" name="selected[{{ entity_performance.id }}]"></td>
                 <td>{{ entity_performance.id }}</td>
                 <td>{{ entity_performance.date ? entity_performance.date|date('Y-m-d') : '' }}</td>
                 <td>
-                    <a href="{{ path('manager/entity_performances_show', {'id': entity_performance.id}) }}">show</a>
-                    <a href="{{ path('manager/entity_performances_edit', {'id': entity_performance.id}) }}">edit</a>
+                    <a href="{{ path('manager/entity_performances_show', {'id': entity_performance.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('manager/entity_performances_edit', {'id': entity_performance.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="5">Aucune entrée</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('manager/entity_performances_new') }}">Create new</a>
 {% endblock %}

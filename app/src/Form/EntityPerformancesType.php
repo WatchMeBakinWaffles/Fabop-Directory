@@ -12,8 +12,8 @@ class EntityPerformancesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date')
-            ->add('shows')
+            ->add('date', null, array('label' => 'Date'))
+            ->add('shows', null, array('label' => 'Spectacle'))
         ;
     }
 

@@ -25,12 +25,24 @@ class EntityTagsController extends AbstractController
     }
 
     /**
+     * @Route("/list", name="manager/entity_tags_list", methods="GET")
+     */
+    public function list(EntityTagsRepository $entityTagsRepository): Response
+    {
+        return $this->render('entity_tags/list.html.twig', ['entity_tags' => $entityTagsRepository->findAll()]);
+    }
+
+    /**
      * @Route("/new", name="manager/entity_tags_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
         $entityTag = new EntityTags();
-        $form = $this->createForm(EntityTagsType::class, $entityTag);
+        $form = $this->createForm(EntityTagsType::class, $entityTag, array(
+            'attr' => array(
+                'id' => 'form_entity_tags_new',
+            )
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -42,6 +54,31 @@ class EntityTagsController extends AbstractController
         }
 
         return $this->render('entity_tags/new.html.twig', [
+            'entity_tag' => $entityTag,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/modal/new", name="manager/entity_tags_new_modal", methods="GET|POST")
+     */
+    public function newModal(Request $request): Response
+    {
+        $entityTag = new EntityTags();
+        $form = $this->createForm(EntityTagsType::class, $entityTag, array(
+            'attr' => array(
+                'id' => 'form_entity_tags_new',
+            )
+        ));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entityTag);
+            $em->flush();
+        }
+
+        return $this->render('modal/tag_new.html.twig', [
             'entity_tag' => $entityTag,
             'form' => $form->createView(),
         ]);

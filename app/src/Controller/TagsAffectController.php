@@ -30,10 +30,16 @@ class TagsAffectController extends AbstractController
     public function new(Request $request): Response
     {
         $tagsAffect = new TagsAffect();
-        $form = $this->createForm(TagsAffectType::class, $tagsAffect);
+        $form = $this->createForm(TagsAffectType::class, $tagsAffect, array(
+            'attr' => array(
+                'id' => 'form_tags_affect_new',
+            )
+        ));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $submittedToken = $request->request->get('tags_affect')['_token'];        
+        
+        if ($form->isSubmitted() && $this->isCsrfTokenValid('new-tags-affect', $submittedToken)) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($tagsAffect);
             $em->flush();

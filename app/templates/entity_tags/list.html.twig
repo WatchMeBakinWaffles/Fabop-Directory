@@ -1,0 +1,5 @@
+{% for entity_tag in entity_tags %}
+    <option value={{ entity_tag.id }}>{{ entity_tag.name }}</option>
+{% else %}
+    <option value="1">Aucun tag</option>
+{% endfor %}

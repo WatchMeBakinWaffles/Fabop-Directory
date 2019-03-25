@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
 
+use App\Repository\TagsAffectRepository;
+
 /**
  * @Route("/manager/people")
  */
@@ -64,10 +66,12 @@ class EntityPeopleController extends AbstractController
     /**
      * @Route("/{id}", name="manager/entity_people_show", methods="GET")
      */
-    public function show(EntityPeople $entityPerson): Response
+    public function show(EntityPeople $entityPerson, TagsAffectRepository $tagsAffectRepository): Response
     {
-
-        return $this->render('entity_people/show.html.twig', ['entity_person' => $entityPerson]);
+        return $this->render('entity_people/show.html.twig', [
+            'entity_person' => $entityPerson,
+            'tags_affects' => $tagsAffectRepository->findAll(),
+        ]);
     }
 
     /**

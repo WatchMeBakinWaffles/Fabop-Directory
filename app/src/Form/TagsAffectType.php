@@ -12,9 +12,9 @@ class TagsAffectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tag')
-            ->add('performance')
-            ->add('person')
+            ->add('tag', null, array('label' => 'Tag'))
+            ->add('performance', null, array('label' => 'Représentation'))
+            ->add('person', null, array('label' => 'Personne'))
         ;
     }
 

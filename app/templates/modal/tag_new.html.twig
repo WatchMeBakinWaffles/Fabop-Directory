@@ -1,0 +1,13 @@
+{% block content %}
+<div class="col">
+    <h2><i class="fas fa-tag"></i> Ajouter un TAG</h2>
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
+        {# <a class="btn btn-light m-1" href="{{ path('manager/entity_tags_index') }}"><i class="fas fa-undo"></i> Annuler</a> #}
+    {{ form_end(form) }}
+</div>
+{% endblock %}

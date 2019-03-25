@@ -1,11 +1,11 @@
-{% extends 'baselayout.html.twig' %}
+{# {% extends 'baselayout.html.twig' %}
 
-{% block title %}TagsAffect index{% endblock %}
+{% block title %}TagsAffect index{% endblock %} #}
 
 {% block content %}
-    <h1>TagsAffect index</h1>
+    {# <h1>TagsAffect index</h1> #}
 
-    <table class="table">
+    <table id="table_tags_affect" class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -16,24 +16,24 @@
             </tr>
         </thead>
         <tbody>
-        {% for tags_affect in tags_affects %}
-            <tr>
-                <td>{{ tags_affect.id }}</td>
-                <td>{{ tags_affect.person }}</td>
-                <td>{{ tags_affect.performance }}</td>
-                <td>{{ tags_affect.tag }}</td>
-                <td>
-                    <a href="{{ path('manager/tags_affect_show', {'id': tags_affect.id}) }}">show</a>
-                    <a href="{{ path('manager/tags_affect_edit', {'id': tags_affect.id}) }}">edit</a>
-                </td>
-            </tr>
+        {% for tags_affect in tags_affects if (entity_person is defined) and ((entity_person.name ~ ' ' ~ entity_person.firstname) == tags_affect.person) %}
+                <tr>
+                    <td>{{ tags_affect.id }}</td>
+                    <td>{{ tags_affect.person }}</td>
+                    <td>{{ tags_affect.performance }}</td>
+                    <td>{{ tags_affect.tag }}</td>
+                    <td>
+                        <a href="{{ path('manager/tags/tags_affect_show', {'id': tags_affect.id}) }}"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('manager/tags/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="5">Aucune entrée trouvée pour cette personne</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('manager/tags_affect_new') }}">Create new</a>
+    {# <a href="{{ path('manager/tags/tags_affect_new') }}">Create new</a> #}
 {% endblock %}

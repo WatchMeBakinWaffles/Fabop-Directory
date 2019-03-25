@@ -1,9 +1,9 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}TagsAffect{% endblock %}
+{% block title %}Affectation de TAGs{% endblock %}
 
 {% block content %}
-    <h1>TagsAffect</h1>
+    <h1>Fiche du tag affect "{{ tags_affect.id }}"</h1>
 
     <table class="table">
         <tbody>
@@ -11,12 +11,23 @@
                 <th>Id</th>
                 <td>{{ tags_affect.id }}</td>
             </tr>
+            <tr>
+                <th>Personne</th>
+                <td>{{ tags_affect.person }}</td>
+            </tr>
+            <tr>
+                <th>Représentation</th>
+                <td>{{ tags_affect.performance }}</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td>{{ tags_affect.tag }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('manager/tags_affect_index') }}">back to list</a>
-
-    <a href="{{ path('manager/tags_affect_edit', {'id': tags_affect.id}) }}">edit</a>
+    <a class="btn btn-light m-1" href="{{ path('manager/tags/tags_affect_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+    <a class="btn btn-success m-1" href="{{ path('manager/tags/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
 
     {{ include('tags_affect/_delete_form.html.twig') }}
 {% endblock %}

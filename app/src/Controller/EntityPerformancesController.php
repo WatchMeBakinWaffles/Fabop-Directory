@@ -25,12 +25,25 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
+     * @Route("/list", name="manager/entity_performances_list", methods="GET")
+     */
+    public function list(EntityPerformancesRepository $entityPerformancesRepository): Response
+    {
+        //filtres à appliquer ici
+        return $this->render('entity_performances/list.html.twig', ['entity_performances' => $entityPerformancesRepository->findAll()]);
+    }
+
+    /**
      * @Route("/new", name="manager/entity_performances_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
         $entityPerformance = new EntityPerformances();
-        $form = $this->createForm(EntityPerformancesType::class, $entityPerformance);
+        $form = $this->createForm(EntityPerformancesType::class, $entityPerformance, array(
+            'attr' => array(
+                'id' => 'form_entity_performances_new',
+            )
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
