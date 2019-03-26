@@ -23,8 +23,8 @@
                     <td>{{ tags_affect.performance }}</td>
                     <td>{{ tags_affect.tag }}</td>
                     <td>
-                        <a href="{{ path('manager/tags/tags_affect_show', {'id': tags_affect.id}) }}"><i class="fas fa-eye"></i></a>
-                        <a href="{{ path('manager/tags/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i></a>
+                        <a href="{{ path('manager/tags_affect_show', {'id': tags_affect.id}) }}"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('manager/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i></a>
                     </td>
                 </tr>
         {% else %}
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 
-    {# <a href="{{ path('manager/tags/tags_affect_new') }}">Create new</a> #}
+    {# <a href="{{ path('manager/tags_affect_new') }}">Create new</a> #}
 {% endblock %}

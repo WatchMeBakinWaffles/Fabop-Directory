@@ -26,8 +26,8 @@
         </tbody>
     </table>
 
-    <a class="btn btn-light m-1" href="{{ path('manager/tags/tags_affect_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
-    <a class="btn btn-success m-1" href="{{ path('manager/tags/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+    <a class="btn btn-light m-1" href="{{ path('manager/tags_affect_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+    <a class="btn btn-success m-1" href="{{ path('manager/tags_affect_edit', {'id': tags_affect.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
 
     {{ include('tags_affect/_delete_form.html.twig') }}
 {% endblock %}

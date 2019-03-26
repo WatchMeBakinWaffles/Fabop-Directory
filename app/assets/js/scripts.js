@@ -103,13 +103,13 @@ $(document).on("submit", "#form_entity_performances_new", function(e){
     and the table of tags_affect is updated */
 $(document).on("submit", "#form_tags_affect_new", function(e){
     e.preventDefault();
-    $.post('http://localhost/manager/tags/affect/new', 
+    $.post('http://localhost/manager/tags-affect/new', 
     $('#form_tags_affect_new').serialize(), 
         function(data, status, xhr){
             if(status == "success") {
                 alert("L'affectation de tag a bien été ajoutée");
                 $.ajax({
-                    url: "http://localhost/manager/tags/affect/",
+                    url: "http://localhost/manager/tags-affect/",
                     method: "get"
                 }).done(function(content){
                     // On peut commenter car on reload la page
