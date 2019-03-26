@@ -1,5 +1,5 @@
 {% for entity_performance in entity_performances %}
-    <option value={{ entity_performance.id }}>{{ entity_performance.date|date("m/d/Y") }}</option>
+    <option value={{ entity_performance.id }}>{{ entity_performance.shows }} | {{ entity_performance.date|date("m/d/Y") }}</option>
 {% else %}
     <option value="1">Aucune performance</option>
 {% endfor %}

@@ -15,6 +15,7 @@
                 <th><input type="checkbox" id="select-all"></th>
                 <th>Id</th>
                 <th>Date</th>
+                <th>Spectacle</th>
                 <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <td id="{{ entity_performance.id }}"><input type="checkbox" name="selected[{{ entity_performance.id }}]"></td>
                 <td>{{ entity_performance.id }}</td>
                 <td>{{ entity_performance.date ? entity_performance.date|date('Y-m-d') : '' }}</td>
+                <td>{{ entity_performance.shows }}</td>
                 <td>
                     <a href="{{ path('manager/entity_performances_show', {'id': entity_performance.id}) }}"><i class="fas fa-eye"></i></a>
                     <a href="{{ path('manager/entity_performances_edit', {'id': entity_performance.id}) }}"><i class="fas fa-edit"></i></a>
