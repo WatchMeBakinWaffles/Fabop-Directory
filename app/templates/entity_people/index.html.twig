@@ -3,14 +3,10 @@
 {% block title %}Annuaire{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-  
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 
     <h2><i class="fas fa-users"></i> Liste des personnes</h2>
     <div class="row m-3">
         <a class="btn btn-primary mr-2" href="{{ path('manager/entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
-        <a class="btn btn-primary mr-2 content-grey" href="#"><i class="fas fa-download"></i> Export</a>
         <span class="not-allowed"><a class="btn text-warning mr-2 disabled dotted" href=""><i class="fas fa-upload"></i> Importer des données</a></span>
     </div>
         <table id="table-view" class="table table-striped">
@@ -50,24 +46,5 @@
             {% endfor %}
             </tbody>
         </table>
-        {#<nav class="row justify-content-center" aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item">
-                <a class="page-link" href="#!" aria-label="Previous">
-                    <span aria-hidden="true"><i class="fas fa-arrow-circle-left"></i></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#!">1</a></li>
-                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                <li class="page-item">
-                <a class="page-link" href="#!" aria-label="Next">
-                    <span aria-hidden="true"><i class="fas fa-arrow-circle-right"></i></span>
-                    <span class="sr-only">Next</span>
-                </a>
-                </li>
-            </ul>
-        </nav>#}
     </div>
 {% endblock %}
