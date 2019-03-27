@@ -24,6 +24,8 @@ gulp.task('js', function() {
     // DataTables
     gulp.src('node_modules/datatables.net/js/jquery.dataTables.min.js')
     .pipe(gulp.dest('public/static/js/'));
+    gulp.src('node_modules/datatables.net-buttons/js/dataTables.buttons.min.js')
+    .pipe(gulp.dest('public/static/js/'))
     gulp.src('node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js')
     .pipe(gulp.dest('public/static/js/'));
     // Custom
