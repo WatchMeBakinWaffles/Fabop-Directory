@@ -131,7 +131,7 @@ $(document).ready(function() {
                 var column = this;
                 
                 if(index != 0 && index != tableElementCount-1) {
-                    var select = $('<select><option value=""></option></select>')
+                    var select = $('<select class="form-control form-control-sm"><option value=""></option></select>')
                         .appendTo( $(column.footer()).empty() )
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
