@@ -36,6 +36,18 @@ services:
         MYSQL_USER: app_access
         MYSQL_PASSWORD: <SET PASSWORD HERE>
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysqldb
+      PMA_USER: app_access
+      PMA_PASSWORD: password
+    ports:
+    - "8080:80"
+    restart: always
+    depends_on: 
+    - mysqldb
+
   mongodb:
     build: 
       context: build/mongodb
