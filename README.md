@@ -136,6 +136,65 @@ These instructions will get you a copy of the project up and running on your loc
 
     `docker exec -it <mycontainer> bash`
 
+### Setting up the development environment without Docker
+
+1. First, you need to clone the project and install dependencies with following command lines :
+
+    `git clone https://tuleap.fiction-factory.fr/plugins/git/fabop/fabop-directory.git`
+    
+    `cd fabop-directory/app`
+
+    `git checkout develop`
+    
+    `yarn install`
+    
+    `composer install`
+
+2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000`
+
+    and run gulp routines to make front-end and back-end working.
+
+    `yarn run gulp styles`
+    
+    `yarn run gulp js`
+    
+    `yarn run gulp fa`
+    
+    `yarn run gulp animations`
+    
+    `yarn run gulp images`
+    
+    `yarn run gulp fonts`
+
+4. Edit app/.env and set `APP_ENV` to `dev`
+
+5. Replace 
+    - `DATABASE_URL="mysql://app_access:<SET PASSWORD HERE>@mysqldb:3306/fabop_directory"` 
+                                                by
+      `DATABASE_URL="mysql://[VOTRE LOGIN]:[VOTRE LOGIN]@servinfo-mariadb:3306/sf[VOTRE LOGIN]"`
+
+    Note : Remplace [VOTRE LOGIN] by your session login
+
+    - `MONGODB_URL=mongodb://app_access:<SET PASSWORD HERE>@mongodb:27017/fabop_directory`
+                                                by
+      `MONGODB_URL="mongodb://localhost:27017"`
+
+    Warning : Do not forget the quotation marks
+
+6. Now, you can run migrations
+
+    `php bin/console make:migration`
+
+    `php bin/console doctrine:migrations:migrate`
+
+    Note : Answer `y` to the question :
+
+        WARNING! You are about to execute a database migration that could result in schema changes and data loss. Are you sure you wish to continue? (y/n)
+
+7. Finally, you can start the project
+
+    `php bin/console server:start`
+
 ### Running the tests
 
 1. Test mongodb manager (custom data retriever) :
