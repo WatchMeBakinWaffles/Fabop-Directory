@@ -185,6 +185,8 @@ These instructions will get you a copy of the project up and running on your loc
 
     `php bin/console make:migration`
 
+    If you have a warning, don't care about it, continue.
+
     `php bin/console doctrine:migrations:migrate`
 
     Note : Answer `y` to the question :
