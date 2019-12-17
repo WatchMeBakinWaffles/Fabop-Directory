@@ -3,11 +3,9 @@
 {% block title %}Import-export de données{% endblock %}
 
 {% block content %}
-    <h2>Import-export de données</h2>
-
     <section class="row">
         <section class="col-6">
-            <h3><i class="fa fa-file-import"></i> Importer des données</h3>
+            <h2><i class="fa fa-file-import"></i> Importer des données</h2>
             <form action="">
                 <div class="custom-file mb-1">
                     <label class="custom-file-label" for="import-file">Choose file</label>
@@ -18,8 +16,8 @@
         </section>
 
         <section class="col-6">
-            <h3><i class="fa fa-upload"></i> Exporter des données</h3>
-            <form action="">
+            <h2><i class="fa fa-upload"></i> Exporter des données</h2>
+            <form action="{{ path('manager/export') }}">
                 <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Exporter</button>
             </form>
         </section>
