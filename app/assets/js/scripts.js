@@ -183,6 +183,12 @@ $('#select-all').click(function(event) {
     }
 });
 
+$('#import-file').change(function(){
+    var v = $(this).val().split('\\');
+    var m = v[v.length-1]
+    $('#labelChoose').text(m);
+});
+
 function startTime() {
     var today = new Date();
     var h = today.getHours();
