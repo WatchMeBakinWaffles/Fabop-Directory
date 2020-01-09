@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use App\Entity\EntityPeople;
+
 use App\Repository\EntityPeopleRepository;
 use App\Utils\XLSXWriter;
 
@@ -33,6 +35,29 @@ class ImportExportController extends AbstractController
         $writer->writeAll($epr);
 
         $file = "export.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/export_selectif", name="manager/export_selectif")
+     */
+    public function export_selectif(Request $request)
+    {
+        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->write($_POST['ids'], $people);
+
+        $file = "export_selectif.xlsx";
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($file).'"');

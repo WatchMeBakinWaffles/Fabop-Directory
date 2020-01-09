@@ -189,6 +189,23 @@ $('#import-file').change(function(){
     $('#labelChoose').text(m);
 });
 
+document.getElementById("exportClick").addEventListener("click", function (){
+    let checkboxs = document.getElementsByClassName("checkImport");
+    const liste_id = [];
+    for (const checkbox of checkboxs){
+        if (checkbox.checked === true){
+            liste_id.push(checkbox.parentNode.id);
+        }
+    }
+    $.post('http://localhost/manager/imp-exp/export_selectif', {ids: liste_id}, 
+        function(){
+            window.location = "http://localhost/export_selectif.xlsx";
+        }
+    ).fail(function(){
+        alert("Vous n'avez rien séléctionné");
+    });
+});
+
 function startTime() {
     var today = new Date();
     var h = today.getHours();
