@@ -17,6 +17,10 @@
         <env name="DATABASE_URL" value="mysql://db_access:MgWhXBaBm9QvMucX2GQNkyzJdMNcS3Ftj6WhU9n3P3uc6TF3aMpvfHLr6jCkTQ8e@127.0.0.1:3306/fabop_directory" />
         <env name="MONGODB_URL" value="mongodb://app_access:3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug@127.0.0.1:27017/fabop_directory" />
         <!-- define your env variables for the test env here -->
+
+        <!-- ###+ nelmio/cors-bundle ### -->
+        <env name="CORS_ALLOW_ORIGIN" value="^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$"/>
+        <!-- ###- nelmio/cors-bundle ### -->
     </php>
 
     <testsuites>
