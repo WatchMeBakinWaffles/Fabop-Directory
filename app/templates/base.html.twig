@@ -15,6 +15,7 @@
     <body onload="startTime()">
         {% block body %}{% endblock %}
         {% block javascripts %}
+        {{ encore_entry_link_tags('app') }}
         <script src="{{ asset('static/js/jquery.min.js') }}"></script>
         <script src="{{ asset('static/js/popper.min.js') }}"></script>
         <script src="{{ asset('static/js/jquery.dataTables.min.js') }}"></script>
