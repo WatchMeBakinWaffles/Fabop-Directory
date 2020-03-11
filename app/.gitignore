@@ -1,3 +1,5 @@
+# Environement
+/.env
 # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
@@ -58,3 +60,10 @@ public/bundles
 
 *.lock
 public/*.xlsx
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
