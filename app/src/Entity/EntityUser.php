@@ -43,6 +43,11 @@ class EntityUser implements UserInterface
      */
     private $lastName;
 
+    /**
+     * @ORM\Column(type="string", unique=true, length=255)
+     */
+    private $ApiToken;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,6 +146,18 @@ class EntityUser implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->ApiToken;
+    }
+
+    public function setApiToken(string $ApiToken): self
+    {
+        $this->ApiToken = $ApiToken;
 
         return $this;
     }
