@@ -19,7 +19,7 @@ use App\Utils\XLSXReader;
 class ImportExportController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/import_export")
+     * @Route("/", name="import_export")
      */
     public function index()
     {
@@ -27,7 +27,7 @@ class ImportExportController extends AbstractController
     }
 
     /**
-     * @Route("/export", name="manager/export")
+     * @Route("/export", name="export")
      */
     public function export(EntityPeopleRepository $epr)
     {
@@ -47,7 +47,7 @@ class ImportExportController extends AbstractController
     }
 
     /**
-     * @Route("/export_selectif", name="manager/export_selectif")
+     * @Route("/export_selectif", name="export_selectif")
      */
     public function export_selectif(Request $request)
     {
@@ -70,7 +70,7 @@ class ImportExportController extends AbstractController
     }
 
     /**
-     * @Route("/import", name="manager/import")
+     * @Route("/import", name="import")
      */
     public function import(Request $request)
     {

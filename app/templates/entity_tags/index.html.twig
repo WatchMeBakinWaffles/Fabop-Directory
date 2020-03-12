@@ -5,7 +5,7 @@
 {% block content %}
 <h2><i class="fas fa-tags"></i> Liste des TAGs</h2>
     <div class="row m-3">
-        <a class="btn btn-primary mr-2" href="{{ path('manager/entity_tags_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+        <a class="btn btn-primary mr-2" href="{{ path('entity_tags_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
     </div>
 
     <table class="table table-striped">
@@ -22,8 +22,8 @@
                 <td id="{{ entity_tag.id }}"><input type="checkbox" name="selected[{{ entity_tag.id }}]"></td>
                 <td>{{ entity_tag.name }}</td>
                 <td>
-                    <a href="{{ path('manager/entity_tags_show', {'id': entity_tag.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('manager/entity_tags_edit', {'id': entity_tag.id}) }}"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('entity_tags_show', {'id': entity_tag.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('entity_tags_edit', {'id': entity_tag.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
