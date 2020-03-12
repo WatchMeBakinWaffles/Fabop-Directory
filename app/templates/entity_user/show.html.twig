@@ -1,0 +1,46 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}EntityUser{% endblock %}
+
+{% block content %}
+    <h1>EntityUser</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity_user.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ entity_user.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ entity_user.roles ? entity_user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ entity_user.password }}</td>
+            </tr>
+            <tr>
+                <th>FirstName</th>
+                <td>{{ entity_user.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LastName</th>
+                <td>{{ entity_user.lastName }}</td>
+            </tr>
+            <tr>
+                <th>ApiToken</th>
+                <td>{{ entity_user.ApiToken }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('entity_user_index') }}">back to list</a>
+
+    <a href="{{ path('entity_user_edit', {'id': entity_user.id}) }}">edit</a>
+
+    {{ include('entity_user/_delete_form.html.twig') }}
+{% endblock %}

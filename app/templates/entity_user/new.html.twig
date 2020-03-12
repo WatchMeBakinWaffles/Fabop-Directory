@@ -1,0 +1,11 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}New EntityUser{% endblock %}
+
+{% block content %}
+    <h1>Create new EntityUser</h1>
+
+    {{ include('entity_user/_form.html.twig') }}
+
+    <a href="{{ path('entity_user_index') }}">back to list</a>
+{% endblock %}
