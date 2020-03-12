@@ -1,1 +1,7 @@
-static
+static/fonts
+static/images
+static/css/fontawesome
+static/css/webfonts
+static/css/animate.css
+static/css/dataTables.bootstrap4.min.css
+static/css/style.css
