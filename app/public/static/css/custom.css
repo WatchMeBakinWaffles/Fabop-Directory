@@ -25,10 +25,6 @@ top:-100px;
 transition:top 0.3s;
 }
 
-.header-fixed .header-limiter {
-max-width: 1200px;
-}
-
 /*  The header placeholder. It is displayed when the header is fixed to the top of the
 browser window, in order to prevent the content of the page from jumping up. */
 
@@ -119,7 +115,7 @@ font-size: 13px;
 
 .header-fixed .header-limiter h1 {
     float: none;
-    margin: -8px 0 10px;        <h1><a href="#">Fabrique<span>Opéra</span></a></h1>
+    margin: -8px 0 10px;
     text-align: center;
     font-size: 24px;
     line-height: 1;
