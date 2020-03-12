@@ -4,13 +4,17 @@
 <header class="header-fixed">
 
     <div class="header-limiter">
-        {# <img src="{{ asset('static/images/favicon.png')}}" alt="CompagnyLogo" id="Logo"> #}
-        <h1><a href="#">Fabrique<span>Opéra</span></a></h1>
+        <img src="{{ asset('static/images/logo.png')}}" alt="CompagnyLogo" id="Logo">
+        {# <h1><a href="#">Fabrique<span>Opéra</span></a></h1> #}
 
         <nav>
-            <a href="#">Accueil</a>
-            <a href="#" class="selected">Blog</a>
-            <a href="#">Pricing</a>
+            <a href="#"><i class="fas fa-home"></i></i>&nbsp;Accueil</a>
+            <a href="#" class="selected"><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</a>
+            {% if app.user %}
+                <a href="#"><i class="fas fa-user"></i>&nbsp;{{app.user.firstname}}</a>
+            {% else %}
+                <a href="#"><i class="fas fa-user"></i>&nbsp;Profile</a>
+            {% endif %}
             <a href="#">About</a>
             <a href="#">Faq</a>
             <a href="#">Contact</a>
