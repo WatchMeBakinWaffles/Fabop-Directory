@@ -17,7 +17,7 @@ use App\Utils\MongoManager;
 class EntityInstitutionsController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/entity_institutions_index", methods="GET")
+     * @Route("/", name="entity_institutions_index", methods="GET")
      */
     public function index(EntityInstitutionsRepository $entityInstitutionsRepository): Response
     {
@@ -26,7 +26,7 @@ class EntityInstitutionsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="manager/entity_institutions_new", methods="GET|POST")
+     * @Route("/new", name="entity_institutions_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
@@ -61,7 +61,7 @@ class EntityInstitutionsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_institutions_show", methods="GET")
+     * @Route("/{id}", name="entity_institutions_show", methods="GET")
      */
     public function show(EntityInstitutions $entityInstitution): Response
     {
@@ -69,7 +69,7 @@ class EntityInstitutionsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="manager/entity_institutions_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="entity_institutions_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityInstitutions $entityInstitution): Response
     {
@@ -103,7 +103,7 @@ class EntityInstitutionsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_institutions_delete", methods="DELETE")
+     * @Route("/{id}", name="entity_institutions_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityInstitutions $entityInstitution): Response
     {

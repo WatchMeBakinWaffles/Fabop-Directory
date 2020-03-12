@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityPerformancesController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/entity_performances_index", methods="GET")
+     * @Route("/", name="entity_performances_index", methods="GET")
      */
     public function index(EntityPerformancesRepository $entityPerformancesRepository): Response
     {
@@ -25,7 +25,7 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="manager/entity_performances_list", methods="GET")
+     * @Route("/list", name="entity_performances_list", methods="GET")
      */
     public function list(EntityPerformancesRepository $entityPerformancesRepository): Response
     {
@@ -34,7 +34,7 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="manager/entity_performances_new", methods="GET|POST")
+     * @Route("/new", name="entity_performances_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
@@ -61,7 +61,7 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_performances_show", methods="GET")
+     * @Route("/{id}", name="entity_performances_show", methods="GET")
      */
     public function show(EntityPerformances $entityPerformance): Response
     {
@@ -69,7 +69,7 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="manager/entity_performances_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="entity_performances_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityPerformances $entityPerformance): Response
     {
@@ -89,7 +89,7 @@ class EntityPerformancesController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_performances_delete", methods="DELETE")
+     * @Route("/{id}", name="entity_performances_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityPerformances $entityPerformance): Response
     {

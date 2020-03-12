@@ -6,8 +6,8 @@
 
     <h2><i class="fas fa-users"></i> Liste des personnes</h2>
     <div class="row m-3">
-        <a class="btn btn-primary mr-2" href="{{ path('manager/entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
-        <span class="not-allowed"><a class="btn text-warning mr-2" href="{{ path('manager/import_export') }}"><i class="fas fa-file-import"></i> Import des données</a></span>
+        <a class="btn btn-primary mr-2" href="{{ path('entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+        <span class="not-allowed"><a class="btn text-warning mr-2" href="{{ path('import_export') }}"><i class="fas fa-file-import"></i> Import des données</a></span>
         <span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
     </div>
         <table class="table table-striped">
@@ -36,8 +36,8 @@
                     <td>{{ entity_person.city }}</td>
                     <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
                     <td>
-                        <a href="{{ path('manager/entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
-                        <a href="{{ path('manager/entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
+                        <a href="{{ path('entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
+                        <a href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
                     </td>
                 </tr>
             {% else %}
