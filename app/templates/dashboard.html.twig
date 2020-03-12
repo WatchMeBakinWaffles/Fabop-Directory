@@ -4,53 +4,5 @@
 {% block content %}
 <h2><i class="fas fa-tachometer-alt"></i> Tableau de bord</h2>
 <div class="row font-staatliches text-light">
-<section class="m-1 col col-lg-2 col-md-12">
-    <a class="custom-card" href="/manager/people">
-        <div class="card text-center bg-primary">
-            <div class="card-body">
-                <p class="card-title"><i class="fa fa-atlas fa-5x"></i></p>
-                <p class="card-text">{{ entity_people_count }} 
-                    {{ entity_people_count > 1 ? 'personnes' : 'personne' }}
-                </p>
-            </div>
-        </div>
-    </a>
-</section>
-<section class="m-1 col col-lg-2 col-md-12">
-    <a class="custom-card" href="/manager/institutions">
-        <div class="card text-center bg-primary">
-            <div class="card-body">
-                <p class="card-title"><i class="fa fa-university fa-5x"></i></p>
-                <p class="card-text">{{ entity_institutions_count }} 
-                    {{ entity_institutions_count > 1 ? 'institutions' : 'institution' }}
-                </p>
-            </div>
-        </div>
-    </a>
-</section>
-<section class="m-1 col col-lg-2 col-md-12">
-    <a class="custom-card" href="/manager/shows">
-        <div class="card text-center bg-primary">
-            <div class="card-body">
-                <p class="card-title"><i class="fa fa-theater-masks fa-5x"></i></p>
-                <p class="card-text">{{ entity_shows_count }}
-                    {{ entity_shows_count > 1 ? 'spectacles' : 'spectacle' }}
-                </p>
-            </div>
-        </div>
-    </a>
-</section>
-<section class="m-1 col col-lg-2 col-md-12">
-    <a class="custom-card" href="/manager/tags">
-        <div class="card text-center bg-primary">
-            <div class="card-body">
-                <p class="card-title"><i class="fa fa-tags fa-5x"></i></p>
-                <p class="card-text">{{ entity_tags_count }}
-                    {{ entity_tags_count > 1 ? 'TAGS' : 'TAG' }}
-                </p>
-            </div>
-        </div>
-    </a>
-</section>
 </div>
 {% endblock %}
