@@ -170,7 +170,7 @@ body.fixed .header-fixed {
 }
 
 form {
-    width: 360px;
+    min-width: 360px;
 }
 
 .login-content img {
@@ -275,19 +275,6 @@ form {
     margin-bottom: 4px;
 }
 
-a {
-    display: block;
-    text-align: right;
-    text-decoration: none;
-    color: #999;
-    font-size: 0.9rem;
-    transition: .3s;
-}
-
-a:hover {
-    color: #951b81;
-}
-
 .bouton {
     display: block;
     width: 100%;
@@ -314,6 +301,11 @@ a:hover {
     color: #951b81;
     transition-property: color;
     transition-duration: .4s;
+    display: block;
+    text-align: right;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: .3s;
 }
 
 .f-mdp:hover {
