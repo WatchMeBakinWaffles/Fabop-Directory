@@ -316,3 +316,16 @@ form {
 .title {
     color: #2e353d;
 }
+
+
+/* COMMON FORMS */
+
+.form-control .cm-input {
+    max-width: 400px;
+    transition-property: border;
+    transition-duration: .8s;
+}
+
+.form-control .cm-input:focus {
+    border: 2px solid #951b81 !important;
+}
