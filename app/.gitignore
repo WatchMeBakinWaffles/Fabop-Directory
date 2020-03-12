@@ -67,3 +67,5 @@ public/*.xlsx
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+yarn.lock
+package-lock.json
