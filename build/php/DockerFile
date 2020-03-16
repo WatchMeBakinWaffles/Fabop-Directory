@@ -1,32 +1,19 @@
+# ./docker/php/Dockerfile
 FROM php:7.2-fpm
 
-RUN apt-get update
+RUN docker-php-ext-install pdo_mysql
 
-# ENV PHP_CPPFLAGS="$PHP_CPPFLAGS -std=c++11"
+RUN pecl install apcu
 
-RUN curl -sS -o /tmp/icu.tar.gz -L http://download.icu-project.org/files/icu4c/58.2/icu4c-58_2-src.tgz \
-    && tar -zxf /tmp/icu.tar.gz -C /tmp \
-    && cd /tmp/icu/source \
-    && ./configure --prefix=/usr/local \
-    && make \
-    && make install
+RUN apt-get update && \
+apt-get install -y \
+zlib1g-dev
 
-RUN pecl install mongodb xdebug apcu opcache libmongoc openssl-dev
+RUN docker-php-ext-install zip
+RUN docker-php-ext-enable apcu
 
-RUN docker-php-ext-enable mongodb xdebug apcu opcache
+RUN curl --silent --show-error https://getcomposer.org/installer | php
 
-RUN docker-php-ext-install pdo pdo_mysql intl
-
-RUN mkdir /run/php
-
-ADD conf/www.conf /etc/php/7.2/fpm/pool.d/www.conf
-ADD conf/php-fpm.conf /etc/php/7.2/fpm/php7-fpm.conf
-
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
 RUN ln -snf /usr/share/zoneinfo/Europe/Lisbon /etc/localtime
 
 WORKDIR /var/www/html/symfony

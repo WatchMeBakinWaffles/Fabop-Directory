@@ -10,7 +10,7 @@ services:
       - mongodb
       - mysqldb
     volumes:
-      - ./app:/var/www/html/symfony:cached
+      - ./app:/var/www/html/symfony
       - ./logs:/var/log
       - /var/www/symfony/vendor
   web:
@@ -23,7 +23,7 @@ services:
     depends_on:
         - php
     volumes:
-        - ./app:/var/www/html/symfony:cached
+        - ./app:/var/www/html/symfony
 
   mysqldb:
     image: mariadb
