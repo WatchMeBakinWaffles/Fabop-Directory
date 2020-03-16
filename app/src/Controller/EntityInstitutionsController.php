@@ -51,7 +51,7 @@ class EntityInstitutionsController extends AbstractController
             $em->persist($entityInstitution);
             $em->flush();
 
-            return $this->redirectToRoute('manager/entity_institutions_index');
+            return $this->redirectToRoute('entity_institutions_index');
         }
 
         return $this->render('entity_institutions/new.html.twig', [
@@ -92,7 +92,7 @@ class EntityInstitutionsController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('manager/entity_institutions_index', ['id' => $entityInstitution->getId()]);
+            return $this->redirectToRoute('entity_institutions_index', ['id' => $entityInstitution->getId()]);
         }
 
         return $this->render('entity_institutions/edit.html.twig', [
@@ -115,6 +115,6 @@ class EntityInstitutionsController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('manager/entity_institutions_index');
+        return $this->redirectToRoute('entity_institutions_index');
     }
 }

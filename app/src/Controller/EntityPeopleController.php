@@ -54,7 +54,7 @@ class EntityPeopleController extends AbstractController
             $em->persist($entityPerson);
             $em->flush();
 
-            return $this->redirectToRoute('manager/entity_people_index');
+            return $this->redirectToRoute('entity_people_index');
         }
 
         return $this->render('entity_people/new.html.twig', [
@@ -97,7 +97,7 @@ class EntityPeopleController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('manager/entity_people_index', ['id' => $entityPerson->getId()]);
+            return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
         }
 
         return $this->render('entity_people/edit.html.twig', [
@@ -120,6 +120,6 @@ class EntityPeopleController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('manager/entity_people_index');
+        return $this->redirectToRoute('entity_people_index');
     }
 }
