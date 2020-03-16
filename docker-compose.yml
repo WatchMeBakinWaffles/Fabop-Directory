@@ -1,7 +1,7 @@
 version: '3'
 services:
   php:
-    build: 
+    build:
       context: build/php
       dockerfile: DockerFile
     expose:
@@ -14,7 +14,7 @@ services:
       - ./logs:/var/log
       - /var/www/symfony/vendor
   web:
-    build: 
+    build:
       context: build/nginx
       dockerfile: DockerFile
     restart: always
@@ -24,7 +24,7 @@ services:
         - php
     volumes:
         - ./app:/var/www/html/symfony:cached
-  
+
   mysqldb:
     image: mariadb
     command: ["--default-authentication-plugin=mysql_native_password"]
@@ -34,22 +34,22 @@ services:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: fabop_directory
         MYSQL_USER: app_access
-        MYSQL_PASSWORD: <SET PASSWORD HERE>
+        MYSQL_PASSWORD: MySQLpass12345
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: mysqldb
       PMA_USER: app_access
-      PMA_PASSWORD: password
+      PMA_PASSWORD: MySQLpass12345
     ports:
     - "8080:80"
     restart: always
-    depends_on: 
+    depends_on:
     - mysqldb
 
   mongodb:
-    build: 
+    build:
       context: build/mongodb
       dockerfile: DockerFile
     restart: always
@@ -57,5 +57,5 @@ services:
         - "27017:27017"
     environment:
         MONGO_INITDB_ROOT_USERNAME: app_access
-        MONGO_INITDB_ROOT_PASSWORD: <SET PASSWORD HERE>
+        MONGO_INITDB_ROOT_PASSWORD: MongoDB12345
         MONGO_INITDB_DATABASE: admin

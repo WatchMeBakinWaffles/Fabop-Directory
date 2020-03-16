@@ -197,15 +197,9 @@ document.getElementById("exportClick").addEventListener("click", function (){
             liste_id.push(checkbox.parentNode.id);
         }
     }
-<<<<<<< HEAD
     $.post('http://localhost:8000/manager/imp-exp/export_selectif', {ids: liste_id}, 
         function(){
             window.location = "http://localhost:8000/export_selectif.xlsx";
-=======
-    $.post('http://localhost/manager/imp-exp/export_selectif', {ids: liste_id}, 
-        function(){
-            window.location = "http://localhost/export_selectif.xlsx";
->>>>>>> 84a5ce62c02d68b990c850c5b27a8606076ddc4f
         }
     ).fail(function(){
         alert("Vous n'avez rien séléctionné");
