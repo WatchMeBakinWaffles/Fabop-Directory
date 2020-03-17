@@ -28,6 +28,8 @@ RUN pecl install mongodb
 
 WORKDIR /var/www/html/symfony
 
+RUN chown -R :www-data /var/www
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
