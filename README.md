@@ -92,7 +92,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. First, you need to clone the project and install dependencies with following command lines :
 
-    `git clone https://gitlab.com/moulagofre/fabop-directory`
+    `git clone https://tuleap.fiction-factory.fr/plugins/git/fabop/fabop-directory.git`
     
     `cd fabop-directory/app`
     
