@@ -17,7 +17,7 @@ use App\Utils\MongoManager;
 class EntityShowsController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/entity_shows_index", methods="GET")
+     * @Route("/", name="entity_shows_index", methods="GET")
      */
     public function index(EntityShowsRepository $entityShowsRepository): Response
     {
@@ -26,7 +26,7 @@ class EntityShowsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="manager/entity_shows_new", methods="GET|POST")
+     * @Route("/new", name="entity_shows_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
@@ -51,7 +51,7 @@ class EntityShowsController extends AbstractController
             $em->persist($entityShow);
             $em->flush();
 
-            return $this->redirectToRoute('manager/entity_shows_index');
+            return $this->redirectToRoute('entity_shows_index');
         }
 
         return $this->render('entity_shows/new.html.twig', [
@@ -61,7 +61,7 @@ class EntityShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_shows_show", methods="GET")
+     * @Route("/{id}", name="entity_shows_show", methods="GET")
      */
     public function show(EntityShows $entityShow): Response
     {
@@ -69,7 +69,7 @@ class EntityShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="manager/entity_shows_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="entity_shows_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityShows $entityShow): Response
     {
@@ -88,10 +88,10 @@ class EntityShowsController extends AbstractController
                     }
                 }
             }
-            
+
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('manager/entity_shows_index', ['id' => $entityShow->getId()]);
+            return $this->redirectToRoute('entity_shows_index', ['id' => $entityShow->getId()]);
         }
 
         return $this->render('entity_shows/edit.html.twig', [
@@ -102,7 +102,7 @@ class EntityShowsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_shows_delete", methods="DELETE")
+     * @Route("/{id}", name="entity_shows_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityShows $entityShow): Response
     {
@@ -114,6 +114,6 @@ class EntityShowsController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('manager/entity_shows_index');
+        return $this->redirectToRoute('entity_shows_index');
     }
 }

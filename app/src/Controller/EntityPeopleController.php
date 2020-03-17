@@ -19,7 +19,7 @@ use App\Repository\TagsAffectRepository;
 class EntityPeopleController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/entity_people_index", methods="GET")
+     * @Route("/", name="entity_people_index", methods="GET")
      */
     public function index(EntityPeopleRepository $entityPeopleRepository): Response
     {
@@ -28,7 +28,7 @@ class EntityPeopleController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="manager/entity_people_new", methods="GET|POST")
+     * @Route("/new", name="entity_people_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
@@ -54,7 +54,7 @@ class EntityPeopleController extends AbstractController
             $em->persist($entityPerson);
             $em->flush();
 
-            return $this->redirectToRoute('manager/entity_people_index');
+            return $this->redirectToRoute('entity_people_index');
         }
 
         return $this->render('entity_people/new.html.twig', [
@@ -64,7 +64,7 @@ class EntityPeopleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_people_show", methods="GET")
+     * @Route("/{id}", name="entity_people_show", methods="GET")
      */
     public function show(EntityPeople $entityPerson, TagsAffectRepository $tagsAffectRepository): Response
     {
@@ -75,7 +75,7 @@ class EntityPeopleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="manager/entity_people_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="entity_people_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityPeople $entityPerson): Response
     {
@@ -97,7 +97,7 @@ class EntityPeopleController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('manager/entity_people_index', ['id' => $entityPerson->getId()]);
+            return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
         }
 
         return $this->render('entity_people/edit.html.twig', [
@@ -108,7 +108,7 @@ class EntityPeopleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_people_delete", methods="DELETE")
+     * @Route("/{id}", name="entity_people_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityPeople $entityPerson): Response
     {
@@ -120,6 +120,6 @@ class EntityPeopleController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('manager/entity_people_index');
+        return $this->redirectToRoute('entity_people_index');
     }
 }

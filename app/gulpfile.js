@@ -7,7 +7,7 @@ gulp.task('styles', function() {
     .pipe(sass())
     .pipe(gulp.dest('public/static/css/'));
     // DataTables Boostrap
-    gulp.src('node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css')
+    return gulp.src('node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css')
     .pipe(gulp.dest('public/static/css/'));
 });
 
@@ -29,30 +29,30 @@ gulp.task('js', function() {
     gulp.src('node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js')
     .pipe(gulp.dest('public/static/js/'));
     // Custom
-    gulp.src('assets/js/scripts.js')
+    return gulp.src('assets/js/scripts.js')
     .pipe(gulp.dest('public/static/js/'));
 });
 
 gulp.task('fa', function() {
     gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
     .pipe(gulp.dest('public/static/css/fontawesome'));
-    gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
+    return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
     .pipe(gulp.dest('public/static/css/webfonts'));
     // gulp.src('node_modules/@fortawesome/fontawesome-free/js/all.js')
     // .pipe(gulp.dest('public/static/js/fontawesome'));
 });
 
 gulp.task('animations', function() {
-    gulp.src('node_modules/animate.css/animate.css')
+    return gulp.src('node_modules/animate.css/animate.css')
     .pipe(gulp.dest('public/static/css/'));
 });
 
 gulp.task('images', function() {
-    gulp.src('assets/images/*')
+    return gulp.src('assets/images/*')
     .pipe(gulp.dest('public/static/images/'));
 });
 
 gulp.task('fonts', function() {
-    gulp.src('assets/fonts/*/*')
+    return gulp.src('assets/fonts/*/*')
     .pipe(gulp.dest('public/static/fonts/'));
 });

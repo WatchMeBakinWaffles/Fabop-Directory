@@ -193,7 +193,13 @@ These instructions will get you a copy of the project up and running on your loc
 
         WARNING! You are about to execute a database migration that could result in schema changes and data loss. Are you sure you wish to continue? (y/n)
 
-7. Finally, you can start the project
+7. Need npm for svelte:
+    `npm install`
+
+8. Build the app svelte:
+    `yarn encore dev`
+
+9. Finally, you can start the project
 
     `php bin/console server:start`
 

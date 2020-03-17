@@ -4,16 +4,15 @@
 <header class="header-fixed">
 
     <div class="header-limiter">
-        {# <img src="{{ asset('static/images/favicon.png')}}" alt="CompagnyLogo" id="Logo"> #}
-        <h1><a href="#">Fabrique<span>Opéra</span></a></h1>
+        <img src="{{ asset('static/images/logo.png')}}" alt="CompagnyLogo" id="Logo">
+        {# <h1><a href="#">Fabrique<span>Opéra</span></a></h1> #}
 
         <nav>
-            <a href="#">Accueil</a>
-            <a href="#" class="selected">Blog</a>
-            <a href="#">Pricing</a>
-            <a href="#">About</a>
-            <a href="#">Faq</a>
-            <a href="#">Contact</a>
+            {% if app.user %}
+                <a href="#"><i class="fas fa-user"></i>&nbsp;{{app.user.firstname}}</a>
+            {% else %}
+                <a href="#"><i class="fas fa-user"></i>&nbsp;Profile</a>
+            {% endif %}
         </nav>
 
     </div>
@@ -26,27 +25,27 @@
             <div class="menu-list">
                     <ul id="menu-content" class="menu-content collapse out show">
                         <li class="{{ app.request.get('_route') matches '{dashboard}' ? 'active' }}">
-                            <a href="/dashboard">
+                            <a href="{{ path('dashboard') }}">
                             <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
                             </a>
                         </li>
 
-                        <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{manager/(.+)}' ? 'active' }}">
+                        <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{entity(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-atlas"></i> &nbsp; Annuaire<span class="arrow"></span></a>
                         </li>
-                        <ul class="sub-menu collapse {{ app.request.get('_route') matches '{manager/(.+)}' ? 'show' }}" id="directory">
-                            <li class="{{ app.request.get('_route') matches '{manager/entity_people(.+)}' ? 'active' }}"><a href="/manager/people">Personnes</a></li>
-                            <li class="{{ app.request.get('_route') matches '{manager/entity_institutions(.+)}' ? 'active' }}"><a href="/manager/institutions">Institutions</a></li>
-                            <li class="{{ app.request.get('_route') matches '{manager/entity_shows(.+)}' ? 'active' }}"><a href="/manager/shows">Spectacles</a></li>
-                            <li class="{{ app.request.get('_route') matches '{manager/entity_tags(.+)}' ? 'active' }}"><a href="/manager/tags">TAGs</a></li>
+                        <ul class="sub-menu collapse {{ app.request.get('_route') matches '{entity(.+)}' ? 'show' }}" id="directory">
+                            <li class="{{ app.request.get('_route') matches '{entity_people(.+)}' ? 'active' }}"><a href="{{ path('entity_people_index') }}">Personnes</a></li>
+                            <li class="{{ app.request.get('_route') matches '{entity_institutions(.+)}' ? 'active' }}"><a href="{{ path('entity_institutions_index') }}">Institutions</a></li>
+                            <li class="{{ app.request.get('_route') matches '{entity_shows(.+)}' ? 'active' }}"><a href="{{ path('entity_shows_index') }}">Spectacles</a></li>
+                            <li class="{{ app.request.get('_route') matches '{entity_tags(.+)}' ? 'active' }}"><a href="{{ path('entity_tags_index') }}">TAGs</a></li>
                         </ul>
 
 
-                        <li data-toggle="collapse" data-target="#config" class="collapsed">
+                        <li data-toggle="collapse" data-target="#config" class="collapsed {{ app.request.get('_route') matches '{admin(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-wrench"></i> &nbsp; Administration <span class="arrow"></span></a>
                         </li>  
-                        <ul class="sub-menu collapse" id="config">
-                            <li><a href="#">Gestion des utilisateurs et rôles</a></li>
+                        <ul class="sub-menu collapse {{ app.request.get('_route') matches '{admin(.+)}' ? 'show' }}" id="config">
+                            <li class="{{ app.request.get('_route') matches '{admin_user(.+)}' ? 'active' }}"><a href="{{ path('admin_user_index') }}">Gestion des utilisateurs et rôles</a></li>
                             <li><a href="#">Gestion des modèles</a></li>
                             <li><a href="#">Configuration</a></li>
                             <li><a href="#">Sauvegardes / restaurations</a></li>

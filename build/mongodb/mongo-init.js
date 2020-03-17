@@ -1,10 +1,10 @@
-db.auth('app_access', '<SET PASSWORD HERE>')
+db.auth('app_access', 'MongoDB12345')
 
 db = db.getSiblingDB('fabop_directory')
 
 db.createUser({
   user: 'app_access',
-  pwd: '<SET PASSWORD HERE>',
+  pwd: 'MongoDB12345',
   roles: [
     {
       role: 'readWrite',

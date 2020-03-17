@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntityTagsController extends AbstractController
 {
     /**
-     * @Route("/", name="manager/entity_tags_index", methods="GET")
+     * @Route("/", name="entity_tags_index", methods="GET")
      */
     public function index(EntityTagsRepository $entityTagsRepository): Response
     {
@@ -25,7 +25,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="manager/entity_tags_list", methods="GET")
+     * @Route("/list", name="entity_tags_list", methods="GET")
      */
     public function list(EntityTagsRepository $entityTagsRepository): Response
     {
@@ -33,7 +33,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="manager/entity_tags_new", methods="GET|POST")
+     * @Route("/new", name="entity_tags_new", methods="GET|POST")
      */
     public function new(Request $request): Response
     {
@@ -50,7 +50,7 @@ class EntityTagsController extends AbstractController
             $em->persist($entityTag);
             $em->flush();
 
-            return $this->redirectToRoute('manager/entity_tags_index');
+            return $this->redirectToRoute('entity_tags_index');
         }
 
         return $this->render('entity_tags/new.html.twig', [
@@ -60,7 +60,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/modal/new", name="manager/entity_tags_new_modal", methods="GET|POST")
+     * @Route("/modal/new", name="entity_tags_new_modal", methods="GET|POST")
      */
     public function newModal(Request $request): Response
     {
@@ -85,7 +85,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_tags_show", methods="GET")
+     * @Route("/{id}", name="entity_tags_show", methods="GET")
      */
     public function show(EntityTags $entityTag): Response
     {
@@ -93,7 +93,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="manager/entity_tags_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="entity_tags_edit", methods="GET|POST")
      */
     public function edit(Request $request, EntityTags $entityTag): Response
     {
@@ -103,7 +103,7 @@ class EntityTagsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('manager/entity_tags_index', ['id' => $entityTag->getId()]);
+            return $this->redirectToRoute('entity_tags_index', ['id' => $entityTag->getId()]);
         }
 
         return $this->render('entity_tags/edit.html.twig', [
@@ -113,7 +113,7 @@ class EntityTagsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="manager/entity_tags_delete", methods="DELETE")
+     * @Route("/{id}", name="entity_tags_delete", methods="DELETE")
      */
     public function delete(Request $request, EntityTags $entityTag): Response
     {
@@ -123,6 +123,6 @@ class EntityTagsController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('manager/entity_tags_index');
+        return $this->redirectToRoute('entity_tags_index');
     }
 }
