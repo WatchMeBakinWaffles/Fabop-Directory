@@ -150,7 +150,7 @@ These instructions will get you a copy of the project up and running on your loc
     
     `composer install`
 
-2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000`
+2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000` or by `fabop.fr` (IMPORTANT **9**)
 
     and run gulp routines to make front-end and back-end working.
 
@@ -198,8 +198,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 8. Build the app svelte:
     `yarn encore dev`
+    
+9. {**Facultatif**} if you use the domain fabop.fr you must write domain name in your file hosts :    
+     
+     Get the web container ip:
+     `sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fabop-directory_web_1`
+     
+     Write in hosts :
+     `sudo nano /etc/hosts`
+     
+     {container IP}  fabop.fr
+    
 
-9. Finally, you can start the project
+10. Finally, you can start the project
 
     `php bin/console server:start`
 

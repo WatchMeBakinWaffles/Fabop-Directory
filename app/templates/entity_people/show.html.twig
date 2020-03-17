@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <th>Date de naissance</th>
-                <td>{{ entity_person.birthdate ? entity_person.birthdate|localizeddate('none', 'none', 'fr', null,'d MMMM Y') : '' }}</td>
+                <td>{{ entity_person.birthdate ? entity_person.birthdate|date("m/d/Y") : '' }}</td>
             </tr>
             <tr>
                 <th>Abonnement Newsletter</th>
