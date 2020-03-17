@@ -77,7 +77,7 @@ class ImportExportController extends AbstractController
         $fichier = basename($_FILES['import']['name']);
         $taille = filesize($_FILES['import']['tmp_name']);
         $extensions = array('.xlsx');
-        $extension = strrchr($_FILES['import']['name'], '.'); 
+        $extension = strrchr($_FILES['import']['name'], '.');
         //Début des vérifications de sécurité...
         if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
         {
@@ -86,15 +86,15 @@ class ImportExportController extends AbstractController
         if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
         {
             //On formate le nom du fichier ici...
-            $fichier = strtr($fichier, 
-                'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
+            $fichier = strtr($fichier,
+                'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
                 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
             $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
             if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
             {
                 $reader = new XLSXReader($this->getDoctrine()->getManager());
                 $reader->readAll($request, $fichier);
-                return $this->redirectToRoute('manager/entity_people_index');
+                return $this->redirectToRoute('entity_people_index');
             }
             else //Sinon (la fonction renvoie FALSE).
             {
@@ -105,7 +105,7 @@ class ImportExportController extends AbstractController
         {
             echo $erreur;
         }
-        
-        
+
+
     }
 }
