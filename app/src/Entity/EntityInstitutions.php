@@ -9,7 +9,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityInstitutionsRepository")
- * @ApiResource
+ * @ApiResource(
+ *      attributes={"access_control"="is_granted('ROLE_USER')"},
+ *      collectionOperations={
+ *          "get",
+ *      },
+ *      itemOperations={
+ *          "get",
+ *          "put"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *      }
+ * )
  */
 class EntityInstitutions
 {
