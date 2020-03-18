@@ -6,7 +6,7 @@ use App\Entity\EntityUser;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class AppFixtures extends Fixture
+class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
@@ -21,5 +21,7 @@ class AppFixtures extends Fixture
         $manager->persist($user_root);
 
         $manager->flush();
+
+        $this->addReference(self::ADMIN_USER_REFERENCE, $user_root);
     }
 }
