@@ -22,6 +22,5 @@ class UserFixtures extends Fixture
 
         $manager->flush();
 
-        $this->addReference(self::ADMIN_USER_REFERENCE, $user_root);
     }
 }

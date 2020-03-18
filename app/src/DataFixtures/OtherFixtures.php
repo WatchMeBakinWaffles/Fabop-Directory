@@ -11,12 +11,10 @@ class OtherFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $entity = new EntityInstitutions();
-        $entity->setName("Institution 1");
-        $entity->setRole("Role");
+        
 
-        $manager->persist($entity);
+        // $manager->persist($entity);
 
-        $manager->flush();
+        // $manager->flush();
     }
 }
