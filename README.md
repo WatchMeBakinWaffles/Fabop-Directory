@@ -246,6 +246,11 @@ These instructions will get you a copy of the project up and running on your loc
     
     **Those tests may not pass if some database's data are not precisely set.**
 
+### Loading fixtures
+    
+`php bin/console doctrine:fixtures:load`
+    
+
 ## Deployment / production server installation
 
 *Will come later*
