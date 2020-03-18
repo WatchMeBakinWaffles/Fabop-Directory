@@ -47,7 +47,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-1. Make sure you have php7.2, composer installed.
+1. Make sure you have php7.2, composer and mongodb installed.
 
     **Install PHP 7.2**
     
@@ -99,8 +99,10 @@ These instructions will get you a copy of the project up and running on your loc
     `yarn install`
     
     `composer install`
+   
+    *Certaines personnes rencontrent des difficultés pour intaller car ils ne savent pas installer mongoDB dans ce cas là se referer au point 6*
 
-2. Then, when cloning is complete, you can run migrations and gulp routines to make front-end and back-end working.
+2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000` or by `fabop.fr` (IMPORTANT **8**)
 
     `yarn run gulp styles`
     
@@ -126,15 +128,41 @@ These instructions will get you a copy of the project up and running on your loc
 
     Use `docker-compose start/stop` to manage containers (or any GUI Docker containers manager)
 
-6. Make db migrations by using following commands :
+6. {**Facultatif**} Si tu es un pas très débrouillard avec ton propre environnement voici une façon de lancer ton composer install via docker:
+        `sudo docker exec -it <container php> bash`
+      
+      Vous êtes maintenant sur le container php, installez composer :     
+            `php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+            php composer-setup.php
+            php -r "unlink('composer-setup.php');"`
+       
+      Ensuite il est nécessaire de faire le composer install avec :
+            `php composer.phar install`
+            
+7. Make db migrations by using following commands :
 
     `docker-compose exec php bin/console --no-interaction doctrine:migrations:diff`
 
     `docker-compose exec php bin/console --no-interaction doctrine:migrations:migrate`
 
-7. If you need to enter containers terminal :
+8. If you need to enter containers terminal :
 
     `docker exec -it <mycontainer> bash`
+    
+9. {**Facultatif**} if you use the domain fabop.fr you must write domain name in your file hosts :    
+        
+      Get the web container ip:
+        `sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container web>`
+        
+      Write in hosts :
+        `sudo nano /etc/hosts`
+        
+        {container IP}  fabop.fr
+        
+10. Build the app svelte:
+     `yarn encore dev`    
+       
 
 ### Setting up the development environment without Docker
 
@@ -150,7 +178,7 @@ These instructions will get you a copy of the project up and running on your loc
     
     `composer install`
 
-2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000` or by `fabop.fr` (IMPORTANT **9**)
+2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000`
 
     and run gulp routines to make front-end and back-end working.
 
@@ -199,18 +227,8 @@ These instructions will get you a copy of the project up and running on your loc
 8. Build the app svelte:
     `yarn encore dev`
     
-9. {**Facultatif**} if you use the domain fabop.fr you must write domain name in your file hosts :    
-     
-     Get the web container ip:
-     `sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fabop-directory_web_1`
-     
-     Write in hosts :
-     `sudo nano /etc/hosts`
-     
-     {container IP}  fabop.fr
-    
 
-10. Finally, you can start the project
+9. Finally, you can start the project
 
     `php bin/console server:start`
 
