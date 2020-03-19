@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
 use App\Entity\EntityUser;
-use App\Form\EntityUserType;
+use App\Form\EntityUserProfileType;
 
 
 /**
@@ -51,7 +51,7 @@ class BaseController extends AbstractController
      */
     public function edit_profile(Request $request, EntityUser $entityUser): Response
     {
-        $form = $this->createForm(EntityUserType::class, $entityUser);
+        $form = $this->createForm(EntityUserProfileType::class, $entityUser);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
