@@ -9,7 +9,8 @@
 
         <nav>
             {% if app.user %}
-                <a href="#"><i class="fas fa-user"></i>&nbsp;{{app.user.firstname}}</a>
+                <a href="{{ path('profile_user_edit', {'id': app.user.id}) }}"><i class="fas fa-user"></i>&nbsp;{{app.user.firstname}}</a>
+                <a href="{{ path('app_logout') }}" title="Se déconnecter"><i class="fas fa-power-off"></i></a>
             {% else %}
                 <a href="#"><i class="fas fa-user"></i>&nbsp;Profile</a>
             {% endif %}
