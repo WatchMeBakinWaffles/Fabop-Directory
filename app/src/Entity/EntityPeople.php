@@ -81,6 +81,11 @@ class EntityPeople
      */
     private $institution;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adresseMailing;
+
     public function __construct()
     {
         $this->tagsAffects = new ArrayCollection();
@@ -230,6 +235,18 @@ class EntityPeople
     public function setInstitution(?EntityInstitutions $institution): self
     {
         $this->institution = $institution;
+
+        return $this;
+    }
+
+    public function getAdresseMailing(): ?string
+    {
+        return $this->adresseMailing;
+    }
+
+    public function setAdresseMailing(?string $adresseMailing): self
+    {
+        $this->adresseMailing = $adresseMailing;
 
         return $this;
     }

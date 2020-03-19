@@ -16,6 +16,7 @@
                     <th><input type="checkbox" id="select-all"></th>
                     <th>Nom</th>
                     <th>Prénom</th>
+                    <th>Mail</th>
                     <th>Date de naissance</th>
                     <th>Abonnement à la newsletter</th>
                     <th>Code postal</th>
@@ -30,6 +31,7 @@
                     <td id="{{ entity_person.id }}"><input type="checkbox" name="selected[{{ entity_person.id }}]" class="checkImport"></td> <!--VALUE !-->
                     <td>{{ entity_person.name }}</td>
                     <td>{{ entity_person.firstname }}</td>
+                    <td>{{ entity_person.adresseMailing }}</td>
                     <td>{{ entity_person.birthdate ? entity_person.birthdate|date('Y-m-d') : '' }}</td>
                     <td>{{ entity_person.newsletter ? 'Oui' : 'Non' }}</td>
                     <td>{{ entity_person.postalCode }}</td>
@@ -51,6 +53,7 @@
                     <th><input type="checkbox" id="select-all"></th>
                     <th>Nom</th>
                     <th>Prénom</th>
+                    <th>Mailing</th>
                     <th>Date de naissance</th>
                     <th>Abonnement à la newsletter</th>
                     <th>Code postal</th>
