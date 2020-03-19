@@ -1,13 +1,13 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}Edit EntityUser{% endblock %}
+{% block title %}Édition de {{ entity_user.firstname }} {{ entity_user.lastname }}{% endblock %}
 
 {% block content %}
-    <h1>Edit EntityUser</h1>
+    <h1><i class="fas fa-edit"></i> Édition de {{ entity_user.firstname }} {{ entity_user.lastname }}</h1>
 
-    {{ include('entity_user/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('entity_user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
-    <a href="{{ path('admin_user_index') }}">back to list</a>
+    <a href="{{ path('admin_user_index') }}">Retour à la liste</a>
 
     {{ include('entity_user/_delete_form.html.twig') }}
 

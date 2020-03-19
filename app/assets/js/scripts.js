@@ -55,7 +55,7 @@ if ($("table").length){
 // Ajax function to append the content of the form to create new tags
 $('#btn-add-tag').click(function() {
     $.ajax({
-        url: "http://fabop.fr/manager/tags/modal/new",
+        url: "http://172.18.0.6/manager/tags/modal/new",
         method: "GET"
     }).done(function(content){
         appendContentToModal(content);
@@ -65,7 +65,7 @@ $('#btn-add-tag').click(function() {
 // Ajax function to append the content of the form to create new performance
 $('#btn-add-performance').click(function() {
     $.ajax({
-        url: "http://fabop.fr/manager/performances/new",
+        url: "http://172.18.0.6/manager/performances/new",
         method: "get"
     }).done(function(content){
         appendContentToModal(content);
@@ -84,7 +84,7 @@ const path = window.location.pathname;
 if (path.match(/\/manager\/people\/[0-9]/g) != null) {
     // Ajax function to append the list of existing tags
     $.ajax({
-        url: "http://fabop.fr/manager/tags/list",
+        url: "http://172.18.0.6/manager/tags/list",
         method: "get"
     }).done(function(content){
         $('#tags_affect_tag').append(content);
@@ -92,7 +92,7 @@ if (path.match(/\/manager\/people\/[0-9]/g) != null) {
 
     // Ajax function to append the list of existing performances
     $.ajax({
-        url: "http://fabop.fr/manager/performances/list",
+        url: "http://172.18.0.6/manager/performances/list",
         method: "get"
     }).done(function(content){
         $('#tags_affect_performance').append(content);
@@ -104,14 +104,14 @@ if (path.match(/\/manager\/people\/[0-9]/g) != null) {
     and the options for the select tags are updated */
 $(document).on("submit", "#form_entity_tags_new", function(e){
     e.preventDefault();
-    $.post('http://fabop.fr/manager/tags/new',
+    $.post('http://172.18.0.6/manager/tags/new',
         $('#form_entity_tags_new').serialize(),
         function(data, status, xhr){
             if(status == "success") {
                 alert("Le tag a bien été ajouté");
                 $('#exampleModalCenter').modal("hide");
                 $.ajax({
-                    url: "http://fabop.fr/manager/tags/list",
+                    url: "http://172.18.0.6/manager/tags/list",
                     method: "get"
                 }).done(function(content){
                     $('#tags_affect_tag').empty();
@@ -126,14 +126,14 @@ $(document).on("submit", "#form_entity_tags_new", function(e){
     and the options for the select performances are updated */
 $(document).on("submit", "#form_entity_performances_new", function(e){
     e.preventDefault();
-    $.post('http://fabop.fr/manager/performances/new',
+    $.post('http://172.18.0.6/manager/performances/new',
     $('#form_entity_performances_new').serialize(),
         function(data, status, xhr){
             if(status == "success") {
                 alert("La représentation a bien été ajoutée");
                 $('#exampleModalCenter').modal("hide");
                 $.ajax({
-                    url: "http://fabop.fr/manager/performances/list",
+                    url: "http://172.18.0.6/manager/performances/list",
                     method: "get"
                 }).done(function(content){
                     $('#tags_affect_performance').empty();
@@ -148,13 +148,13 @@ $(document).on("submit", "#form_entity_performances_new", function(e){
     and the table of tags_affect is updated */
 $(document).on("submit", "#form_tags_affect_new", function(e){
     e.preventDefault();
-    $.post('http://fabop.fr/manager/tags-affect/new',
+    $.post('http://172.18.0.6/manager/tags-affect/new',
     $('#form_tags_affect_new').serialize(),
         function(data, status, xhr){
             if(status == "success") {
                 alert("L'affectation de tag a bien été ajoutée");
                 $.ajax({
-                    url: "http://fabop.fr/manager/tags-affect/",
+                    url: "http://172.18.0.6/manager/tags-affect/",
                     method: "get"
                 }).done(function(content){
                     // On peut commenter car on reload la page
@@ -197,9 +197,9 @@ document.getElementById("exportClick").addEventListener("click", function (){
             liste_id.push(checkbox.parentNode.id);
         }
     }
-    $.post('http://fabop.fr/manager/imp-exp/export_selectif', {ids: liste_id},
+    $.post('http://172.18.0.6/manager/imp-exp/export_selectif', {ids: liste_id},
         function(){
-            window.location = "http://fabop.fr/export_selectif.xlsx";
+            window.location = "http://172.18.0.6/export_selectif.xlsx";
         }
     ).fail(function(){
         alert("Vous n'avez rien séléctionné");

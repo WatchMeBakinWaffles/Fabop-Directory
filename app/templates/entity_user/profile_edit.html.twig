@@ -1,9 +1,9 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}Edit EntityUser{% endblock %}
+{% block title %}Édition de {{ entity_user.firstname }} {{ entity_user.lastname }}{% endblock %}
 
 {% block content %}
-    <h1>Edit EntityUser</h1>
+    <h1>Édition de {{ entity_user.firstname }} {{ entity_user.lastname }}</h1>
 
     {{ include('entity_user/_form.html.twig', {'button_label': ' Mettre à jour', 'edit': true}) }}
 
