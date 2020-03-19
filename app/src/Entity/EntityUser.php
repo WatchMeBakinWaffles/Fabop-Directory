@@ -161,4 +161,11 @@ class EntityUser implements UserInterface
 
         return $this;
     }
+
+    public function bCryptPassword(string $password){
+        $crypted = password_hash($password, PASSWORD_BCRYPT);
+        $this->setPassword($crypted);
+
+
+    }
 }
