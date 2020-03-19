@@ -248,7 +248,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Loading fixtures
     
-`php bin/console doctrine:fixtures:load`
+`docker-compose exec php bin/console doctrine:fixtures:load`
     
 
 ## Deployment / production server installation
