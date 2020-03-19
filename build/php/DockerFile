@@ -1,22 +1,21 @@
 # ./docker/php/Dockerfile
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 
 RUN docker-php-ext-install pdo_mysql
 
 RUN pecl install apcu
 
 RUN apt-get update && \
-    apt-get install -y zlib1g-dev libicu-dev g++ autoconf build-essential libmongoc-1.0-0 libcurl4-openssl-dev pkg-config libssl-dev
+    apt-get install -y zlib1g-dev libicu-dev g++ autoconf build-essential libmongoc-1.0-0 libcurl4-openssl-dev pkg-config libssl-dev libzip-dev
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install intl
-
 RUN docker-php-ext-install zip
 RUN docker-php-ext-enable apcu
 
 RUN pecl install mongodb
 RUN curl --silent --show-error https://getcomposer.org/installer | php
 RUN ln -snf /usr/share/zoneinfo/Europe/Lisbon /etc/localtime
-RUN docker-php-ext-enable /usr/local/lib/php/extensions/no-debug-non-zts-20170718/mongodb.so
+RUN docker-php-ext-enable /usr/local/lib/php/extensions/no-debug-non-zts-20190902/mongodb.so
 
 WORKDIR /var/www/html/symfony
 
