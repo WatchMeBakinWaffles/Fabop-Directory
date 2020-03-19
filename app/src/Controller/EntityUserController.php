@@ -39,7 +39,7 @@ class EntityUserController extends AbstractController
             $entityManager->persist($entityUser);
             $entityManager->flush();
 
-            return $this->redirectToRoute('entity_user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
 
         return $this->render('entity_user/new.html.twig', [
@@ -69,7 +69,7 @@ class EntityUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_user_index');
+            return $this->redirectToRoute('admin_user_index');
         }
 
         return $this->render('entity_user/edit.html.twig', [
@@ -89,6 +89,6 @@ class EntityUserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('entity_user_index');
+        return $this->redirectToRoute('admin_user_index');
     }
 }

@@ -9,10 +9,14 @@ use App\Repository\EntityPerformancesRepository;
 use App\Repository\EntityShowsRepository;
 use App\Repository\EntityTagsRepository;
 use App\Repository\EntityTagsAffectRepository;
+use App\Repository\EntityUserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
+use App\Entity\EntityUser;
+use App\Form\EntityUserType;
+
 
 /**
  * @Route("/")
@@ -39,6 +43,27 @@ class BaseController extends AbstractController
                 'entity_tags_count' => $entityTagsRepository->count([])
             ]
         );
+    }
+
+
+    /**
+     * @Route("/profile/edit/{id}", name="profile_user_edit", methods={"GET","POST"})
+     */
+    public function edit_profile(Request $request, EntityUser $entityUser): Response
+    {
+        $form = $this->createForm(EntityUserType::class, $entityUser);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render('entity_user/profile_edit.html.twig', [
+            'entity_user' => $entityUser,
+            'form' => $form->createView(),
+        ]);
     }
 
 }
