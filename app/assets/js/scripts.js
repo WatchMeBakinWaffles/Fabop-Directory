@@ -106,9 +106,11 @@ if (path.match(/\/manager\/people\/[0-9]/g) != null) {
     and the options for the select tags are updated */
 $(document).on("submit", "#form_entity_tags_new", function(e){
     e.preventDefault();
-    $.post(URL+'/manager/tags/new',
-        $('#form_entity_tags_new').serialize(),
-        function(data, status, xhr){
+    $.ajax({
+        url:URL+'/manager/tags/new',
+        method: "POST",
+        data: $('#form_entity_tags_new').serialize(),
+    }).done(function(data, status, xhr){
             if(status == "success") {
                 alert("Le tag a bien été ajouté");
                 $('#exampleModalCenter').modal("hide");
@@ -128,9 +130,11 @@ $(document).on("submit", "#form_entity_tags_new", function(e){
     and the options for the select performances are updated */
 $(document).on("submit", "#form_entity_performances_new", function(e){
     e.preventDefault();
-    $.post(URL+'/manager/performances/new',
-    $('#form_entity_performances_new').serialize(),
-        function(data, status, xhr){
+    $.ajax({
+            url:URL+'/manager/performances/new',
+        method: "POST",
+        data:     $('#form_entity_performances_new').serialize(),
+        }).done(function(data, status, xhr){
             if(status == "success") {
                 alert("La représentation a bien été ajoutée");
                 $('#exampleModalCenter').modal("hide");
@@ -150,9 +154,11 @@ $(document).on("submit", "#form_entity_performances_new", function(e){
     and the table of tags_affect is updated */
 $(document).on("submit", "#form_tags_affect_new", function(e){
     e.preventDefault();
-    $.post(URL+'/manager/tags-affect/new',
-    $('#form_tags_affect_new').serialize(),
-        function(data, status, xhr){
+    $.ajax({
+            url:URL+'/manager/tags-affect/new',
+            method: "POST",
+            data: $('#form_tags_affect_new').serialize(),
+        }).done(function(data, status, xhr){
             if(status == "success") {
                 alert("L'affectation de tag a bien été ajoutée");
                 $.ajax({
@@ -199,11 +205,15 @@ document.getElementById("exportClick").addEventListener("click", function (){
             liste_id.push(checkbox.parentNode.id);
         }
     }
-    $.post(URL+'/manager/imp-exp/export_selectif', {ids: liste_id},
-        function(){
+    $.ajax({
+            url:URL+'/manager/imp-exp/export_selectif',
+            method:"POST",
+            data:{
+                ids: liste_id
+            }
+    }).done(function(){
             window.location = URL+"/export_selectif.xlsx";
-        }
-    ).fail(function(){
+        }).fail(function(){
         alert("Vous n'avez rien séléctionné");
     });
 });
