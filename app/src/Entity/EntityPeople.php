@@ -9,7 +9,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityPeopleRepository")
- * @ApiResource
+ * @ApiResource(
+ *      attributes={"access_control"="is_granted('ROLE_USER')"},
+ *      collectionOperations={
+ *          "get",
+ *      },
+ *      itemOperations={
+ *          "get",
+ *          "put"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *      }
+ * )
  */
 class EntityPeople
 {
@@ -70,6 +80,11 @@ class EntityPeople
      * @ORM\JoinColumn(nullable=false)
      */
     private $institution;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adresseMailing;
 
     public function __construct()
     {
@@ -220,6 +235,18 @@ class EntityPeople
     public function setInstitution(?EntityInstitutions $institution): self
     {
         $this->institution = $institution;
+
+        return $this;
+    }
+
+    public function getAdresseMailing(): ?string
+    {
+        return $this->adresseMailing;
+    }
+
+    public function setAdresseMailing(?string $adresseMailing): self
+    {
+        $this->adresseMailing = $adresseMailing;
 
         return $this;
     }

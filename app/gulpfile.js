@@ -36,10 +36,10 @@ gulp.task('js', function() {
 gulp.task('fa', function() {
     gulp.src('node_modules/@fortawesome/fontawesome-free/css/all.min.css')
     .pipe(gulp.dest('public/static/css/fontawesome'));
-    return gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
+    gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
     .pipe(gulp.dest('public/static/css/webfonts'));
-    // gulp.src('node_modules/@fortawesome/fontawesome-free/js/all.js')
-    // .pipe(gulp.dest('public/static/js/fontawesome'));
+    return gulp.src('node_modules/@fortawesome/fontawesome-free/js/all.js')
+    .pipe(gulp.dest('public/static/js/fontawesome'));
 });
 
 gulp.task('animations', function() {
