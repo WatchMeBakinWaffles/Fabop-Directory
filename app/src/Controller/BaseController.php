@@ -34,7 +34,7 @@ class BaseController extends AbstractController
         EntityTagsRepository $entityTagsRepository
     ): Response
     {
-        return $this->render('dashboard.html.twig', 
+        return $this->render('dashboard.html.twig',
             [
                 'entity_institutions_count' => $entityInstitutionsRepository->count([]),
                 'entity_people_count' => $entityPeopleRepository->count([]),
@@ -55,7 +55,13 @@ class BaseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($entityUser);
+            /**
+             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+             */
+            $entityUser->bCryptPassword($entityUser->getPassword());
+            $entityManager->flush();
 
             return $this->redirectToRoute('dashboard');
         }
