@@ -1,9 +1,9 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}EntityUser{% endblock %}
+{% block title %}Utilisateur : {{ entity_user.firstName }} {{ entity_user.lastName }}{% endblock %}
 
 {% block content %}
-    <h1>EntityUser</h1>
+    <h1>Utilisateur : {{ entity_user.firstName }} {{ entity_user.lastName }}</h1>
 
     <table class="table">
         <tbody>
@@ -38,9 +38,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('admin_user_index') }}">back to list</a>
+    <a href="{{ path('admin_user_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('admin_user_edit', {'id': entity_user.id}) }}">edit</a>
+    <a href="{{ path('admin_user_edit', {'id': entity_user.id}) }}">Modifier</a>
 
     {{ include('entity_user/_delete_form.html.twig') }}
 {% endblock %}

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
 use App\Entity\EntityUser;
-use App\Form\EntityUserType;
+use App\Form\EntityUserProfileType;
 
 
 /**
@@ -34,7 +34,7 @@ class BaseController extends AbstractController
         EntityTagsRepository $entityTagsRepository
     ): Response
     {
-        return $this->render('dashboard.html.twig', 
+        return $this->render('dashboard.html.twig',
             [
                 'entity_institutions_count' => $entityInstitutionsRepository->count([]),
                 'entity_people_count' => $entityPeopleRepository->count([]),
@@ -51,11 +51,17 @@ class BaseController extends AbstractController
      */
     public function edit_profile(Request $request, EntityUser $entityUser): Response
     {
-        $form = $this->createForm(EntityUserType::class, $entityUser);
+        $form = $this->createForm(EntityUserProfileType::class, $entityUser);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($entityUser);
+            /**
+             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+             */
+            $entityUser->bCryptPassword($entityUser->getPassword());
+            $entityManager->flush();
 
             return $this->redirectToRoute('dashboard');
         }

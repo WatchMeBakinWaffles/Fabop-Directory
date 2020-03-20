@@ -71,7 +71,13 @@ class EntityUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($entityUser);
+            /**
+             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+             */
+            $entityUser->bCryptPassword($entityUser->getPassword());
+            $entityManager->flush();
 
             return $this->redirectToRoute('admin_user_index');
         }
