@@ -13,6 +13,9 @@ services:
       - ./app:/var/www/html/symfony
       - ./logs:/var/log
       - /var/www/symfony/vendor
+    networks:
+      - mysqlDB
+      - mongoDB
   web:
     build:
       context: build/nginx
@@ -24,6 +27,9 @@ services:
         - php
     volumes:
         - ./app:/var/www/html/symfony
+    networks:
+      - mysqlDB
+      - mongoDB
 
   mysqldb:
     image: mariadb
@@ -35,6 +41,8 @@ services:
         MYSQL_DATABASE: fabop_directory
         MYSQL_USER: app_access
         MYSQL_PASSWORD: MySQLpass12345
+    networks:
+      - mysqlDB
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -47,6 +55,8 @@ services:
     restart: always
     depends_on:
     - mysqldb
+    networks:
+      - mysqlDB
 
   mongodb:
     build:
@@ -59,3 +69,8 @@ services:
         MONGO_INITDB_ROOT_USERNAME: app_access
         MONGO_INITDB_ROOT_PASSWORD: MongoDB12345
         MONGO_INITDB_DATABASE: admin
+    networks:
+      - mongoDB
+networks:
+  mysqlDB:
+  mongoDB:
