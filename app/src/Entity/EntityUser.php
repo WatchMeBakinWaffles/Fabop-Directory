@@ -48,6 +48,13 @@ class EntityUser implements UserInterface
      */
     private $ApiToken;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\EntityInstitutions", inversedBy="entityUsers")
+     */
+    private $institution;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -168,4 +175,18 @@ class EntityUser implements UserInterface
 
 
     }
+
+    public function getInstitution(): ?EntityInstitutions
+    {
+        return $this->institution;
+    }
+
+    public function setInstitution(?EntityInstitutions $institution): self
+    {
+        $this->institution = $institution;
+
+        return $this;
+    }
+
+ 
 }

@@ -18,6 +18,7 @@ class EntityUserType extends AbstractType
     {
         $choices = array(
             'administrateur' => 'ROLE_ADMIN',
+            'contributeur' => 'ROLE_CONTRIBUTEUR',
             'utilisateur' => 'ROLE_USER',
         );
         $builder
@@ -29,20 +30,9 @@ class EntityUserType extends AbstractType
             ->add('password', PasswordType::class)
             ->add('firstName')
             ->add('lastName')
+            ->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')))
             ->add('ApiToken')
         ;
-        // $builder->get('roles')
-        //     ->addModelTransformer(new CallbackTransformer(
-        //         function ($tagsAsArray) {
-        //             // transform the array to a string
-        //             return implode(', ', $tagsAsArray);
-        //         },
-        //         function ($tagsAsString) {
-        //             // transform the string back to an array
-        //             return explode(', ', $tagsAsString);
-        //         }
-        //     ))
-        // ;
 
     }
 
