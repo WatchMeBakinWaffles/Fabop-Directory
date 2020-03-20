@@ -13,17 +13,16 @@
         <link rel="stylesheet" href="{{ asset('static/css/dataTables.bootstrap4.min.css') }}">
         {% endblock %}
     </head>
-    <body onload="startTime()">
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-        <script src="{{ asset('static/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('static/js/popper.min.js') }}"></script>
-        <script src="{{ asset('static/js/jquery.dataTables.min.js') }}"></script>
-        {# <script src="{{ asset('static/js/dataTables.buttons.min.js') }}"></script> #}
-        <script src="{{ asset('static/js/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('static/js/scripts.js') }}"></script>
-        <script src="{{ asset('static/js/login.js') }}"></script>
-        <script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
-        {% endblock %}
-    </body>
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+    <script src="{{ asset('static/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('static/js/popper.min.js') }}"></script>
+    <script src="{{ asset('static/js/jquery.dataTables.min.js') }}"></script>
+    {# <script src="{{ asset('static/js/dataTables.buttons.min.js') }}"></script> #}
+    <script src="{{ asset('static/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('static/js/scripts.js') }}"></script>
+    <script src="{{ asset('static/js/login.js') }}"></script>
+    <script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
+    {% endblock %}
+
 </html>
