@@ -21,6 +21,10 @@
                 <td>{{ entity_person.firstname }}</td>
             </tr>
             <tr>
+                <th>Mail</th>
+                <td>{{ entity_person.adresseMailing }}</td>
+            </tr>
+            <tr>
                 <th>Date de naissance</th>
                 <td>{{ entity_person.birthdate ? entity_person.birthdate|date("m/d/Y") : '' }}</td>
             </tr>
