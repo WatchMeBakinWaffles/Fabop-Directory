@@ -115,7 +115,7 @@ These instructions will get you a copy of the project up and running on your loc
             
 7. Make db migrations by using following commands :
 
-    `docker-compose exec php bin/console make:migrate`
+    `docker-compose exec php bin/console make:migration`
 
     `docker-compose exec php bin/console doctrine:migrations:migrate`
 
