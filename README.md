@@ -111,21 +111,30 @@ These instructions will get you a copy of the project up and running on your loc
 
 6. Install composer dependencies by your php container : 
    
-   `docker exec <php container> php composer.phar install `
+   `docker exec <php container> composer install `
             
 7. Make db migrations by using following commands :
 
-    `docker-compose exec php bin/console --no-interaction doctrine:migrations:diff`
+    `docker-compose exec php bin/console make:migrate`
 
-    `docker-compose exec php bin/console --no-interaction doctrine:migrations:migrate`
+    `docker-compose exec php bin/console doctrine:migrations:migrate`
 
 8. If you need to enter containers terminal :
 
     `docker exec -it <mycontainer> bash`
         
 9. Build the app svelte:
-     `yarn encore dev`    
+     `yarn encore dev`
+     
+10. Get your user root (mail : root@root.fr | mdp : root) :
+
+    `docker-compose exec php bin/console doctrine:fixtures:load`
+
+11. To get your ip container :
+    `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <Container Name >`
        
+12. Your app is active and you can see your project at localhost:80 or your web container ip.
+
 
 ### Setting up the development environment without Docker
 
