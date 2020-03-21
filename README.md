@@ -122,18 +122,8 @@ These instructions will get you a copy of the project up and running on your loc
 8. If you need to enter containers terminal :
 
     `docker exec -it <mycontainer> bash`
-    
-9. {**Facultatif**} if you use the domain fabop.fr you must write domain name in your file hosts :    
         
-      Get the web container ip:
-        `sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container web>`
-        
-      Write in hosts :
-        `sudo nano /etc/hosts`
-        
-        {container IP}  fabop.fr
-        
-10. Build the app svelte:
+9. Build the app svelte:
      `yarn encore dev`    
        
 
