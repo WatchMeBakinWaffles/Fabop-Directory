@@ -25,7 +25,7 @@ The project handle a Docker configuration made for a 4 containers stack :
 
     - php : Php-fpm container
         port : 9000
-        image : php:7.2-fpm-alpine
+        image : php:7.4-fpm
 
         Handle php backend scripts execution. Serve Nginx on port 9000.
 
@@ -46,26 +46,8 @@ The project handle a Docker configuration made for a 4 containers stack :
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
-
-1. Make sure you have php7.2, composer and mongodb installed.
-
-    **Install PHP 7.2**
     
-    `apt-get update`
-    
-    `apt-get install php-cli`
-    
-    `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip php-mysql php-mongodb`
-    
-    **Install composer**
-    
-    `apt install composer`
-
-2. Install git for being able to clone the project, make commits and push, etc...
-
-    `apt-get install git`
-    
-3. Install nodejs and yarn.
+1. Install nodejs and yarn.
 
     `apt-get install nodejs npm`
     
@@ -75,7 +57,7 @@ These instructions will get you a copy of the project up and running on your loc
     
     `apt-get update && apt-get install yarn`
 
-4. Docker dependencies
+2. Docker dependencies
 
     Ubuntu : https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
@@ -85,24 +67,23 @@ These instructions will get you a copy of the project up and running on your loc
     
     CentOS : https://docs.docker.com/install/linux/docker-ce/centos/
 
-
     Windows : https://docs.docker.com/docker-for-windows/install/
+    
+3. Install git for being able to clone the project, make commits and push, etc...
+
+    `apt-get install git`
 
 ### Setting up Docker dev environment
 
-1. First, you need to clone the project and install dependencies with following command lines :
+1. First, you need to clone the project and install yarn dependencies
 
     `git clone https://tuleap.fiction-factory.fr/plugins/git/fabop/fabop-directory.git`
     
     `cd fabop-directory/app`
     
     `yarn install`
-    
-    `composer install`
-   
-    *Certaines personnes rencontrent des difficultés pour intaller car ils ne savent pas installer mongoDB dans ce cas là se referer au point 6*
 
-2. Then, When cloning is complete, replace in app/assets/js/scripts.js every `localhost` by `localhost:8000` or by `fabop.fr` (IMPORTANT **8**)
+2. Then, When cloning is complete :
 
     `yarn run gulp styles`
     
@@ -128,45 +109,50 @@ These instructions will get you a copy of the project up and running on your loc
 
     Use `docker-compose start/stop` to manage containers (or any GUI Docker containers manager)
 
-6. {**Facultatif**} Si tu es un pas très débrouillard avec ton propre environnement voici une façon de lancer ton composer install via docker:
-        `sudo docker exec -it <container php> bash`
-      
-      Vous êtes maintenant sur le container php, installez composer :     
-            `php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-            php -r "if (hash_file('sha384', 'composer-setup.php') === 'e0012edf3e80b6978849f5eff0d4b4e4c79ff1609dd1e613307e16318854d24ae64f26d17af3ef0bf7cfb710ca74755a') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-            php composer-setup.php
-            php -r "unlink('composer-setup.php');"`
-       
-      Ensuite il est nécessaire de faire le composer install avec :
-            `php composer.phar install`
+6. Install composer dependencies by your php container : 
+   
+   `docker exec <php container> composer install `
             
 7. Make db migrations by using following commands :
 
-    `docker-compose exec php bin/console --no-interaction doctrine:migrations:diff`
+    `docker-compose exec php bin/console make:migration`
 
-    `docker-compose exec php bin/console --no-interaction doctrine:migrations:migrate`
+    `docker-compose exec php bin/console doctrine:migrations:migrate`
 
 8. If you need to enter containers terminal :
 
     `docker exec -it <mycontainer> bash`
-    
-9. {**Facultatif**} if you use the domain fabop.fr you must write domain name in your file hosts :    
         
-      Get the web container ip:
-        `sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container web>`
-        
-      Write in hosts :
-        `sudo nano /etc/hosts`
-        
-        {container IP}  fabop.fr
-        
-10. Build the app svelte:
-     `yarn encore dev`    
+9. Build the app svelte:
+     `yarn encore dev`
+     
+10. Get your user root (mail : root@root.fr | mdp : root) :
+
+    `docker-compose exec php bin/console doctrine:fixtures:load`
+
+11. To get your ip container :
+    `docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <Container Name >`
        
+12. Your app is active and you can see your project at localhost:80 or your web container ip.
+
 
 ### Setting up the development environment without Docker
 
-1. First, you need to clone the project and install dependencies with following command lines :
+1.1. Make sure you have php7.4, composer and mongodb installed :
+
+   **Install PHP 7.4**
+        
+   `apt-get update`
+        
+   `apt-get install php-cli`
+        
+   `apt-get install php-curl php-gd php-intl php-json php-mbstring php-xml php-zip php-mysql php-mongodb`    
+    
+   **Install composer**
+    
+   `apt install composer`
+
+1.2. First, you need to clone the project and install dependencies with following command lines :
 
     `git clone https://tuleap.fiction-factory.fr/plugins/git/fabop/fabop-directory.git`
     
@@ -221,14 +207,11 @@ These instructions will get you a copy of the project up and running on your loc
 
         WARNING! You are about to execute a database migration that could result in schema changes and data loss. Are you sure you wish to continue? (y/n)
 
-7. Need npm for svelte:
-    `npm install`
-
-8. Build the app svelte:
+7. Build the app svelte:
     `yarn encore dev`
     
 
-9. Finally, you can start the project
+8. Finally, you can start the project
 
     `php bin/console server:start`
 

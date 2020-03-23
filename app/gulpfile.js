@@ -29,6 +29,8 @@ gulp.task('js', function() {
     gulp.src('node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js')
     .pipe(gulp.dest('public/static/js/'));
     // Custom
+    gulp.src('assets/js/login.js')
+        .pipe(gulp.dest('public/static/js/'));
     return gulp.src('assets/js/scripts.js')
     .pipe(gulp.dest('public/static/js/'));
 });
