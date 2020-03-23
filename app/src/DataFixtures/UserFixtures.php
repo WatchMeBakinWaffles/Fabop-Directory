@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\EntityUser;
+use App\Entity\EntityInstitutions;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -10,6 +11,7 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        
         $user_root = new EntityUser();
         $user_root->setEmail("root@root.fr");
         $user_root->setRoles(array("ROLE_ADMIN"));
@@ -17,6 +19,7 @@ class UserFixtures extends Fixture
         $user_root->setLastname("root");
         $user_root->setPassword('$2y$12$eGhtebnhdb0BDs72VBLYneNt6Fz9QYM5FLL6P86irhhwahamUDhEm');
         $user_root->setApiToken("API_ROOT");
+        $user_root->setInstitution($manager->getRepository(EntityInstitutions::class)->find(1));
 
         $manager->persist($user_root);
 
