@@ -1,13 +1,13 @@
 $('#import-file').change(function(){
-    var v = $(this).val().split('\\');
-    var m = v[v.length-1]
+    let v = $(this).val().split('\\');
+    let m = v[v.length-1]
     $('#labelChoose').text(m);
 });
 
 if (path == "/manager/people/"){
     document.getElementById("exportClick").addEventListener("click", function () {
         let checkboxs = document.getElementsByClassName("checkImport");
-        const liste_id = [];
+        let liste_id = [];
         for (const checkbox of checkboxs) {
             if (checkbox.checked === true) {
                 liste_id.push(checkbox.parentNode.id);
