@@ -98,12 +98,12 @@ class ImportExportController extends AbstractController
             }
             else //Sinon (la fonction renvoie FALSE).
             {
-                echo 'Echec de l\'upload !';
+                return $this->redirectToRoute("import_export",['error'=>'Echec de l\'upload !']);
             }
         }
         else
         {
-            echo $erreur;
+            return $this->redirectToRoute("import_export",['error'=>$erreur]);
         }
 
 

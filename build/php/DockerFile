@@ -29,8 +29,8 @@ RUN mv composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www/html/symfony
 
-RUN chown -R :www-data /var/www
-
 EXPOSE 9000
+
+RUN chown -R :www-data /var/www
 
 CMD ["php-fpm"]
