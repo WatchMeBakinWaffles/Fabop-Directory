@@ -13,8 +13,10 @@ function remcl(){
 	}
 }
 
-
 inputs.forEach(input => {
+	if (input.value!=""){
+		input.parentNode.parentNode.classList.add("focus");
+	}
 	input.addEventListener("focus", addcl);
 	input.addEventListener("blur", remcl);
 });

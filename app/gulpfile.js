@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var concat = require('gulp-concat');
 
 gulp.task('styles', function() {
     // Custom
@@ -29,10 +30,9 @@ gulp.task('js', function() {
     gulp.src('node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js')
     .pipe(gulp.dest('public/static/js/'));
     // Custom
-    gulp.src('assets/js/login.js')
-        .pipe(gulp.dest('public/static/js/'));
-    return gulp.src('assets/js/scripts.js')
-    .pipe(gulp.dest('public/static/js/'));
+    return gulp.src('assets/js/vanilla/*')
+        .pipe(concat('scripts.js'))
+    .pipe(gulp.dest('public/static/js/script'));
 });
 
 gulp.task('fa', function() {
