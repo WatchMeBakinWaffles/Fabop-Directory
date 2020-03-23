@@ -24,6 +24,7 @@ class EntityTagsController extends AbstractController
         return $this->render('entity_tags/index.html.twig', ['entity_tags' => $entityTagsRepository->findAll()]);
     }
 
+    // TODO :: Quand Svelte Tableau mis en place, utiliser les webs components et l'API donc supprimer cette route
     /**
      * @Route("/list", name="entity_tags_list", methods="GET")
      */

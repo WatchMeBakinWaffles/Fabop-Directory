@@ -1,5 +1,7 @@
 /* If the current path of the page is matching the regex, ajax queries are send */
 
+// TODO :: Changer les fonctions et utilisations du web components
+
 if (path.match(/\/manager\/people\/[0-9]/g) != null) {
     // Ajax function to append the list of existing tags
     $.ajax({
