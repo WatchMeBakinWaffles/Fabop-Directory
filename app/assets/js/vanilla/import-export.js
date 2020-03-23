@@ -4,23 +4,25 @@ $('#import-file').change(function(){
     $('#labelChoose').text(m);
 });
 
-document.getElementById("exportClick").addEventListener("click", function (){
-    let checkboxs = document.getElementsByClassName("checkImport");
-    const liste_id = [];
-    for (const checkbox of checkboxs){
-        if (checkbox.checked === true){
-            liste_id.push(checkbox.parentNode.id);
+if (path == "/manager/people/") {
+    document.getElementById("exportClick").addEventListener("click", function () {
+        let checkboxs = document.getElementsByClassName("checkImport");
+        const liste_id = [];
+        for (const checkbox of checkboxs) {
+            if (checkbox.checked === true) {
+                liste_id.push(checkbox.parentNode.id);
+            }
         }
-    }
-    $.ajax({
-        url:URL+'/manager/imp-exp/export_selectif',
-        method:"POST",
-        data:{
-            ids: liste_id
-        }
-    }).done(function(){
-        window.location = URL+"/export_selectif.xlsx";
-    }).fail(function(){
-        alert("Vous n'avez rien séléctionné");
+        $.ajax({
+            url: URL + '/manager/imp-exp/export_selectif',
+            method: "POST",
+            data: {
+                ids: liste_id
+            }
+        }).done(function () {
+            window.location = URL + "/export_selectif.xlsx";
+        }).fail(function () {
+            alert("Vous n'avez rien séléctionné");
+        });
     });
-});
+}

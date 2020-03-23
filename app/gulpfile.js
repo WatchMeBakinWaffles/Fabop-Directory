@@ -32,7 +32,7 @@ gulp.task('js', function() {
     // Custom
     return gulp.src('assets/js/vanilla/*')
         .pipe(concat('scripts.js'))
-    .pipe(gulp.dest('public/static/js/script'));
+    .pipe(gulp.dest('public/static/js/'));
 });
 
 gulp.task('fa', function() {

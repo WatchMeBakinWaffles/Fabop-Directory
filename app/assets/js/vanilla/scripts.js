@@ -1,5 +1,3 @@
-const URL = "http://localhost:80";
-
 // Side menu dropdown
 $('.dropdown').on('show.bs.dropdown', function(e){
     $(this).find('.dropdown-menu').first().stop(true, true).slideDown(300);
@@ -56,8 +54,6 @@ if ($("table").length){
 
 /* If the current path of the page is matching the regex, ajax queries are send */
 
-const path = window.location.pathname;
-
 if (path.match(/\/manager\/people\/[0-9]/g) != null) {
     // Ajax function to append the list of existing tags
     $.ajax({
@@ -89,19 +85,3 @@ $('#select-all').click(function(event) {
         });
     }
 });
-
-function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('date_time').innerHTML =
-    h + ":" + m + ":" + s;
-    var t = setTimeout(startTime, 500);
-}
-function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
-}
