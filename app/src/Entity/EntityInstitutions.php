@@ -13,11 +13,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      collectionOperations={
  *          "get",
+ *          "post"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getId() == user.getInstitution()) )"},
  *      },
  *      itemOperations={
  *          "get",
- *          "put"={"access_control"="is_granted('ROLE_ADMIN')"},
- *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *          "put"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getId() == user.getInstitution()) )"},
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getId() == user.getInstitution()) )"}
  *      }
  * )
  */
