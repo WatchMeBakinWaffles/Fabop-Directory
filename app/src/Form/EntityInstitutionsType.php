@@ -12,8 +12,8 @@ class EntityInstitutionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name',null,array('label' => 'Nom'))
-            ->add('role',null,array('label' => 'Rôle'))
+            ->add('name',null,array('label' => 'Nom','required' => true))
+            ->add('role',null,array('label' => 'Rôle','required' => true))
         ;
     }
 
