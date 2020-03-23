@@ -14,12 +14,10 @@ class EntityPeopleType extends AbstractType
     {
         $builder
             ->add('name',null,array('label' => 'Nom',
-                                    'required' => true,
                                     'attr' => array(
                                         'class' => 'cm-input'
                                     )))
             ->add('firstname', null,array('label' => 'Prénom',
-                                          'required' => true,
                                           'attr' => array(
                                               'class' => 'cm-input'
                                           )))
@@ -40,14 +38,13 @@ class EntityPeopleType extends AbstractType
                                         'class' => 'cm-input'
                                     )))
             ->add('institution', null,array('label' => 'Institution',
-                                            'required' => true,
                                             'attr' => array(
                                                 'class' => 'cm-input'
                                             )))
             ->add('adresseMailing', null,array('label' => 'Mail',
-                '                            attr' => array(
-                                            'class' => 'cm-input'
-                                            )))
+                'attr' => array(
+                    'class' => 'cm-input'
+                )))
         ;
     }
 
