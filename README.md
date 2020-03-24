@@ -136,6 +136,12 @@ These instructions will get you a copy of the project up and running on your loc
        
 12. Your app is active and you can see your project at localhost:80 or your web container ip.
 
+13. Fix right of your folders to import/export:
+
+       `docker-compose exec php chown -R :www-data /var/www`
+        
+       `docker-compose exec php chmod 775 /var/www/html/symfony/public`
+
 
 ### Setting up the development environment without Docker
 
@@ -241,11 +247,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Built With
 
-* Php 7.2.16
+* Php 7.4.3
 * JavaScript
 * Twig
 
-* Symfony 4.1.7 - The web framework used (PHP)
+* Symfony 4.4.5 - The web framework used (PHP)
 * npm/yarn - Dependency Management
 * Bootstrap 4 - CSS framework
 * jquery - JS framework
