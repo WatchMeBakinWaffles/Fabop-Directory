@@ -239,6 +239,17 @@ These instructions will get you a copy of the project up and running on your loc
 ### Loading fixtures
     
 `docker-compose exec php bin/console doctrine:fixtures:load`
+
+### SwiftMailer Configuration
+
+Edit .env file :
+
+        MAIL_TRANSPORT_TYPE=smtp
+        MAIL_ENCRYPTION=ssl
+        MAIL_AUTHMODE=login
+        MAIL_HOST=ssl0.ovh.net
+        MAIL_USERNAME=bdd_iut@lfovdl.com
+        MAIL_PASSWORD=Lf0VdL2019#
     
 
 ## Deployment / production server installation
