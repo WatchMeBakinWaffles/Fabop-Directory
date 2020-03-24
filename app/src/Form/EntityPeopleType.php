@@ -21,7 +21,10 @@ class EntityPeopleType extends AbstractType
                                           'attr' => array(
                                               'class' => 'cm-input'
                                           )))
-            ->add('birthdate', BirthdayType::class,array('label' => 'Date de naissance'))
+            ->add('birthdate', BirthdayType::class,array('label' => 'Date de naissance',
+                'attr' => array(
+                    'class' => 'cm-input'
+                )))
             ->add('newsletter', null,array('label' => 'Abonnement Newsletter',
                                             'attr' => array(
                                                 'class' => 'cm-input'
