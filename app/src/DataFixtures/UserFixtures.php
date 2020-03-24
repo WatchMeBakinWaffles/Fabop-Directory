@@ -19,7 +19,6 @@ class UserFixtures extends Fixture
         $user_root->setLastname("root");
         $user_root->setPassword('$2y$12$eGhtebnhdb0BDs72VBLYneNt6Fz9QYM5FLL6P86irhhwahamUDhEm');
         $user_root->setApiToken("API_ROOT");
-        $user_root->setInstitution($manager->getRepository(EntityInstitutions::class)->find(1));
 
         $manager->persist($user_root);
 

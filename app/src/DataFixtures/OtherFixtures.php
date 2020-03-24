@@ -16,8 +16,8 @@ class OtherFixtures extends Fixture
 
         $sheetInstitutionId=$mongoman->insertSingle("Entity_institution_sheet",[]);
         $entityInstitution = new EntityInstitutions();
-        $entityInstitution->setName("Institution root");
-        $entityInstitution->setRole("ROOT");
+        $entityInstitution->setName("Institution test");
+        $entityInstitution->setRole("TEST");
         $entityInstitution->setSheetId($sheetInstitutionId);
 
         $manager->persist($entityInstitution);

@@ -50,7 +50,6 @@ class EntityUser implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EntityInstitutions", inversedBy="entityUsers")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $institution;
 

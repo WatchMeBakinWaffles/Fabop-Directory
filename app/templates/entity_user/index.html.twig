@@ -29,7 +29,7 @@
                 <td>{{ entity_user.lastName }}</td>
                 <td>{{ entity_user.email }}</td>
                 <td>{{ entity_user.roles ? entity_user.roles|json_encode : '' }}</td>
-                <td>{{ entity_user.institution.getName() }}</td>
+                <td>{{ entity_user.institution ? entity_user.institution.getName() }}</td>
                 <td>{{ entity_user.ApiToken }}</td>
                 <td>
                     <a href="{{ path('admin_user_show', {'id': entity_user.id}) }}"><i class="fas fa-eye"></i></a>
