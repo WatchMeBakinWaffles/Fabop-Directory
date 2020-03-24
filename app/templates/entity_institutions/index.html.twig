@@ -5,7 +5,9 @@
 {% block content %}
     <h2><i class="fas fa-university"></i> Liste des institutions</h2>
     <div class="row m-3">
-        <a class="btn btn-primary mr-2" href="{{ path('entity_institutions_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-primary mr-2" href="{{ path('entity_institutions_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+        {% endif %}
     </div>
     <table class="table table-striped">
         <thead class="bg-secondary text-white">

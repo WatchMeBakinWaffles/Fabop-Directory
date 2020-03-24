@@ -24,7 +24,20 @@ class EntityPeopleController extends AbstractController
     public function index(EntityPeopleRepository $entityPeopleRepository): Response
     {
         //filtres à appliquer ici
-        return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
+
+        // le role user ou contibuteur ne peut voir que les entités rattaché à son institution
+        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+            return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
+        else{
+            
+            $institution_id = $this->getUser()->getInstitution();
+
+            if(isset($institution_id))
+                return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findBy(['institution' => $institution_id])]);
+            else
+                return $this->render('entity_people/index.html.twig', ['entity_people' =>[]]);
+        }
+
     }
 
     /**

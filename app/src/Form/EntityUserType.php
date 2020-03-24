@@ -16,12 +16,15 @@ class EntityUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+    
+
         $choices = array(
             'administrateur' => 'ROLE_ADMIN',
+            'contributeur' => 'ROLE_CONTRIBUTEUR',
             'utilisateur' => 'ROLE_USER',
         );
         $builder
-            ->add('email')
+            ->add('email', null,array('required' => true))
             ->add('roles', ChoiceType::class, array(
                 'choices' => $choices,
                 'multiple' => true,
@@ -29,27 +32,16 @@ class EntityUserType extends AbstractType
             ->add('password', PasswordType::class)
             ->add('firstName')
             ->add('lastName')
+            ->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')))
             ->add('ApiToken')
         ;
-        // $builder->get('roles')
-        //     ->addModelTransformer(new CallbackTransformer(
-        //         function ($tagsAsArray) {
-        //             // transform the array to a string
-        //             return implode(', ', $tagsAsArray);
-        //         },
-        //         function ($tagsAsString) {
-        //             // transform the string back to an array
-        //             return explode(', ', $tagsAsString);
-        //         }
-        //     ))
-        // ;
 
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => EntityUser::class,
+            'entityUser' => EntityUser::class,
         ]);
     }
 }

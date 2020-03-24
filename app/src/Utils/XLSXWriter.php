@@ -11,14 +11,23 @@ use Box\Spout\Common\Entity\Row;
 class XLSXWriter
 {
 
-    public function writeAll(EntityPeopleRepository $entityPeopleRepository)
+    public function writeAll(EntityPeopleRepository $entityPeopleRepository, $institution_id = null)
     {
         // Création Writer XLSX
         $writer = WriterEntityFactory::createXLSXWriter();
         $writer->openToFile("export.xlsx");
 
         // Récupération participants
-        $people = $entityPeopleRepository->findAll();
+        $people = array();
+            
+
+        if(isset($institution_id))
+            $people = $entityPeopleRepository->findBy(['institution' => $institution_id]);
+
+        else
+            $people = $entityPeopleRepository->findAll();
+
+
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Institution", "Abonné à la newsletter"];
