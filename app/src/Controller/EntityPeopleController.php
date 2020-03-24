@@ -26,7 +26,9 @@ class EntityPeopleController extends AbstractController
         //filtres à appliquer ici
 
         // le role user ou contibuteur ne peut voir que les entités rattaché à son institution
-        if(in_array('ROLE_USER', $this->getUser()->getRoles()) || in_array('ROLE_CONTRIBUTEUR', $this->getUser()->getRoles())){
+        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+            return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
+        else{
             
             $institution_id = $this->getUser()->getInstitution();
 
@@ -35,8 +37,7 @@ class EntityPeopleController extends AbstractController
             else
                 return $this->render('entity_people/index.html.twig', ['entity_people' =>[]]);
         }
-        
-        return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
+
     }
 
     /**

@@ -31,8 +31,15 @@ class ImportExportController extends AbstractController
      */
     public function export(EntityPeopleRepository $epr)
     {
+
+        $institution_id = null;
+
+        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
+            $institution_id = $this->getUser()->getInstitution();        
+
+
         $writer = new XLSXWriter();
-        $writer->writeAll($epr);
+        $writer->writeAll($epr, $institution_id);
 
         $file = "export.xlsx";
         header('Content-Description: File Transfer');

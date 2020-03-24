@@ -23,6 +23,7 @@
                     <th>Abonnement à la newsletter</th>
                     <th>Code postal</th>
                     <th>Ville</th>
+                    <th>Institution</th>
                     <th>Date d'ajout</th>
                     <th><i class="fas fa-cog"></i></th>
                 </tr>
@@ -38,6 +39,7 @@
                     <td>{{ entity_person.newsletter ? 'Oui' : 'Non' }}</td>
                     <td>{{ entity_person.postalCode }}</td>
                     <td>{{ entity_person.city }}</td>
+                    <td>{{ entity_person.institution.getName() }}</td>
                     <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
                     <td>
                         <a href="{{ path('entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
