@@ -6,7 +6,7 @@ use App\Entity\EntityPeople;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Form\TagsAffectType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class EntityPeopleType extends AbstractType
 {
@@ -21,10 +21,7 @@ class EntityPeopleType extends AbstractType
                                           'attr' => array(
                                               'class' => 'cm-input'
                                           )))
-            ->add('birthdate', null,array('label' => 'Date de naissance',
-                                            'attr' => array(
-                                                'class' => 'cm-input'
-                                            )))
+            ->add('birthdate', BirthdayType::class,array('label' => 'Date de naissance'))
             ->add('newsletter', null,array('label' => 'Abonnement Newsletter',
                                             'attr' => array(
                                                 'class' => 'cm-input'
