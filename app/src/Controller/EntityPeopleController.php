@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EntityPeople;
+use App\Entity\Log;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityPeopleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,6 +65,17 @@ class EntityPeopleController extends AbstractController
             $entityPerson->setSheetId($sheetId);
             $entityPerson->setAddDate(new \DateTime("now"));
 
+
+
+            $log = new Log();
+            $log->setDate(new \DateTime());
+            $log->setElement('Participant');
+            $log->setTypeAction('Ajout');
+            $log->setComment($this->getUser()->getEmail().' a ajouté '.$entityPerson->getFirstname().' '.$entityPerson->getName());
+            $log->setIdUser($this->getUser()->getId());
+            $em->persist($log);
+
+
             $em->persist($entityPerson);
             $em->flush();
 
@@ -95,6 +107,7 @@ class EntityPeopleController extends AbstractController
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);
         $mongoman = new MongoManager();
+        $em = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (null != $request->request->get('person_data')){
@@ -107,8 +120,15 @@ class EntityPeopleController extends AbstractController
                     }
                 }
             }
+            $log = new Log();
+            $log->setDate(new \DateTime());
+            $log->setElement('Participant');
+            $log->setTypeAction('Modification');
+            $log->setComment($this->getUser()->getEmail().' a modifié '.$entityPerson->getFirstname().' '.$entityPerson->getName());
+            $log->setIdUser($this->getUser()->getId());
+            $em->persist($log);
 
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
         }
@@ -129,6 +149,16 @@ class EntityPeopleController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $mongoman = new MongoManager();
             $mongoman->deleteSingleById("Entity_person_sheet",$entityPerson->getSheetId());
+
+            $log = new Log();
+            $log->setDate(new \DateTime());
+            $log->setElement('Participant');
+            $log->setTypeAction('Suppression');
+            $log->setComment($this->getUser()->getEmail().' a supprimé '.$entityPerson->getFirstname().' '.$entityPerson->getName());
+            $log->setIdUser($this->getUser()->getId());
+            $em->persist($log);
+
+
             $em->remove($entityPerson);
             $em->flush();
         }

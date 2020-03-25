@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log index{% endblock %}
+
+{% block body %}
+    <h1>Log index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Element</th>
+                <th>Type_action</th>
+                <th>Comment</th>
+                <th>Id_user</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.date ? log.date|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ log.element }}</td>
+                <td>{{ log.typeAction }}</td>
+                <td>{{ log.comment }}</td>
+                <td>{{ log.idUser }}</td>
+                <td>
+                    <a href="{{ path('log_show', {'id': log.id}) }}">Afficher</a>
+                    {{ include('log/_delete_form.html.twig') }}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
