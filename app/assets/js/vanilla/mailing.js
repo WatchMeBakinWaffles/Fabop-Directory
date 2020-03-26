@@ -2,7 +2,7 @@
 
 $(document).on('click', '#mailingBtn', function(){
     for ( let mail in document.querySelectorAll('mailingSelection') ) {
-        console.log(mail);  
+        console.log(mail);
     }
 })
 
@@ -12,8 +12,8 @@ $(document).on('click', '#sendMailBtn', function(e){
     $.ajax({
         url:URL+'/mail',
         method: "POST",
-        data: {message: $('#message').serialize(),
-                subject: $('#subject').serialize()},
+        data: { message: $('#message').val(),
+                subject: $('#subject').val()},
     }).done(function(data, status, xhr){
         if(status == "success") {
             $('#modal-mail').modal("hide");
