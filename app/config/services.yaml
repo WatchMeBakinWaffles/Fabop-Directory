@@ -37,3 +37,13 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+    
+    entity.log_listener:
+        class: App\EventListener\EntityLogListener
+        arguments:
+            - '@security.token_storage' 
+        tags:
+            - { name: 'doctrine.event_listener', event: 'preUpdate' }
+            - { name: 'doctrine.event_listener', event: 'prePersist' }
+            - { name: 'doctrine.event_listener', event: 'preRemove' }
+            - { name: 'doctrine.event_listener', event: 'postFlush' }

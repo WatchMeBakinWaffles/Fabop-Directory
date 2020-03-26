@@ -6,7 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations={
+ *          "get"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *      },
+ *      itemOperations={
+ *          "get"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"},
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"}
+ *      }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\LogRepository")
  */
 class Log
