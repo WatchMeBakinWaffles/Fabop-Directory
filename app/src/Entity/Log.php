@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource(
  *      collectionOperations={
- *          "get"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *          "get",
  *      },
  *      itemOperations={
  *          "get"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"},

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Log;
-use App\Form\LogType;
 use App\Repository\LogRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,22 +24,6 @@ class LogController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="log_new", methods={"GET","POST"})
-     */
-    public function new(array $data)
-    {
-        $log = new Log();
-        $log->setDate($data['date']);
-        $log->setElement($data['element']);
-        $log->setTypeAction($data['type_action']);
-        $log->setComment($data['comment']);
-        $log->setIdUser($data['id_user']);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($log);
-        $entityManager->flush();
-
-    }
 
     /**
      * @Route("/{id}", name="log_show", methods={"GET"})
