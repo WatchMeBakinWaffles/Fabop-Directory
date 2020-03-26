@@ -3,6 +3,9 @@
 {{ form_start(form) }}
 <div class="container">
     {{ form_widget(form, { 'attr': {'class': 'input'} }) }}
+    <div id="person_data">
+        <button class="btn btn-primary m-1" id="add_person_data" type="button">+</button>
+    </div>
     <button class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
     <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-undo"></i> Annuler</a>
 </div>

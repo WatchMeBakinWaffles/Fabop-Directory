@@ -35,7 +35,7 @@ class MongoManager
             throw new DocumentNotFoundException;
         }else{
             //Mongo Object to JSON Object
-            $this->doc= MongoDB\BSON\toJSON(MongoDB\BSON\fromPHP($this->doc));
+            $this->doc= json_decode(MongoDB\BSON\toJSON(MongoDB\BSON\fromPHP($this->doc)),true);
             return $this->doc;
         }
     }
@@ -83,7 +83,7 @@ class MongoManager
         } else {
             throw new DocumentNotFoundException;
         }
-        
+
     }
 
     function unsetSingleValueById($collection,$id,$key){
