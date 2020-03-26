@@ -17,10 +17,11 @@ class MailingController extends AbstractController
     {
         $mailText = $request->get('message');
         $object = $request->get('subject');
+        $mails = $request->get('mailList');
 
         $message = new \Swift_Message($object);
         $message->setFrom($_SERVER['MAIL_USERNAME']);
-        $message->setTo('axel.serrie@gmail.com');
+        $message->setTo('louis.chamaillard@gmail.com');
         $message->setBody(
             $this->renderView(
                 'mails/example.html.twig', ['message' => $mailText],
