@@ -1,10 +1,8 @@
 <script>
 	import PeopleCard from './PeopleCard.svelte';
-	import InstitutionCard from './InstitutionCard.svelte'
+	import Tableau from './tableau/tableau.svelte';
+	import InstitutionCard from './InstitutionCard.svelte';
 </script>
 
-<PeopleCard>
-</PeopleCard>
-
-<InstitutionCard>
-</InstitutionCard>
+<Tableau>
+</Tableau>

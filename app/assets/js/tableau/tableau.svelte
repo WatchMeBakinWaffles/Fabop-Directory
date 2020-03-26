@@ -1,0 +1,217 @@
+<script type="text/javascript">
+let entity = "peoples";
+let api = "none";
+let list;
+async function fetchAsync () {
+  // await response of fetch call
+  let response = await fetch('http://localhost/api/entity_'+entity);
+  // only proceed once promise is resolved
+  let data = await response.json();
+  // only proceed once second promise is resolved
+  return data;
+}
+
+// trigger async function
+// log response or catch error of fetch promise
+fetchAsync()
+  .then(data => createTable(data["hydra:member"]))
+  .catch(reason => console.log(reason.message))
+
+function createTable(data){
+  var tableau = document.getElementById('example');
+  console.log(tableau);
+  var thead = document.getElementById('TableHeader');
+  var tbody = document.getElementById('TableBody');
+  var tfoot = document.getElementById('TableFooter');
+  var str = "";
+  if(data[0]["@id"].split("/")[2] == "entity_peoples"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Prénom</th>"+
+            "<th>Date de naissance</th>"+
+            "<th>Abonnement à la newsletter</th>"+
+            "<th>Code postal</th>"+
+            "<th>Ville</th>"+
+            "<th>Date d'ajout</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML += str;
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Prénom</th>"+
+            "<th>Date de naissance</th>"+
+            "<th>Abonnement à la newsletter</th>"+
+            "<th>Code postal</th>"+
+            "<th>Ville</th>"+
+            "<th>Date d'ajout</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+        "</tr>";
+    tfoot.innerHTML += str;
+    str = "";
+    api = "people";
+    list = "Liste des personnes";
+  }else if(data[0]["@id"].split("/")[2] == "entity_institutions"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Rôle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML += str;
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Rôle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    tfoot.innerHTML += str;
+    str = "";
+    api = "institution";
+    list = "Liste des institutions";
+  }else if(data[0]["@id"].split("/")[2] == "entity_shows"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Année</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML += str;
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Année</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    tfoot.innerHTML += str;
+    str = "";
+    api = "show";
+    list = "Liste des spectacles";
+  }else if(data[0]["@id"].split("/")[2] == "entity_tags"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML += str;
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    tfoot.innerHTML += str;
+    str = "";
+    api = "tag";
+    list = "Liste des étiquettes";
+  }else if(data[0]["@id"].split("/")[2] == "entity_performances"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Id</th>"+
+            "<th>Date</th>"+
+            "<th>Spectacle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML += str;
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Id</th>"+
+            "<th>Date</th>"+
+            "<th>Spectacle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    tfoot.innerHTML += str;
+    str = "";
+    api = "performance";
+    list = "Liste des performances";
+  }
+  if(api =='people'){
+    data.forEach(d =>
+      str += "<tr role='row' class='odd'>"+
+                  "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                  "<td>"+d.name+"</td>"+
+                  "<td>"+d.firstname+"</td>"+
+                  "<td>"+d.birthdate+"</td>"+
+                  "<td>"+d.newsletter+"</td>"+
+                  "<td>"+d.postalCode+"</td>"+
+                  "<td>"+d.city+"</td>"+
+                  "<td>"+d.addDate+"</td>"+
+                  "<td>"+
+                      "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                      "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                  "</td>"+
+                "</tr>"
+    );
+    tbody.innerHTML += str;
+    str = "";
+  }else if(api =='institution'){
+    data.forEach(d =>
+      str += "<tr role='row' class='odd'>"+
+                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td>"+d.name+"</td>"+
+                "<td>"+d.role+"</td>"+
+                "<td>"+
+                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                "</td>"+
+              "</tr>"
+    );
+    tbody.innerHTML += str;
+    str = "";
+  }else if(api =='show'){
+    data.forEach(d =>
+      str += "<tr role='row' class='odd'>"+
+                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td>"+d.name+"</td>"+
+                "<td>"+d.year+"</td>"+
+                "<td>"+
+                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                "</td>"+
+              "</tr>"
+    );
+    tbody.innerHTML += str;
+    str = "";
+  }else if(api =='tag'){
+    data.forEach(d =>
+      str += "<tr role='row' class='odd'>"+
+                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td>"+d.name+"</td>"+
+                "<td>"+
+                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                "</td>"+
+              "</tr>"
+    );
+    tbody.innerHTML += str;
+    str = "";
+  }else if(api =='performance'){
+    data.forEach(d =>
+      str += "<tr role='row' class='odd'>"+
+                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td>"+d.date+"</td>"+
+                "<td>"+d.shows+"</td>"+
+                "<td>"+
+                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                "</td>"+
+              "</tr>"
+    );
+    tbody.innerHTML += str;
+    str = "";
+  }
+}
+</script>
+
+<h2><i class="fas fa-users"></i>{list}</h2>
+<div class="row m-3">
+    <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="imp_exp"><i class="fas fa-file-import"></i> Import des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
+</div>
+<table id="example" class="table table-striped" style="width:100%">
+  <thead class="bg-secondary text-white" id="TableHeader"></thead>
+  <tbody id="TableBody"></tbody>
+  <tfoot class="bg-secondary text-white" id="TableFooter"></tfoot>
+</table> 
+
