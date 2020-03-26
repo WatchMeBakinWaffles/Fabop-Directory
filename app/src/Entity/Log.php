@@ -51,6 +51,11 @@ class Log
      */
     private $id_user;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $institution;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -112,6 +117,18 @@ class Log
     public function setIdUser(int $id_user): self
     {
         $this->id_user = $id_user;
+
+        return $this;
+    }
+
+    public function getInstitution(): ?int
+    {
+        return $this->institution;
+    }
+
+    public function setInstitution(?int $institution): self
+    {
+        $this->institution = $institution;
 
         return $this;
     }

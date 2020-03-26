@@ -23,52 +23,59 @@ class EntityLogListener
         $this->securityContext = $security;
     }
 
+    private function log(array $data){
+        // now
+        $date = new \DateTime('',new \DateTimeZone('Europe/Paris'));
+
+        $log = new Log();
+        $log->setDate($date);
+        $log->setElement($data['element']);
+        $log->setTypeAction($data['type_action']);
+        $log->setComment($data['comment']);
+        $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
+        $log->setInstitution($data['institution']);
+
+        $this->log[] = $log;
+    }
+
     public function preUpdate(LifecycleEventArgs $args) 
     {
         $entity = $args->getEntity();
 
-        // now
-        $date = new \DateTime('',new \DateTimeZone('Europe/Paris'));
 
         if ($entity instanceof EntityPeople) {
             foreach ($this->fields_people as $field) {
                 if ( $args->hasChangedField($field)){
-                    $log = new Log();
-                    $log->setDate($date);
-                    $log->setElement('Participant');
-                    $log->setTypeAction('Modification');
-                    $log->setComment($field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'");
-                    $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-                    $this->log[] = $log;
+                    $this->log(array(
+                        'element' => 'Participant',
+                        'type_action' => 'Modification',
+                        'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
+                        'institution' => $entity->getInstitution()->getId()
+                    ));
                 }
             }
         }
         elseif ($entity instanceof EntityInstitutions) {
             foreach ($this->fields_institution as $field) {
                 if ( $args->hasChangedField($field)){
-                    $log = new Log();
-                    $log->setDate($date);
-                    $log->setElement('Institution');
-                    $log->setTypeAction('Modification');
-                    $log->setComment($field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'");
-                    $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-                    $this->log[] = $log;
+                    $this->log(array(
+                        'element' => 'Institution',
+                        'type_action' => 'Modification',
+                        'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
+                        'institution' => $entity->getInstitution()->getId()
+                    ));
                 }
             }
         }
         elseif ($entity instanceof EntityUser) {
             foreach ($this->fields_user as $field) {
                 if ( $args->hasChangedField($field)){
-                    $log = new Log();
-                    $log->setDate($date);
-                    $log->setElement('Utilisateur');
-                    $log->setTypeAction('Modification');
-                    $log->setComment($field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'");
-                    $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-                    $this->log[] = $log;
+                    $this->log(array(
+                        'element' => 'Utilisateur',
+                        'type_action' => 'Modification',
+                        'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
+                        'institution' => $entity->getInstitution()->getId()
+                    ));
                 }
             }
         }
@@ -79,45 +86,36 @@ class EntityLogListener
     {
         $entity = $args->getEntity();
 
-        //now
-        $date = new \DateTime('',new \DateTimeZone('Europe/Paris'));
 
         if ($entity instanceof EntityPeople) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Participant');
-            $log->setTypeAction('Ajout');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
-                
+            $this->log(array(
+                'element' => 'Participant',
+                'type_action' => 'Ajout',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName().' '.$entity->getFirstname(),
+                'institution' => $entity->getInstitution()->getId()
+            ));                
             
         }
         elseif ($entity instanceof EntityInstitutions) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Institution');
-            $log->setTypeAction('Ajout');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
+            $this->log(array(
+                'element' => 'Institution',
+                'type_action' => 'Ajout',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName(),
+                'institution' => $entity->getInstitution()->getId()
+            ));  
                 
             
         }
         elseif ($entity instanceof EntityUser) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Utilisateur');
-            $log->setTypeAction('Ajout');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
+            $this->log(array(
+                'element' => 'Utilisateur',
+                'type_action' => 'Ajout',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
+                'institution' => $entity->getInstitution()->getId()
+            ));  
                 
             
         }
@@ -132,40 +130,34 @@ class EntityLogListener
 
         if ($entity instanceof EntityPeople) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Participant');
-            $log->setTypeAction('Suppression');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
+            $this->log(array(
+                'element' => 'Participant',
+                'type_action' => 'Suppression',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getName().' '.$entity->getFirstname(),
+                'institution' => $entity->getInstitution()->getId()
+            ));  
                 
             
         }
         elseif ($entity instanceof EntityInstitutions) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Institution');
-            $log->setTypeAction('Suppression');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
+            $this->log(array(
+                'element' => 'Institution',
+                'type_action' => 'Suppression',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getName(),
+                'institution' => $entity->getInstitution()->getId()
+            ));  
                 
             
         }
         elseif ($entity instanceof EntityUser) {
             
-            $log = new Log();
-            $log->setDate($date);
-            $log->setElement('Utilisateur');
-            $log->setTypeAction('Suppression');
-            $log->setComment($this->securityContext->getToken()->getUser()->getEmail());
-            $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
-
-            $this->log[] = $log;
+            $this->log(array(
+                'element' => 'Utilisateur',
+                'type_action' => 'Suppression',
+                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getFirstName().' '.$entity->getLastName(),
+                'institution' => $entity->getInstitution()->getId()
+            ));  
                 
             
         }
