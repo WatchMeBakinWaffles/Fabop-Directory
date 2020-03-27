@@ -15,11 +15,11 @@ fetchAsync()
   .catch(reason => console.log(reason.message))
 
 function createTable(res){
-  var tableau = document.getElementById('logs');
-  var thead = document.getElementById('TableHeader');
-  var tbody = document.getElementById('TableBody');
-  var tfoot = document.getElementById('TableFooter');
-  var str = "";
+  let tableau = document.getElementById('logs');
+  let thead = document.getElementById('TableHeader');
+  let tbody = document.getElementById('TableBody');
+  let tfoot = document.getElementById('TableFooter');
+  let str = "";
   str = "<tr>"+
           "<th>ID</th>"+
           "<th>Date</th>"+
