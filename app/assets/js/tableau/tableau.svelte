@@ -14,7 +14,8 @@ async function fetchAsync () {
 // trigger async function
 // log response or catch error of fetch promise
 fetchAsync()
-  .then(data => createTable(data["hydra:member"]))
+  .then(data => createTable(data["hydra:member"]
+  ))
   .catch(reason => console.log(reason.message))
 
 function createTable(data){
@@ -200,6 +201,7 @@ function createTable(data){
     tbody.innerHTML += str;
     str = "";
   }
+  table_init()
 }
 </script>
 
@@ -213,5 +215,5 @@ function createTable(data){
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
   <tbody id="TableBody"></tbody>
   <tfoot class="bg-secondary text-white" id="TableFooter"></tfoot>
-</table> 
+</table>
 
