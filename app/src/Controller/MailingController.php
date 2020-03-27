@@ -12,7 +12,7 @@ class MailingController extends AbstractController
     /**
      * @Route("/mail", name="mailing")
      */
-    public function index(Request $request, \Swift_Mailer $mailer, 
+    public function index(Request $request, \Swift_Mailer $mailer,
         LoggerInterface $logger)
     {
         $mailText = $request->get('message');
@@ -21,7 +21,7 @@ class MailingController extends AbstractController
 
         $message = new \Swift_Message($object);
         $message->setFrom($_SERVER['MAIL_USERNAME']);
-        $message->setTo('louis.chamaillard@gmail.com');
+        $message->setTo($mails);
         $message->setBody(
             $this->renderView(
                 'mails/example.html.twig', ['message' => $mailText],

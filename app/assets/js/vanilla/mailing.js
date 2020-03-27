@@ -13,11 +13,10 @@ $('.checkImport').bind('click', function() {
     } else {
         mails.splice(mails.indexOf($(this)[0].parentElement.parentElement.children[3].textContent), 1);
     }
-    console.log(mails);
 });
 
 $(document).on('click', '#sendMailBtn', function(e){
-    console.log(mails);
+
     e.preventDefault();
     $.ajax({
         url:URL+'/mail',
@@ -30,6 +29,6 @@ $(document).on('click', '#sendMailBtn', function(e){
             $('#modal-mail').modal("hide");
             alert("Le mail a bien été envoyé");
         }
-        else alert("Le tag n'a pas été ajouté");
+        else alert("Le mail a rencontré des difficultés pour s'envoyer.");
     });
 })

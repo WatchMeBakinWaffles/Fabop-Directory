@@ -73,7 +73,7 @@
 				th[class="thead"]{display:table-header-group !important; width:100% !important;}
 				th[class="tfoot"]{display:table-footer-group !important; width:100% !important;}
 			}
-		
+
 
 </style>
 
@@ -82,24 +82,26 @@
     <td data-bgcolor="bg-module" bgcolor="#eaeced">
       <table class="flexible" width="1550" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
         <tr>
-          <td class="img-flex"><img src="images/img-01.jpg" style="vertical-align:top;" width="600" height="306" alt="" /></td>
-        </tr>
-        <tr>
           <td data-bgcolor="bg-block" class="holder" style="padding:58px 60px 52px; border: 6px solid #951b81;" bgcolor="#2e353d">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#ffffff;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#ffffff; padding:0 0 24px;">
-                  <img src="../../public/static/images/logo.png"
+                <td data-color="title" data-size="size title" data-min="25" data-max="150" data-link-color="link title color" data-link-style="text-decoration:none; color:#ffffff;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#ffffff; padding:0 0 24px;">
+                  <img height="150" width="250" src="{{ asset('static/images/logo.png')}}">
                 </td>
               </tr>
               <tr>
                 <td data-color="title" data-size="size title" data-min="25" data-max="45" data-link-color="link title color" data-link-style="text-decoration:none; color:#ffffff;" class="title" align="center" style="font:35px/38px Arial, Helvetica, sans-serif; color:#ffffff; padding:0 0 24px;">
-                  Bonjour à tous
+                  {{subject}}
                 </td>
               </tr>
               <tr>
                 <td data-color="text" data-size="size text" data-min="10" data-max="26" data-link-color="link text color" data-link-style="font-weight:bold; text-decoration:underline; color:#ffffff;" align="center" style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#ffffff; padding:0 0 23px;">
                   {{message}}
+                </td>
+              </tr>
+              <tr>
+                <td data-color="text" data-size="size footer" data-min="10" data-max="26" data-link-color="link text color" data-link-style="font-weight:bold; text-decoration:underline; color:#ffffff;" align="center" style="font:bold 16px/25px Arial, Helvetica, sans-serif; color:#ffffff; padding:0 0 23px;">
+                  {{info_user}}
                 </td>
               </tr>
             </table>
