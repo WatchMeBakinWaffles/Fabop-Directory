@@ -134,7 +134,7 @@ function createTable(data){
                   "<td>"+d.firstname+"</td>"+
                   "<td>"+d.birthdate+"</td>"+
                   "<td>"+d.newsletter+"</td>"+
-                  "<td>"+d.postalCode+"</td>"+  
+                  "<td>"+d.postalCode+"</td>"+
                   "<td>"+d.city+"</td>"+
                   "<td>"+d.addDate+"</td>"+
                   "<td>"+

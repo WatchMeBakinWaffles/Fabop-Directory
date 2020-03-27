@@ -1,6 +1,5 @@
 <script>
 	import Tableau from './tableau/tableau.svelte';
-	import CustomButton from './customButton.svelte';
 	let tab = "none";
 
 	function personnes() {
