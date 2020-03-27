@@ -1,5 +1,6 @@
 <script>
 	import Tableau from './tableau/tableau.svelte';
+	import Logs from './tableau/log.svelte';
 	let tab = "none";
 
 	function personnes() {
@@ -50,8 +51,9 @@
 	</Tableau>
 {/if}
 
-<h2>Logs</h2>
-<p>-----</p>
+<h2><i class="fas fa-clipboard-list"></i> Logs</h2>
+<Logs data="{tab}">
+</Logs>
 
 <style>
 .container{
