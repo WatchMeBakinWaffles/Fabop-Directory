@@ -1,24 +1,25 @@
 <script type="text/javascript">
-let entity = "shows";
+export let data;
+let entity = data;
 let api = "none";
 let list;
 async function fetchAsync () {
   // await response of fetch call
   let response = await fetch('http://localhost/api/entity_'+entity);
   // only proceed once promise is resolved
-  let data = await response.json();
+  let res = await response.json();
   // only proceed once second promise is resolved
-  return data;
+  return res;
 }
 
 // trigger async function
 // log response or catch error of fetch promise
 fetchAsync()
-  .then(data => createTable(data["hydra:member"]
+  .then(res => createTable(res["hydra:member"]
   ))
   .catch(reason => console.log(reason.message))
 
-function createTable(data){
+function createTable(res){
   var tableau = document.getElementById('example');
   console.log(tableau);
   var thead = document.getElementById('TableHeader');
@@ -127,7 +128,7 @@ function createTable(data){
     list = "Liste des performances";
   }
   if(api =='people'){
-    data.forEach(d =>
+    res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                   "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                   "<td>"+d.name+"</td>"+
@@ -146,7 +147,7 @@ function createTable(data){
     tbody.innerHTML += str;
     str = "";
   }else if(api =='institution'){
-    data.forEach(d =>
+    res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
@@ -160,7 +161,7 @@ function createTable(data){
     tbody.innerHTML += str;
     str = "";
   }else if(api =='show'){
-    data.forEach(d =>
+    res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
@@ -174,7 +175,7 @@ function createTable(data){
     tbody.innerHTML += str;
     str = "";
   }else if(api =='tag'){
-    data.forEach(d =>
+    res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
@@ -187,7 +188,7 @@ function createTable(data){
     tbody.innerHTML += str;
     str = "";
   }else if(api =='performance'){
-    data.forEach(d =>
+    res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.date+"</td>"+
