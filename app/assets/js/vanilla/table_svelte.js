@@ -2,7 +2,7 @@ function table_init(){
     if ($("table").length){
         $(document).ready(function() {
             const tableElementCount = $('table thead tr').get()[0].childElementCount;
-            let table = $('#example').DataTable({
+            $('#example').DataTable({
                 initComplete: function () {
                     this.api().columns().every( function ( index ) {
                         var column = this;
@@ -42,6 +42,5 @@ function table_init(){
                 }
             })
         });
-        table.destroy();
     }
 }
