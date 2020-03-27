@@ -25,7 +25,7 @@ function createTable(data){
   var tbody = document.getElementById('TableBody');
   var tfoot = document.getElementById('TableFooter');
   var str = "";
-  if(data[0]["@id"].split("/")[2] == "entity_peoples"){
+  if(entity == "peoples"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
@@ -53,7 +53,7 @@ function createTable(data){
     str = "";
     api = "people";
     list = "Liste des personnes";
-  }else if(data[0]["@id"].split("/")[2] == "entity_institutions"){
+  }else if(entity == "institutions"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
@@ -71,7 +71,7 @@ function createTable(data){
     str = "";
     api = "institution";
     list = "Liste des institutions";
-  }else if(data[0]["@id"].split("/")[2] == "entity_shows"){
+  }else if(entity == "shows"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
@@ -89,7 +89,7 @@ function createTable(data){
     str = "";
     api = "show";
     list = "Liste des spectacles";
-  }else if(data[0]["@id"].split("/")[2] == "entity_tags"){
+  }else if(entity == "tags"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
@@ -105,7 +105,7 @@ function createTable(data){
     str = "";
     api = "tag";
     list = "Liste des étiquettes";
-  }else if(data[0]["@id"].split("/")[2] == "entity_performances"){
+  }else if(entity == "performances"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Id</th>"+
@@ -205,7 +205,7 @@ function createTable(data){
 }
 </script>
 
-<h2><i class="fas fa-users"></i>{list}</h2>
+<slot></slot>
 <div class="row m-3">
     <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
     <span class="not-allowed"><a class="btn text-warning mr-2" href="imp_exp"><i class="fas fa-file-import"></i> Import des données</a></span>
