@@ -3,13 +3,13 @@
 	let tab = "none";
 
 	function personnes() {
-		tab = "personnes";
+		tab = "peoples";
 	}
 	function institutions() {
 		tab = "institutions";
 	}
 	function spectacles() {
-		tab = "spectacles";
+		tab = "shows";
 	}
 	function tags() {
 		tab = "tags";
@@ -24,26 +24,26 @@
 	<button on:click={tags}><i class="fas fa-tags"></i> Tags </button>
 </div>
 
-{#if tab == "personnes"}
-	<Tableau>
+{#if tab == "peoples"}
+	<Tableau data="{tab}">
 		<h2><i class="fas fa-users"></i>Liste des personnes</h2>
 	</Tableau>
 {/if}
 
 {#if tab == "institutions"}
-	<Tableau>
+	<Tableau data="{tab}">
 		<h2><i class="fas fa-university"></i>Liste des institutions</h2>
 	</Tableau>
 {/if}
 
-{#if tab == "spectacles"}
-	<Tableau>
+{#if tab == "shows"}
+	<Tableau data="{tab}">
 		<h2><i class="fas fa-theater-masks"></i>Liste des spectacles</h2>
 	</Tableau>
 {/if}
 
 {#if tab == "tags"}
-	<Tableau>
+	<Tableau data="{tab}">
 		<h2><i class="fas fa-tags"></i>Liste des tags</h2>
 	</Tableau>
 {/if}
