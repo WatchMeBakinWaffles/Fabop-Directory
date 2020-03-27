@@ -24,7 +24,7 @@ class MailingController extends AbstractController
         $message->setTo($mails);
         $message->setBody(
             $this->renderView(
-                'mails/example.html.twig', ['message' => $mailText],
+                'mails/example.html.twig', ['subject' =>$object ,'message' => $mailText],
             ),
             'text/html'
         );
