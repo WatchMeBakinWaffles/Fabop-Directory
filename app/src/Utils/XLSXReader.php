@@ -90,7 +90,6 @@ class XLSXReader
                         $institut = $entityInstitutions;
                     }
                     $entityPerson->setInstitution($institut);
-                    var_dump($entityPerson);
                     $this->em->persist($entityPerson);
                     $this->em->flush();
                 }
