@@ -5,11 +5,11 @@ var node = document.getElementById("example_wrapper");
 if(node != null){
   node.remove();
 }
-let api = "none";
+let route = "none";
 let list;
 async function fetchAsync () {
   // await response of fetch call
-  let response = await fetch('http://localhost/api/entity_'+entity);
+  let response = await fetch('http://localhost/route/entity_'+entity);
   // only proceed once promise is resolved
   let res = await response.json();
   // only proceed once second promise is resolved
@@ -55,7 +55,7 @@ function createTable(res){
         "</tr>";
     tfoot.innerHTML += str;
     str = "";
-    api = "people";
+    route = "people";
     list = "Liste des personnes";
   }else if(entity == "institutions"){
     str = "<tr>"+
@@ -73,7 +73,7 @@ function createTable(res){
           "</tr>";
     tfoot.innerHTML += str;
     str = "";
-    api = "institution";
+    route = "institutions";
     list = "Liste des institutions";
   }else if(entity == "shows"){
     str = "<tr>"+
@@ -91,7 +91,7 @@ function createTable(res){
           "</tr>";
     tfoot.innerHTML += str;
     str = "";
-    api = "show";
+    route = "shows";
     list = "Liste des spectacles";
   }else if(entity == "tags"){
     str = "<tr>"+
@@ -107,7 +107,7 @@ function createTable(res){
           "</tr>";
     tfoot.innerHTML += str;
     str = "";
-    api = "tag";
+    route = "tags";
     list = "Liste des étiquettes";
   }else if(entity == "performances"){
     str = "<tr>"+
@@ -127,10 +127,10 @@ function createTable(res){
           "</tr>";
     tfoot.innerHTML += str;
     str = "";
-    api = "performance";
+    route = "performance";
     list = "Liste des performances";
   }
-  if(api =='people'){
+  if(route =='people'){
     res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                   "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
@@ -142,63 +142,63 @@ function createTable(res){
                   "<td>"+d.city+"</td>"+
                   "<td>"+d.addDate+"</td>"+
                   "<td>"+
-                      "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                      "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                      "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                      "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
                   "</td>"+
                 "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
-  }else if(api =='institution'){
+  }else if(route =='institutions'){
     res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
                 "<td>"+d.role+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
-  }else if(api =='show'){
+  }else if(route =='shows'){
     res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
                 "<td>"+d.year+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
-  }else if(api =='tag'){
+  }else if(route =='tags'){
     res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.name+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
-  }else if(api =='performance'){
+  }else if(route =='performance'){
     res.forEach(d =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+d.date+"</td>"+
                 "<td>"+d.shows+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+api+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+api+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
