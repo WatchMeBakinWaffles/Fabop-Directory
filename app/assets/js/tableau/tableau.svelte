@@ -1,6 +1,10 @@
 <script type="text/javascript">
 export let data;
 let entity = data;
+var node = document.getElementById("example_wrapper");
+if(node != null){
+  node.remove();
+}
 let api = "none";
 let list;
 async function fetchAsync () {
@@ -21,7 +25,6 @@ fetchAsync()
 
 function createTable(res){
   var tableau = document.getElementById('example');
-  console.log(tableau);
   var thead = document.getElementById('TableHeader');
   var tbody = document.getElementById('TableBody');
   var tfoot = document.getElementById('TableFooter');
