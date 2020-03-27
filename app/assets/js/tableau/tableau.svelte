@@ -9,7 +9,7 @@ let route = "none";
 let list;
 async function fetchAsync () {
   // await response of fetch call
-  let response = await fetch('http://localhost/route/entity_'+entity);
+  let response = await fetch('http://localhost/api/entity_'+entity);
   // only proceed once promise is resolved
   let res = await response.json();
   // only proceed once second promise is resolved
@@ -212,12 +212,19 @@ function createTable(res){
 <slot></slot>
 <div class="row m-3">
     <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/imp_exp"><i class="fas fa-file-import"></i> Import des données</a></span>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="/import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
 </div>
 <table id="example" class="table table-striped" style="width:100%">
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
   <tbody id="TableBody"></tbody>
   <tfoot class="bg-secondary text-white" id="TableFooter"></tfoot>
 </table>
+<hr>
+
+<style>
+hr{
+	border: 1px solid #951b81;
+}
+</style>
 
