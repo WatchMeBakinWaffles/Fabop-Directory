@@ -48,11 +48,10 @@
                 <th>Date d'ajout</th>
                 <td>{{ entity_person.addDate ? entity_person.addDate|localizeddate('none', 'none', 'fr', null,'d MMMM Y') : '' }}</td>
             </tr>
-            {{ dump(entity_person_data) }}
             {% for key,value in entity_person_data  %}
             <tr>
                 {% if key=='_id' %}
-                <th>sheet_{{ key }} </th>
+                <th>Identifiant champs dynamiques </th>
                 {% else %}
                     <th>{{ key }}</th>
                 {% endif %}
