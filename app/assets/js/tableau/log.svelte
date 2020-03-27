@@ -42,20 +42,30 @@ function createTable(res){
         "</tr>";
   tfoot.innerHTML += str;
   str="";
-  res.forEach(d =>
+  res.forEach(function(elem){
     str += "<tr role='row' class='odd'>"+
-              "<td>"+d.id+"</td>"+
-              "<td>"+d.date+"</td>"+
-              "<td>"+d.element+"</td>"+
-              "<td>"+d.typeAction+"</td>"+
-              "<td>"+d.comment+"</td>"+
-              "<td><a href='/manager/people/"+d.idUser+"'>"+d.idUser+"<i class='fas fa-users'></i></a></td>"+
-              "<td><a href='/manager/institutions/"+d.institution+"'>"+d.institution+"<i class='fas fa-university'></i></a></td>"+
-            "</tr>"
+              "<td>"+elem.id+"</td>"+
+              "<td>"+new Date(elem.date).toLocaleDateString('en-GB')+"</td>"+
+              "<td>"+elem.element+"</td>"+
+              "<td>"+elem.typeAction+"</td>"+
+              "<td>"+elem.comment+"</td>"
+    if (elem.idUser){
+      str += "<td><a href='/admin/user/"+elem.idUser+"'>"+elem.idUser+"<i class='fas fa-users'></i></a></td>"
+    }
+    else{
+      str += "<td>New user</td>"
+    }
+    if (elem.institution){
+      str += "<td><a href='/manager/institutions/"+elem.institution+"'>"+elem.institution+"<i class='fas fa-university'></i></a></td></tr>"
+    }
+    else{
+      str += "<td>New Institution</td></tr>"
+    }
+  }
   );
   tbody.innerHTML += str;
   str = "";
-  init_table();
+  table_init('#logs')
 }
 </script>
 
@@ -65,5 +75,3 @@ function createTable(res){
   <tbody id="TableBody"></tbody>
   <tfoot class="bg-secondary text-white" id="TableFooter"></tfoot>
 </table>
-
-

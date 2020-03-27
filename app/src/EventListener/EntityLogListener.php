@@ -1,7 +1,7 @@
 <?php
 
 namespace App\EventListener;
-     
+
 use App\Entity\EntityPeople;
 use App\Entity\EntityInstitutions;
 use App\Entity\EntityUser;
@@ -38,7 +38,7 @@ class EntityLogListener
         $this->log[] = $log;
     }
 
-    public function preUpdate(LifecycleEventArgs $args) 
+    public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
@@ -62,7 +62,7 @@ class EntityLogListener
                         'element' => 'Institution',
                         'type_action' => 'Modification',
                         'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
-                        'institution' => $entity->getInstitution()->getId()
+                        'institution' => $entity->getId()
                     ));
                 }
             }
@@ -82,46 +82,46 @@ class EntityLogListener
     }
 
 
-    public function prePersist(LifecycleEventArgs $args) 
+    public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
 
         if ($entity instanceof EntityPeople) {
-            
+
             $this->log(array(
                 'element' => 'Participant',
                 'type_action' => 'Ajout',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName().' '.$entity->getFirstname(),
                 'institution' => $entity->getInstitution()->getId()
-            ));                
-            
+            ));
+
         }
         elseif ($entity instanceof EntityInstitutions) {
-            
+
             $this->log(array(
                 'element' => 'Institution',
                 'type_action' => 'Ajout',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName(),
-                'institution' => $entity->getInstitution()->getId()
-            ));  
-                
-            
+                'institution' => $entity->getId()
+            ));
+
+
         }
         elseif ($entity instanceof EntityUser) {
-            
+
             $this->log(array(
                 'element' => 'Utilisateur',
                 'type_action' => 'Ajout',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
                 'institution' => $entity->getInstitution()->getId()
-            ));  
-                
-            
+            ));
+
+
         }
     }
 
-    public function preRemove(LifecycleEventArgs $args) 
+    public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
@@ -129,37 +129,37 @@ class EntityLogListener
         $date = new \DateTime('',new \DateTimeZone('Europe/Paris'));
 
         if ($entity instanceof EntityPeople) {
-            
+
             $this->log(array(
                 'element' => 'Participant',
                 'type_action' => 'Suppression',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getName().' '.$entity->getFirstname(),
                 'institution' => $entity->getInstitution()->getId()
-            ));  
-                
-            
+            ));
+
+
         }
         elseif ($entity instanceof EntityInstitutions) {
-            
+
             $this->log(array(
                 'element' => 'Institution',
                 'type_action' => 'Suppression',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getName(),
-                'institution' => $entity->getInstitution()->getId()
-            ));  
-                
-            
+                'institution' => $entity->getId()
+            ));
+
+
         }
         elseif ($entity instanceof EntityUser) {
-            
+
             $this->log(array(
                 'element' => 'Utilisateur',
                 'type_action' => 'Suppression',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getFirstName().' '.$entity->getLastName(),
                 'institution' => $entity->getInstitution()->getId()
-            ));  
-                
-            
+            ));
+
+
         }
     }
 

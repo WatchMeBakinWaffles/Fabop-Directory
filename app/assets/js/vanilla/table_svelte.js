@@ -1,8 +1,8 @@
-function table_init(){
+function table_init(id_table){
     if ($("table").length){
         $(document).ready(function() {
             const tableElementCount = $('table thead tr').get()[0].childElementCount;
-            $('.table').DataTable({
+            $(id_table).DataTable({
                 initComplete: function () {
                     this.api().columns().every( function ( index ) {
                         var column = this;
@@ -42,5 +42,44 @@ function table_init(){
                 }
             })
         });
+    }
+    // Select all function in index tables
+    $('#select-all').click(function(event) {
+        if(this.checked) {
+            // Iterate each checkbox
+            $(':checkbox').each(function() {
+                this.checked = true;
+            });
+        } else {
+            $(':checkbox').each(function() {
+                this.checked = false;
+            });
+        }
+    });
+    if (document.getElementById("exportClick")){
+      document.getElementById("exportClick").addEventListener("click", function () {
+          let checkboxs = document.getElementsByClassName("checkImport");
+          let liste_id = [];
+          for (const checkbox of checkboxs) {
+              if (checkbox.checked === true) {
+                  liste_id.push(checkbox.parentNode.id);
+              }
+          }
+          if (liste_id.length > 0) {
+              $.ajax({
+                  url: URL + '/manager/imp-exp/export_selectif',
+                  method: "POST",
+                  data: {
+                      ids: liste_id
+                  }
+              }).done(function () {
+                  window.location = URL + "/export_selectif.xlsx";
+              }).fail(function () {
+                  alert("Le serveur a rencontré des difficultés avec votre demande.");
+              });
+          } else {
+              alert("Vous n'avez rien séléctionné");
+          }
+      });
     }
 }

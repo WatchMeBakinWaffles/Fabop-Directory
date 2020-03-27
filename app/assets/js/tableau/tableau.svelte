@@ -34,6 +34,7 @@ function createTable(res){
             "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
             "<th>Prénom</th>"+
+            "<th>Email</th>"+
             "<th>Date de naissance</th>"+
             "<th>Abonnement à la newsletter</th>"+
             "<th>Code postal</th>"+
@@ -131,89 +132,91 @@ function createTable(res){
     list = "Liste des performances";
   }
   if(route =='people'){
-    res.forEach(d =>
+    res.forEach(elem =>
       str += "<tr role='row' class='odd'>"+
                   "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
-                  "<td>"+d.name+"</td>"+
-                  "<td>"+d.firstname+"</td>"+
-                  "<td>"+d.birthdate+"</td>"+
-                  "<td>"+d.newsletter+"</td>"+
-                  "<td>"+d.postalCode+"</td>"+
-                  "<td>"+d.city+"</td>"+
-                  "<td>"+d.addDate+"</td>"+
+                  "<td>"+elem.name+"</td>"+
+                  "<td>"+elem.firstname+"</td>"+
+                  "<td>"+elem.adresseMailing+"</td>"+
+                  "<td>"+new Date(elem.birthdate).toLocaleDateString('en-GB')+"</td>"+
+                  "<td>"+(elem.newsletter ? "Oui" : "Non")+"</td>"+
+                  "<td>"+elem.postalCode+"</td>"+
+                  "<td>"+elem.city+"</td>"+
+                  "<td>"+new Date(elem.addDate).toLocaleDateString('en-GB')+"</td>"+
                   "<td>"+
-                      "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                      "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                      "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
+                      "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                   "</td>"+
                 "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
   }else if(route =='institutions'){
-    res.forEach(d =>
+    res.forEach(elem =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
-                "<td>"+d.name+"</td>"+
-                "<td>"+d.role+"</td>"+
+                "<td>"+elem.name+"</td>"+
+                "<td>"+elem.role+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
   }else if(route =='shows'){
-    res.forEach(d =>
+    res.forEach(elem =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
-                "<td>"+d.name+"</td>"+
-                "<td>"+d.year+"</td>"+
+                "<td>"+elem.name+"</td>"+
+                "<td>"+elem.year+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
   }else if(route =='tags'){
-    res.forEach(d =>
+    res.forEach(elem =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
-                "<td>"+d.name+"</td>"+
+                "<td>"+elem.name+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
   }else if(route =='performance'){
-    res.forEach(d =>
+    res.forEach(elem =>
       str += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
-                "<td>"+d.date+"</td>"+
-                "<td>"+d.shows+"</td>"+
+                "<td>"+elem.date+"</td>"+
+                "<td>"+elem.shows+"</td>"+
                 "<td>"+
-                    "<a href='/manager/"+route+"/"+d.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+d.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
+                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
     tbody.innerHTML += str;
     str = "";
   }
-  table_init()
+  table_init('#example')
+  // Cette ligne au dessus est importante pour que le tableau s'init bien avec bs4 datatable.
 }
 </script>
 
 <slot></slot>
 <div class="row m-3">
     <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="/import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
 </div>
 <table id="example" class="table table-striped" style="width:100%">
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
@@ -227,4 +230,3 @@ hr{
 	border: 1px solid #951b81;
 }
 </style>
-
