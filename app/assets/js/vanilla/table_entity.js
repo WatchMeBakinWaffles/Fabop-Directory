@@ -1,4 +1,4 @@
-function table_init(){
+if (path!='/dashboard'){
     if ($("table").length){
         $(document).ready(function() {
             const tableElementCount = $('table thead tr').get()[0].childElementCount;

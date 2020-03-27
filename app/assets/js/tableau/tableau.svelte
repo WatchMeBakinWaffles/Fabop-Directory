@@ -212,8 +212,8 @@ function createTable(res){
 <slot></slot>
 <div class="row m-3">
     <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="imp_exp"><i class="fas fa-file-import"></i> Import des données</a></span>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/imp_exp"><i class="fas fa-file-import"></i> Import des données</a></span>
+    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
 </div>
 <table id="example" class="table table-striped" style="width:100%">
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
