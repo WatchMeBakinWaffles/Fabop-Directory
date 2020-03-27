@@ -83,7 +83,7 @@ class ImportExportController extends AbstractController
     {
         $fichier = basename($_FILES['import']['name']);
         $taille = filesize($_FILES['import']['tmp_name']);
-        $extensions = array('.xlsx');
+        $extensions = array('.xlsx','.xls', '.ods', '.csv');
         $extension = strrchr($_FILES['import']['name'], '.');
         //Début des vérifications de sécurité...
         if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau

@@ -21,9 +21,6 @@ class XLSXReader
     public function readAll(Request $request, String $filename)
     {
 
-        $entityPerson = new EntityPeople();
-        $entityInstitutions = new EntityInstitutions();
-
         $mongoman = new MongoManager();
 
         $reader = ReaderEntityFactory::createReaderFromFile($filename);
@@ -34,7 +31,8 @@ class XLSXReader
             foreach ($sheet->getRowIterator() as $rowNumber => $row) {
                 if ($rowNumber > 1) {
                     $cells = $row->getCells();
-                    
+                    $entityPerson = new EntityPeople();
+                    $entityInstitutions = new EntityInstitutions();
                     if (null != $request->request->get('person_data')){
                         $sheetId=$mongoman->insertSingle("Entity_person_sheet",$request->request->get('person_data'));
                     }else{
@@ -51,15 +49,18 @@ class XLSXReader
                     // BirthDate
                     $date = new \DateTime($cells[2]->getValue());
                     $entityPerson->setBirthdate($date);
-
+                    
+                    // postal_code
+                    $entityPerson->setPostalCode($cells[3]->getValue());
+                    
+                    // city
+                    $entityPerson->setCity($cells[4]->getValue());
+                    
                     // newsletter
                     $entityPerson->setNewsletter($cells[6]->getValue());
 
-                    // postal_code
-                    $entityPerson->setPostalCode($cells[3]->getValue());
-
-                    // city
-                    $entityPerson->setCity($cells[4]->getValue());
+                    // adresse_mailing
+                    $entityPerson->setAdresseMailing($cells[7]->getValue());
 
                     // add_date
                     $entityPerson->setAddDate(new \DateTime("now"));
@@ -89,6 +90,7 @@ class XLSXReader
                         $institut = $entityInstitutions;
                     }
                     $entityPerson->setInstitution($institut);
+                    var_dump($entityPerson);
                     $this->em->persist($entityPerson);
                     $this->em->flush();
                 }

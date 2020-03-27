@@ -30,7 +30,7 @@ class XLSXWriter
 
 
         // Création première ligne avec noms de colonnes
-        $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Institution", "Abonné à la newsletter"];
+        $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Institution", "Abonné à la newsletter", "Adresse mail"];
         $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
         $writer->addRow($firstRow);
 
@@ -42,7 +42,8 @@ class XLSXWriter
                          $person->getPostalcode(),
                          $person->getCity(),
                          $person->getInstitution()->getName(),
-                         $person->getNewsletter()];
+                         $person->getNewsletter(),
+                         $person->getAdresseMailing()];
             $row = WriterEntityFactory::createRowFromArray($rowcells);
             $writer->addRow($row);
         }
@@ -58,7 +59,7 @@ class XLSXWriter
         $writer->openToFile("export_selectif.xlsx");
 
         // Création première ligne avec noms de colonnes
-        $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Institution", "Abonné à la newsletter"];
+        $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Institution", "Abonné à la newsletter", "Adresse mail"];
         $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
         $writer->addRow($firstRow);
 
@@ -70,7 +71,8 @@ class XLSXWriter
                          $person->getPostalcode(),
                          $person->getCity(),
                          $person->getInstitution()->getName(),
-                         $person->getNewsletter()];
+                         $person->getNewsletter(),
+                         $person->getAdresseMailing()];
             $row = WriterEntityFactory::createRowFromArray($rowcells);
             $writer->addRow($row);
         }
