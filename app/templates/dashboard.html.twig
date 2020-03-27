@@ -2,8 +2,15 @@
 
 {% block title %}Dashboard Opera{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('static/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('static/js/popper.min.js') }}"></script>
+    <script src="{{ asset('static/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('static/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('static/js/scripts.js') }}"></script>
+    <script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
 {% block content %}
-<h2><i class="fas fa-tachometer-alt"></i> Tableau de bord</h2>
-<div class="row font-staatliches text-light">
-</div>
 {% endblock %}

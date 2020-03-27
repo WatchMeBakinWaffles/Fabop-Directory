@@ -1,31 +1,90 @@
 <script>
-	export let name;
-	name="Matthieu";
+	import Tableau from './tableau/tableau.svelte';
+	let tab = "none";
+
+	function personnes() {
+		tab = "peoples";
+	}
+	function institutions() {
+		tab = "institutions";
+	}
+	function spectacles() {
+		tab = "shows";
+	}
+	function tags() {
+		tab = "tags";
+	}
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<h2><i class="fas fa-tachometer-alt"></i> Tableau de bord</h2>
+<div class="container">
+	<button class="myButton" on:click={personnes}><i class="fas fa-users"></i> Personnes </button>
+	<button class="myButton" on:click={institutions}><i class="fas fa-university"></i> Institutions </button>
+	<button class="myButton" on:click={spectacles}><i class="fas fa-theater-masks"></i> Spectacles </button>
+	<button class="myButton" on:click={tags}><i class="fas fa-tags"></i> Tags </button>
+</div>
+<hr>
+
+
+{#if tab == "peoples"}
+	<Tableau data="{tab}">
+		<h2><i class="fas fa-users"></i>Liste des personnes</h2>
+	</Tableau>
+{/if}
+
+{#if tab == "institutions"}
+	<Tableau data="{tab}">
+		<h2><i class="fas fa-university"></i>Liste des institutions</h2>
+	</Tableau>
+{/if}
+
+{#if tab == "shows"}
+	<Tableau data="{tab}">
+		<h2><i class="fas fa-theater-masks"></i>Liste des spectacles</h2>
+	</Tableau>
+{/if}
+
+{#if tab == "tags"}
+	<Tableau data="{tab}">
+		<h2><i class="fas fa-tags"></i>Liste des tags</h2>
+	</Tableau>
+{/if}
+
+<h2>Logs</h2>
+<p>-----</p>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+.container{
+	display: flex;
+	justify-content: space-evenly;
+}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #951b81;
+	background:linear-gradient(to bottom, #951b81 5%, #951b81 100%);
+	background-color:#951b81;
+	border-radius:6px;
+	border:1px solid #951b81;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:22px;
+	padding: 5px;
+	font-weight:bold;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #9b14b3;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #951b81 5%, #951b81 100%);
+	background-color:#951b81;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+hr{
+	border: 1px solid #951b81;
+}
 </style>
