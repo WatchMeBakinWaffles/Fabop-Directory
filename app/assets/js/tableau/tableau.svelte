@@ -24,11 +24,12 @@ fetchAsync()
   .catch(reason => console.log(reason.message))
 
 function createTable(res){
-  var tableau = document.getElementById('example');
-  var thead = document.getElementById('TableHeader');
-  var tbody = document.getElementById('TableBody');
-  var tfoot = document.getElementById('TableFooter');
-  var str = "";
+  let buttons = document.getElementById('buttons_space')
+  let tableau = document.getElementById('example');
+  let thead = document.getElementById('TableHeader');
+  let tbody = document.getElementById('TableBody');
+  let tfoot = document.getElementById('TableFooter');
+  let str = "";
   if(entity == "peoples"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -58,6 +59,9 @@ function createTable(res){
     str = "";
     route = "people";
     list = "Liste des personnes";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'+
+                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>'+
+                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>'
   }else if(entity == "institutions"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -76,6 +80,7 @@ function createTable(res){
     str = "";
     route = "institutions";
     list = "Liste des institutions";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
   }else if(entity == "shows"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -94,6 +99,7 @@ function createTable(res){
     str = "";
     route = "shows";
     list = "Liste des spectacles";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
   }else if(entity == "tags"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -110,6 +116,7 @@ function createTable(res){
     str = "";
     route = "tags";
     list = "Liste des étiquettes";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
   }else if(entity == "performances"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -130,6 +137,7 @@ function createTable(res){
     str = "";
     route = "performance";
     list = "Liste des performances";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
   }
   if(route =='people'){
     res.forEach(elem =>
@@ -213,10 +221,7 @@ function createTable(res){
 </script>
 
 <slot></slot>
-<div class="row m-3">
-    <a class="btn btn-primary mr-2" href="/manager/people/new"><i class="fas fa-plus"></i> Ajouter</a>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>
-    <span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>
+<div id="buttons_space" class="row m-3">
 </div>
 <table id="example" class="table table-striped" style="width:100%">
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
