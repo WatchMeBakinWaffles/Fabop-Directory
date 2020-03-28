@@ -17,8 +17,10 @@
 </script>
 <h2><i class="fas fa-tachometer-alt"></i> Tableau de bord</h2>
 <div class="container" id="buttons_svelte">
+	<!-- TODO::Il faut mieux gérer les droits pour tout afficher,
+	un user non admin ne peut pas voir institutions par exemple,certains buttons ne doivent pas s'afficher selon role -->
 	<button class="myButton" on:click="{personnes}"><i class="fas fa-users"></i> Personnes </button>
-	<button class="myButton" on:click="{institutions}"><i class="fas fa-university"></i> Institutions </button>
+	<!--<button class="myButton" on:click="{institutions}"><i class="fas fa-university"></i> Institutions </button>-->
 	<button class="myButton" on:click="{spectacles}"><i class="fas fa-theater-masks"></i> Spectacles </button>
 	<button class="myButton" on:click="{tags}"><i class="fas fa-tags"></i> Tags </button>
 </div>
