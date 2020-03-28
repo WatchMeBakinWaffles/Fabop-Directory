@@ -10,7 +10,14 @@
     <script src="{{ asset('static/js/scripts.js') }}"></script>
     <script src="{{ asset('static/js/bootstrap.min.js') }}"></script>
     {{ encore_entry_script_tags('app') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ encore_entry_script_tags('admin_svelte') }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
+    <div id="component_app"></div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div id="component_log"></div>
+    {% endif %}
 {% endblock %}

@@ -59,7 +59,7 @@ function createTable(res){
 }
 </script>
 
-<slot></slot>
+<h2><i class="fas fa-clipboard-list"></i> Logs</h2>
 <table id="logs" class="table table-striped" style="width:100%">
   <thead class="bg-secondary text-white" id="TableHeader"></thead>
   <tbody id="TableBody"></tbody>
