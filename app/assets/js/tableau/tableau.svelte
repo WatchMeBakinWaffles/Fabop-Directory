@@ -1,10 +1,6 @@
 <script type="text/javascript">
 export let data;
 let entity = data;
-var node = document.getElementById("example_wrapper");
-if(node != null){
-  node.remove();
-}
 let route = "none";
 let list;
 async function fetchAsync () {
@@ -24,6 +20,10 @@ fetchAsync()
   .catch(reason => console.log(reason.message))
 
 function createTable(res){
+  var node = document.getElementById("example_wrapper");
+  if(node != null){
+    node.remove();
+  }
   let buttons = document.getElementById('buttons_space')
   let tableau = document.getElementById('example');
   let thead = document.getElementById('TableHeader');
@@ -70,10 +70,10 @@ function createTable(res){
                   "</td>"+
                 "</tr>"
     );
+
   }
   else if(entity == "institutions"){
     str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
             "<th>Rôle</th>"+
             "<th><i class='fas fa-cog'></i></th>"+
@@ -85,7 +85,6 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                "<td id=''><input type='checkbox' name='selected[]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.role+"</td>"+
                 "<td>"+
@@ -94,10 +93,10 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
+
   }
   else if(entity == "shows"){
     str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
             "<th>Année</th>"+
             "<th><i class='fas fa-cog'></i></th>"+
@@ -109,7 +108,6 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                "<td id=''><input type='checkbox' name='selected[]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.year+"</td>"+
                 "<td>"+
@@ -118,10 +116,10 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
+
   }
   else if(entity == "tags"){
     str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Nom</th>"+
             "<th><i class='fas fa-cog'></i></th>"+
           "</tr>";
@@ -132,7 +130,6 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+
                     "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
@@ -140,10 +137,10 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
+
   }
   else if(entity == "performances"){
     str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
             "<th>Id</th>"+
             "<th>Date</th>"+
             "<th>Spectacle</th>"+
@@ -156,7 +153,6 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML  += "<tr role='row' class='odd'>"+
-                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.date+"</td>"+
                 "<td>"+elem.shows+"</td>"+
                 "<td>"+
@@ -165,9 +161,10 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
+
   }
-  table_init('#example')
   // Cette ligne au dessus est importante pour que le tableau s'init bien avec bs4 datatable.
+  table_init('#example')
 }
 </script>
 

@@ -29,18 +29,8 @@ function createTable(res){
           "<th>ID de l'utilisateur</th>"+
           "<th>ID de l'institution</th>"+
         "</tr>";
-  thead.innerHTML += str;
-  str = "";
-  str = "<tr>"+
-          "<th>ID</th>"+
-          "<th>Date</th>"+
-          "<th>Element</th>"+
-          "<th>Type d'action</th>"+
-          "<th>Commentaire</th>"+
-          "<th>ID de l'utilisateur</th>"+
-          "<th>ID de l'institution</th>"+
-        "</tr>";
-  tfoot.innerHTML += str;
+  thead.innerHTML = str;
+  tfoot.innerHTML = str;
   str="";
   res.forEach(function(elem){
     str += "<tr role='row' class='odd'>"+
@@ -63,7 +53,7 @@ function createTable(res){
     }
   }
   );
-  tbody.innerHTML += str;
+  tbody.innerHTML = str;
   str = "";
   table_init('#logs')
 }

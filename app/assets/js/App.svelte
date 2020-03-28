@@ -52,8 +52,7 @@
 {/if}
 
 <h2><i class="fas fa-clipboard-list"></i> Logs</h2>
-<Logs data="{tab}">
-</Logs>
+<Logs/>
 
 <style>
 .container{
