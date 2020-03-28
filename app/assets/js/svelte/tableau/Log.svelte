@@ -40,7 +40,7 @@ function createTable(res){
               "<td>"+elem.typeAction+"</td>"+
               "<td>"+elem.comment+"</td>"
     if (elem.idUser){
-      str += "<td><a href='/admin/user/"+elem.idUser+"'>"+elem.idUser+"<i class='fas fa-users'></i></a></td>"
+      str += "<td><a href='/admin/users/"+elem.idUser+"'>"+elem.idUser+"<i class='fas fa-users'></i></a></td>"
     }
     else{
       str += "<td>New user</td>"
