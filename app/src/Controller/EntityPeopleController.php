@@ -30,7 +30,7 @@ class EntityPeopleController extends AbstractController
         if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
             return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
         else{
-            
+
             $institution_id = $this->getUser()->getInstitution();
 
             if(isset($institution_id))
@@ -53,11 +53,13 @@ class EntityPeopleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            // Mise en bdd Mongo de l fiche doc --> return IdMongo
-            if (null != $request->request->get('person_data')){
-                $sheetId=$mongoman->insertSingle("Entity_person_sheet",$request->request->get('person_data'));
-            }else{
+            foreach($request->request->get("person_data") as $elem){
+                $data[$elem['label']] = $elem['value'];
+            }
+            if (null != $data){
+                $sheetId=$mongoman->insertSingle("Entity_person_sheet",$data);
+            }
+            else{
                 $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
             }
 
@@ -82,9 +84,11 @@ class EntityPeopleController extends AbstractController
      */
     public function show(EntityPeople $entityPerson, TagsAffectRepository $tagsAffectRepository): Response
     {
+        $mongoman = new MongoManager();
         return $this->render('entity_people/show.html.twig', [
             'entity_person' => $entityPerson,
             'tags_affects' => $tagsAffectRepository->findAll(),
+            'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
         ]);
     }
 
@@ -101,7 +105,7 @@ class EntityPeopleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if (null != $request->request->get('person_data')){
                 $dataId=$entityPerson->getSheetId();
-                foreach( $request->request->get('person_data') as $key->$value){
+                foreach( $request->request->get('person_data') as $key=>$value){
                     if ($value!=''){
                         $mongoman->updateSingleValueById("Entity_person_sheet",$dataId,$key,$value);
                     }else{
