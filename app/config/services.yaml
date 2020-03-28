@@ -33,15 +33,20 @@ services:
     sensio_framework_extra.view.listener:
         alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
 
+    'App\Doctrine\CurrentUserExtension':
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }
+            - { name: api_platform.doctrine.orm.query_extension.item }
+
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
-    
+
     entity.log_listener:
         class: App\EventListener\EntityLogListener
         arguments:
-            - '@security.token_storage' 
+            - '@security.token_storage'
         tags:
             - { name: 'doctrine.event_listener', event: 'preUpdate' }
             - { name: 'doctrine.event_listener', event: 'prePersist' }
