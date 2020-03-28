@@ -55,7 +55,7 @@ function createTable(res){
 
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                  "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                  "<td id='"+elem.id+"'><input type='checkbox' name='selected["+elem.id+"]' class='checkImport'></td> <!--VALUE !-->"+
                   "<td>"+elem.name+"</td>"+
                   "<td>"+elem.firstname+"</td>"+
                   "<td>"+elem.adresseMailing+"</td>"+
@@ -85,7 +85,7 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td id=''><input type='checkbox' name='selected[]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.role+"</td>"+
                 "<td>"+
@@ -109,7 +109,7 @@ function createTable(res){
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
-                "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
+                "<td id=''><input type='checkbox' name='selected[]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.year+"</td>"+
                 "<td>"+
