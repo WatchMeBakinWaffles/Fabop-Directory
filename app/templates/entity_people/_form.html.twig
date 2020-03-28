@@ -4,7 +4,7 @@
 <div class="container">
     {{ form_widget(form, { 'attr': {'class': 'input'} }) }}
     <div id="person_data">
-         {%  if entity_person_data %}
+         {%  if entity_person_data is defined %}
              {% for key,value in entity_person_data  %}
                  {% if key != '_id' %}
                  <label>{{ key }}</label><input name="person_data[{{ key }}]" class="form-control" value="{{ value }}">
