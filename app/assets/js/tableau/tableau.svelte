@@ -30,6 +30,8 @@ function createTable(res){
   let tbody = document.getElementById('TableBody');
   let tfoot = document.getElementById('TableFooter');
   let str = "";
+
+  // GESTION DES TABLEAUX SELON ENTITY //
   if(entity == "peoples"){
     str = "<tr>"+
             "<th><input type='checkbox' id='select-all'></th>"+
@@ -43,105 +45,16 @@ function createTable(res){
             "<th>Date d'ajout</th>"+
             "<th><i class='fas fa-cog'></i></th>"+
           "</tr>";
-    thead.innerHTML += str;
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th>Prénom</th>"+
-            "<th>Date de naissance</th>"+
-            "<th>Abonnement à la newsletter</th>"+
-            "<th>Code postal</th>"+
-            "<th>Ville</th>"+
-            "<th>Date d'ajout</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-        "</tr>";
-    tfoot.innerHTML += str;
-    str = "";
+    thead.innerHTML = str;
+    tfoot.innerHTML = str;
     route = "people";
     list = "Liste des personnes";
     buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'+
                   '<span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>'+
-                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>'
-  }else if(entity == "institutions"){
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th>Rôle</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    thead.innerHTML += str;
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th>Rôle</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    tfoot.innerHTML += str;
-    str = "";
-    route = "institutions";
-    list = "Liste des institutions";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
-  }else if(entity == "shows"){
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th>Année</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    thead.innerHTML += str;
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th>Année</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    tfoot.innerHTML += str;
-    str = "";
-    route = "shows";
-    list = "Liste des spectacles";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
-  }else if(entity == "tags"){
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    thead.innerHTML += str;
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Nom</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    tfoot.innerHTML += str;
-    str = "";
-    route = "tags";
-    list = "Liste des étiquettes";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
-  }else if(entity == "performances"){
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Id</th>"+
-            "<th>Date</th>"+
-            "<th>Spectacle</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    thead.innerHTML += str;
-    str = "<tr>"+
-            "<th><input type='checkbox' id='select-all'></th>"+
-            "<th>Id</th>"+
-            "<th>Date</th>"+
-            "<th>Spectacle</th>"+
-            "<th><i class='fas fa-cog'></i></th>"+
-          "</tr>";
-    tfoot.innerHTML += str;
-    str = "";
-    route = "performance";
-    list = "Liste des performances";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
-  }
-  if(route =='people'){
+                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>';
+
     res.forEach(elem =>
-      str += "<tr role='row' class='odd'>"+
+      tbody.innerHTML += "<tr role='row' class='odd'>"+
                   "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                   "<td>"+elem.name+"</td>"+
                   "<td>"+elem.firstname+"</td>"+
@@ -157,11 +70,21 @@ function createTable(res){
                   "</td>"+
                 "</tr>"
     );
-    tbody.innerHTML += str;
-    str = "";
-  }else if(route =='institutions'){
+  }
+  else if(entity == "institutions"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Rôle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML = str;
+    tfoot.innerHTML = str;
+    route = "institutions";
+    list = "Liste des institutions";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
-      str += "<tr role='row' class='odd'>"+
+      tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.role+"</td>"+
@@ -171,11 +94,21 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
-    tbody.innerHTML += str;
-    str = "";
-  }else if(route =='shows'){
+  }
+  else if(entity == "shows"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th>Année</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML = str;
+    tfoot.innerHTML = str;
+    route = "shows";
+    list = "Liste des spectacles";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
-      str += "<tr role='row' class='odd'>"+
+      tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.year+"</td>"+
@@ -185,11 +118,20 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
-    tbody.innerHTML += str;
-    str = "";
-  }else if(route =='tags'){
+  }
+  else if(entity == "tags"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Nom</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML = str;
+    tfoot.innerHTML = str;
+    route = "tags";
+    list = "Liste des étiquettes";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
-      str += "<tr role='row' class='odd'>"+
+      tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+
@@ -198,11 +140,22 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
-    tbody.innerHTML += str;
-    str = "";
-  }else if(route =='performance'){
+  }
+  else if(entity == "performances"){
+    str = "<tr>"+
+            "<th><input type='checkbox' id='select-all'></th>"+
+            "<th>Id</th>"+
+            "<th>Date</th>"+
+            "<th>Spectacle</th>"+
+            "<th><i class='fas fa-cog'></i></th>"+
+          "</tr>";
+    thead.innerHTML = str;
+    tfoot.innerHTML = str;
+    route = "performance";
+    list = "Liste des performances";
+    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
-      str += "<tr role='row' class='odd'>"+
+      tbody.innerHTML  += "<tr role='row' class='odd'>"+
                 "<td id='1'><input type='checkbox' name='selected[1]' class='checkImport'></td> <!--VALUE !-->"+
                 "<td>"+elem.date+"</td>"+
                 "<td>"+elem.shows+"</td>"+
@@ -212,8 +165,6 @@ function createTable(res){
                 "</td>"+
               "</tr>"
     );
-    tbody.innerHTML += str;
-    str = "";
   }
   table_init('#example')
   // Cette ligne au dessus est importante pour que le tableau s'init bien avec bs4 datatable.
