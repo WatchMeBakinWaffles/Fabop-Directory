@@ -49,9 +49,9 @@ function createTable(res){
     tfoot.innerHTML = str;
     route = "people";
     list = "Liste des personnes";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'+
-                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>'+
-                  '<span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>';
+    buttons.innerHTML = '<span class="not-allowed"><a class="btn text-warning mr-2" href="#" id="exportClick"><i class="fas fa-file-export"></i> Export des données</a></span>';
+                  //'<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'+
+                  //'<span class="not-allowed"><a class="btn text-warning mr-2" href="manager/import_export"><i class="fas fa-file-import"></i> Import des données</a></span>'+
 
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
@@ -66,7 +66,7 @@ function createTable(res){
                   "<td>"+new Date(elem.addDate).toLocaleDateString('en-GB')+"</td>"+
                   "<td>"+
                       "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
-                      "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
+                      //"<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                   "</td>"+
                 "</tr>"
     );
@@ -82,14 +82,14 @@ function createTable(res){
     tfoot.innerHTML = str;
     route = "institutions";
     list = "Liste des institutions";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
+    buttons.innerHTML = //'<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.role+"</td>"+
                 "<td>"+
                     "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    //"<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
@@ -105,14 +105,14 @@ function createTable(res){
     tfoot.innerHTML = str;
     route = "shows";
     list = "Liste des spectacles";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
+    //buttons.innerHTML = '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+elem.year+"</td>"+
                 "<td>"+
                     "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    //"<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
@@ -127,13 +127,13 @@ function createTable(res){
     tfoot.innerHTML = str;
     route = "tags";
     list = "Liste des étiquettes";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
+    //buttons.innerHTML = '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML += "<tr role='row' class='odd'>"+
                 "<td>"+elem.name+"</td>"+
                 "<td>"+
                     "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    //"<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
@@ -150,14 +150,14 @@ function createTable(res){
     tfoot.innerHTML = str;
     route = "performance";
     list = "Liste des performances";
-    buttons.innerHTML =     '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
+    //buttons.innerHTML = '<a class="btn btn-primary mr-2" href="/manager/'+route+'/new"><i class="fas fa-plus"></i> Ajouter</a>'
     res.forEach(elem =>
       tbody.innerHTML  += "<tr role='row' class='odd'>"+
                 "<td>"+elem.date+"</td>"+
                 "<td>"+elem.shows+"</td>"+
                 "<td>"+
                     "<a href='/manager/"+route+"/"+elem.id+"'><i class='fas fa-eye'></i></a>"+
-                    "<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
+                    //"<a href='/manager/"+route+"/"+elem.id+"/edit'><i class='far fa-edit'></i></a>"+
                 "</td>"+
               "</tr>"
     );
