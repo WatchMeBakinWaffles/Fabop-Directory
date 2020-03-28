@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EntityPeople;
+use App\Entity\Log;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityPeopleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -95,6 +96,7 @@ class EntityPeopleController extends AbstractController
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);
         $mongoman = new MongoManager();
+        $em = $this->getDoctrine()->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (null != $request->request->get('person_data')){
@@ -107,8 +109,7 @@ class EntityPeopleController extends AbstractController
                     }
                 }
             }
-
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
         }
@@ -129,6 +130,7 @@ class EntityPeopleController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $mongoman = new MongoManager();
             $mongoman->deleteSingleById("Entity_person_sheet",$entityPerson->getSheetId());
+
             $em->remove($entityPerson);
             $em->flush();
         }

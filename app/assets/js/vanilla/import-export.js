@@ -26,7 +26,7 @@ if (path == "/manager/people/"){
                 alert("Le serveur a rencontré des difficultés avec votre demande.");
             });
         } else {
-            alert("Vous n'avez rien séléctionné");
+            alert("Vous n'avez rien sélectionné");
         }
     });
 }

@@ -6,7 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../css/app.css';
+import './css/app.css';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -14,5 +14,5 @@ import '../css/app.css';
 import App from './App.svelte';
 
 const app = new App({
-    target: document.body,
+    target: document.getElementById("component_app"),
 });

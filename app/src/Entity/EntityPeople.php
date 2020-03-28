@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Serializer\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,11 +14,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ApiResource(
  *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      collectionOperations={
- *          "get",
+ *          "get"={"object.getId() == user.getInstitution()"},
  *          "post"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"},
  *      },
  *      itemOperations={
- *          "get",
+ *          "get"={"object.getId() == user.getInstitution()"},
  *          "put"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"},
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_CONTRIBUTEUR') && (object.getInstitution() == user.getInstitution()) )"}
  *      }
@@ -79,6 +81,7 @@ class EntityPeople
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\EntityInstitutions", inversedBy="entityPeople")
      * @ORM\JoinColumn(nullable=false)
+     * @var institution
      */
     private $institution;
 
