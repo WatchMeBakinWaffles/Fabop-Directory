@@ -29,25 +29,25 @@
 
 {#if tab == "peoples"}
 	<Tableau data="{tab}">
-		<h2><i class="fas fa-users"></i>Liste des personnes</h2>
+		<h2><i class="fas fa-users"></i> Liste des personnes</h2>
 	</Tableau>
 {/if}
 
 {#if tab == "institutions"}
 	<Tableau data="{tab}">
-		<h2><i class="fas fa-university"></i>Liste des institutions</h2>
+		<h2><i class="fas fa-university"></i> Liste des institutions</h2>
 	</Tableau>
 {/if}
 
 {#if tab == "shows"}
 	<Tableau data="{tab}">
-		<h2><i class="fas fa-theater-masks"></i>Liste des spectacles</h2>
+		<h2><i class="fas fa-theater-masks"></i> Liste des spectacles</h2>
 	</Tableau>
 {/if}
 
 {#if tab == "tags"}
 	<Tableau data="{tab}">
-		<h2><i class="fas fa-tags"></i>Liste des tags</h2>
+		<h2><i class="fas fa-tags"></i> Liste des tags</h2>
 	</Tableau>
 {/if}
 
