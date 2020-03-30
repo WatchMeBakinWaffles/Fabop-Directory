@@ -37,18 +37,15 @@ class EntityPeopleType extends AbstractType
                                     'attr' => array(
                                         'class' => 'cm-input'
                                     )))
+            ->add('institution', null,array('label' => 'Institution',
+                                            'attr' => array(
+                                                'class' => 'cm-input'
+                                            )))
             ->add('adresseMailing', null,array('label' => 'Mail',
                 'attr' => array(
                     'class' => 'cm-input'
                 )))
         ;
-        if(){
-            ->add('institution', null,array('label' => 'Institution',
-                                            'attr' => array(
-                                                'class' => 'cm-input'
-                                            )))
-            ;
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

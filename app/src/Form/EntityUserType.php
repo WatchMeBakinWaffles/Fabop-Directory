@@ -32,9 +32,11 @@ class EntityUserType extends AbstractType
             ->add('password', PasswordType::class)
             ->add('firstName')
             ->add('lastName')
-            ->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')))
             ->add('ApiToken')
         ;
+        if($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')));
+        }
 
     }
 
