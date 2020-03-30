@@ -21,9 +21,9 @@
 
     <a class="btn btn-light m-1" href="{{ path('entity_tags_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
 
+    {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
     <a class="btn btn-success m-1" href="{{ path('entity_tags_edit', {'id': entity_tag.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
 
-    {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
         {{ include('entity_tags/_delete_form.html.twig') }}
     {% endif %}
 {% endblock %}
