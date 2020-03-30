@@ -53,20 +53,22 @@ class EntityPeopleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            foreach($request->request->get("person_data") as $elem){
-                $data[$elem['label']] = $elem['value'];
+            if($request->request->get("person_data") !== null){
+                foreach($request->request->get("person_data") as $elem){
+                    $data[$elem['label']] = $elem['value'];
+                }  
             }
-            if (null != $data){
+            if (isset($data)){
                 $sheetId=$mongoman->insertSingle("Entity_person_sheet",$data);
             }
             else{
                 $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
             }
-
             // Mise en bdd MySQL de l'ID de fiche de données
             $entityPerson->setSheetId($sheetId);
             $entityPerson->setAddDate(new \DateTime("now"));
-
+            if(!$this->isGranted('ROLE_ADMIN'))
+                $entityPerson->setInstitution($this->getUser()->getInstitution());
             $em->persist($entityPerson);
             $em->flush();
 
