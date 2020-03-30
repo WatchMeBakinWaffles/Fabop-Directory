@@ -1,11 +1,5 @@
 "use strict"
 
-$(document).on('click', '#mailingBtn', function(){
-    for ( let mail in document.querySelectorAll('mailingSelection') ) {
-        console.log(mail);
-    }
-})
-
 let mails = [];
 $('.checkImport').bind('click', function() {
     if($(this).is(":checked")) {
@@ -17,18 +11,24 @@ $('.checkImport').bind('click', function() {
 
 $(document).on('click', '#sendMailBtn', function(e){
 
-    e.preventDefault();
-    $.ajax({
-        url:URL+'/mail',
-        method: "POST",
-        data: { message: $('#message').val(),
-                subject: $('#subject').val(),
-                mailList: mails},
-    }).done(function(data, status, xhr){
-        if(status == "success") {
-            $('#modal-mail').modal("hide");
-            alert("Le mail a bien été envoyé");
-        }
-        else alert("Le mail a rencontré des difficultés pour s'envoyer.");
-    });
+    if ( mails.length != 0 ) {
+        console.log(mails);
+        e.preventDefault();
+        $.ajax({
+            url:URL+'/mail',
+            method: "POST",
+            data: { message: $('#message').val(),
+                    subject: $('#subject').val(),
+                    mailList: mails},
+        }).done(function(data, status, xhr){
+            if(status == "success") {
+                $('#modal-mail').modal("hide");
+                alert("Le mail a bien été envoyé");
+            }
+            else alert("Le mail a rencontré des difficultés pour s'envoyer.");
+        });
+    } else {
+        $('#modal-mail').modal("hide");
+        alert('Veuillez choisir un ou plusieurs destinnataires.');
+    }
 })
