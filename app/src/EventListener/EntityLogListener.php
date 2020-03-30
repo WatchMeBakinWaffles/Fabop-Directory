@@ -46,12 +46,14 @@ class EntityLogListener
         if ($entity instanceof EntityPeople) {
             foreach ($this->fields_people as $field) {
                 if ( $args->hasChangedField($field)){
-                    $this->log(array(
-                        'element' => 'Participant',
-                        'type_action' => 'Modification',
-                        'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
-                        'institution' => $entity->getInstitution()->getId()
-                    ));
+                    if($args->getOldValue($field) != $args->getNewValue($field)){
+                        $this->log(array(
+                            'element' => 'Participant',
+                            'type_action' => 'Modification',
+                            'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
+                            'institution' => $entity->getInstitution()->getId()
+                        ));
+                    }
                 }
             }
         }
