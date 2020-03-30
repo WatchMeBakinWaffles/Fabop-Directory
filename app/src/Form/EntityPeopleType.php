@@ -7,9 +7,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Security\Core\Security;
 
 class EntityPeopleType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -37,15 +44,17 @@ class EntityPeopleType extends AbstractType
                                     'attr' => array(
                                         'class' => 'cm-input'
                                     )))
-            ->add('institution', null,array('label' => 'Institution',
-                                            'attr' => array(
-                                                'class' => 'cm-input'
-                                            )))
             ->add('adresseMailing', null,array('label' => 'Mail',
                 'attr' => array(
                     'class' => 'cm-input'
                 )))
         ;
+        if($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('institution', null,array('label' => 'Institution',
+                'attr' => array(
+                    'class' => 'cm-input'
+                )));
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
