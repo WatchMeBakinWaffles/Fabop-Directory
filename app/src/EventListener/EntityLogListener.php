@@ -74,7 +74,7 @@ class EntityLogListener
                         'element' => 'Utilisateur',
                         'type_action' => 'Modification',
                         'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
-                        'institution' => $entity->getInstitution()->getId()
+                        'institution' => $entity->getInstitution()
                     ));
                 }
             }
@@ -114,7 +114,7 @@ class EntityLogListener
                 'element' => 'Utilisateur',
                 'type_action' => 'Ajout',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
-                'institution' => $entity->getInstitution()->getId()
+                'institution' => $entity->getInstitution()
             ));
 
 
@@ -156,7 +156,7 @@ class EntityLogListener
                 'element' => 'Utilisateur',
                 'type_action' => 'Suppression',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getFirstName().' '.$entity->getLastName(),
-                'institution' => $entity->getInstitution()->getId()
+                'institution' => $entity->getInstitution()
             ));
 
 
