@@ -85,7 +85,6 @@ class XLSXReader
                             }else{
                                 $sheetID=$mongoman->insertSingle("Entity_institution_sheet",[]);
                             }
-                            $i++;
                             $entityInstitutions->setSheetId($sheetID);
                             $this->em->persist($entityInstitutions);
                             $institut = $entityInstitutions;
@@ -95,6 +94,7 @@ class XLSXReader
                         $institut = $this->user->getInstitution();
                         $entityPerson->setInstitution($institut);
                     }
+                    $i++;
                     if ((sizeof($cells))>$i){
                         for($i;sizeof($cells)>$i;$i++){
                             $data[$title[$i]] = $cells[$i]->getValue();
