@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityPeople;
 use App\Entity\Log;
 use App\Form\EntityPeopleType;
+use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,9 @@ class EntityPeopleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getDoctrine()->getManager()->getRepository(\App\Entity\EntityInstitutions::class)->countAll()<1){
+            return $this->redirectToRoute('entity_institutions_new');
+        }
         $entityPerson = new EntityPeople();
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);
@@ -53,20 +57,22 @@ class EntityPeopleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            foreach($request->request->get("person_data") as $elem){
-                $data[$elem['label']] = $elem['value'];
+            if($request->request->get("person_data") !== null){
+                foreach($request->request->get("person_data") as $elem){
+                    $data[$elem['label']] = $elem['value'];
+                }  
             }
-            if (null != $data){
+            if (isset($data)){
                 $sheetId=$mongoman->insertSingle("Entity_person_sheet",$data);
             }
             else{
                 $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
             }
-
             // Mise en bdd MySQL de l'ID de fiche de données
             $entityPerson->setSheetId($sheetId);
             $entityPerson->setAddDate(new \DateTime("now"));
-
+            if(!$this->isGranted('ROLE_ADMIN'))
+                $entityPerson->setInstitution($this->getUser()->getInstitution());
             $em->persist($entityPerson);
             $em->flush();
 

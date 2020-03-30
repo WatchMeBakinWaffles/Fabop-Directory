@@ -67,12 +67,13 @@ class MongoManager
 
     function deleteSingleById($collection,$id){
         $collection= $this->db->selectCollection($collection);
-        $result_count=$collection->deleteOne(['_id'=>new MongoDB\BSON\ObjectId($id)])->getDeletedCount();
-        if ($result_count>0){
-            return $result_count;
+        return $result_count=$collection->deleteOne(['_id'=>new MongoDB\BSON\ObjectId($id)])->getDeletedCount();
+        // Pas compris l'utilité , ça bloque juste l'update  mais je garde au cas ou//
+        /** if ($result_count>0){
+        return $result_count;
         } else {
-            throw new DocumentNotFoundException;
-        }
+        throw new DocumentNotFoundException;
+        }*/
     }
 
     function updateSingleValueById($collection,$id,$key,$data){
