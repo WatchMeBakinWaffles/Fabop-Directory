@@ -19,6 +19,14 @@ class EntityInstitutionsRepository extends ServiceEntityRepository
         parent::__construct($registry, EntityInstitutions::class);
     }
 
+    public function countAll()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('count(t.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * @return EntityInstitutions[] Returns an array of EntityInstitutions objects
     //  */

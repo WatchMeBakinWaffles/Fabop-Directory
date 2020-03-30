@@ -69,11 +69,17 @@
         </tbody>
     </table>
     <div class="row">
-        <div class="col">
-            <a class="btn btn-light" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
-            <a class="btn btn-success" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
-            
+        <div class="col-lg-1">
+            <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
         </div>
+        {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+        <div class="col-lg-1">
+            <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+        </div>
+        <div class="col-lg-1">
+            {{ include('entity_people/_delete_form.html.twig') }}
+        </div>
+        {% endif %}
     </div>
     <div style="text-align: center">
         {{ include('entity_people/_delete_form.html.twig') }}

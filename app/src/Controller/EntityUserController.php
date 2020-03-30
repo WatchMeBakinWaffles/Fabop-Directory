@@ -41,6 +41,8 @@ class EntityUserController extends AbstractController
             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
             */
             $entityUser->bCryptPassword($entityUser->getPassword());
+            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
+                $entityUser->setInstitution(NULL);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_user_index');
@@ -77,6 +79,8 @@ class EntityUserController extends AbstractController
              * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
              */
             $entityUser->bCryptPassword($entityUser->getPassword());
+            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
+                $entityUser->setInstitution(NULL);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_user_index');

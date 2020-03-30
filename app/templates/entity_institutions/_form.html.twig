@@ -2,7 +2,7 @@
 
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
+    <button id='validForm' class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
     <a class="btn btn-light m-1" href="{{ path('entity_institutions_index') }}"><i class="fas fa-undo"></i> Annuler</a>
 {{ form_end(form) }}
 
