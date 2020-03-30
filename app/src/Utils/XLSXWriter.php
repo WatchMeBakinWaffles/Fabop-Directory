@@ -55,6 +55,8 @@ class XLSXWriter
                          $person->getNewsletter(),
                          $person->getAdresseMailing(),
                          $person->getInstitution()->getName()];
+
+            // AJOUT DES VALEURS MONGODB
             $array = $mongoman->getDocById("Entity_person_sheet",$person->getSheetId());
             array_splice($array,0,1);
             foreach($array as $key=>$value){
