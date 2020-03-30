@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityInstitutions;
 use App\Form\EntityInstitutionsType;
 use App\Repository\EntityInstitutionsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
