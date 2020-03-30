@@ -75,9 +75,11 @@
         <div class="col-lg-1">
             <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
         </div>
+        {% if is_granted('ROLE_CONTRIBUTEUR') OR is_granted('ROLE_ADMIN') %}
         <div class="col-lg-1">
             {{ include('entity_people/_delete_form.html.twig') }}
         </div>
+        {% endif %}
     </div>
     <hr>
 
