@@ -13,9 +13,11 @@ use App\Utils\MongoManager;
 class XLSXReader
 {
     private $em;
+    private $user;
 
-    public function __construct(EntityManagerInterface $em){
+    public function __construct(EntityManagerInterface $em, $user){
         $this->em = $em;
+        $this->user = $user;
     }
 
     public function readAll(Request $request, String $filename)
@@ -57,10 +59,10 @@ class XLSXReader
                     $entityPerson->setCity($cells[4]->getValue());
                     
                     // newsletter
-                    $entityPerson->setNewsletter($cells[6]->getValue());
+                    $entityPerson->setNewsletter($cells[5]->getValue());
 
                     // adresse_mailing
-                    $entityPerson->setAdresseMailing($cells[7]->getValue());
+                    $entityPerson->setAdresseMailing($cells[6]->getValue());
 
                     // add_date
                     $entityPerson->setAddDate(new \DateTime("now"));
@@ -68,28 +70,33 @@ class XLSXReader
                     //sheet_id
                     $entityPerson->setSheetId($sheetId);
 
-
-                    // institution_id
-                    $institut = $this->em->getRepository(EntityInstitutions::class)
-                                     ->findOneByName($cells[5]->getValue());
-
-                    
-                    // Si l'institut n'existe pas (null), on la crée
-                    if ($institut == null){
-                        $entityInstitutions->setName($cells[5]->getValue());
-                        $entityInstitutions->setRole("Ceci est une institution");
-
-                        if (null != $request->request->get('institution_data')){
-                            $sheetID=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
-                        }else{
-                            $sheetID=$mongoman->insertSingle("Entity_institution_sheet",[]);
+                    if(in_array('ROLE_ADMIN', $this->user->getRoles())){
+                        // institution_id
+                        $institut = $this->em->getRepository(EntityInstitutions::class)
+                                         ->findOneByName($cells[7]->getValue());
+    
+                        
+                        // Si l'institut n'existe pas (null), on la crée
+                        if ($institut == null){
+                            $entityInstitutions->setName($cells[7]->getValue());
+                            $entityInstitutions->setRole("Ceci est une institution");
+    
+                            if (null != $request->request->get('institution_data')){
+                                $sheetID=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
+                            }else{
+                                $sheetID=$mongoman->insertSingle("Entity_institution_sheet",[]);
+                            }
+    
+                            $entityInstitutions->setSheetId($sheetID);
+                            $this->em->persist($entityInstitutions);                   
+                            $institut = $entityInstitutions;
                         }
-
-                        $entityInstitutions->setSheetId($sheetID);
-                        $this->em->persist($entityInstitutions);                   
-                        $institut = $entityInstitutions;
+                        $entityPerson->setInstitution($institut);
+                    } else {
+                        $institut = $this->user->getInstitution();
+                        $entityPerson->setInstitution($institut);
                     }
-                    $entityPerson->setInstitution($institut);
+                    
                     $this->em->persist($entityPerson);
                     $this->em->flush();
                 }
