@@ -10,10 +10,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Security\Core\Security;
 
 
 class EntityUserProfileType extends AbstractType
 {
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
@@ -22,9 +27,11 @@ class EntityUserProfileType extends AbstractType
             ->add('password', PasswordType::class)
             ->add('firstName')
             ->add('lastName')
-            ->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')))
             ->add('ApiToken')
         ;
+        if($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')));
+        }
 
     }
 
