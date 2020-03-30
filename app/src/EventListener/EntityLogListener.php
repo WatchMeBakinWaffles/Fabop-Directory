@@ -27,12 +27,19 @@ class EntityLogListener
         // now
         $date = new \DateTime('',new \DateTimeZone('Europe/Paris'));
 
+        // si l'utilisateur n'est pas connecté (ex : fixtures)
+        if(null != $this->securityContext->getToken()){
+            $user_id = $this->securityContext->getToken()->getUser()->getId();
+        } else {
+            $user_id = 0;
+        }
+
         $log = new Log();
         $log->setDate($date);
         $log->setElement($data['element']);
         $log->setTypeAction($data['type_action']);
         $log->setComment($data['comment']);
-        $log->setIdUser($this->securityContext->getToken()->getUser()->getId());
+        $log->setIdUser($user_id);
         $log->setInstitution($data['institution']);
 
         $this->log[] = $log;
@@ -86,13 +93,20 @@ class EntityLogListener
     {
         $entity = $args->getEntity();
 
+        // si l'utilisateur n'est pas connecté (ex : fixtures)
+        if(null != $this->securityContext->getToken()){
+            $user_email = $this->securityContext->getToken()->getUser()->getEmail();
+        } else {
+            $user_email = "On";
+        }
+
 
         if ($entity instanceof EntityPeople) {
 
             $this->log(array(
                 'element' => 'Participant',
                 'type_action' => 'Ajout',
-                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName().' '.$entity->getFirstname(),
+                'comment' => $user_email.' a ajouté '.$entity->getName().' '.$entity->getFirstname(),
                 'institution' => $entity->getInstitution()->getId()
             ));
 
@@ -102,7 +116,7 @@ class EntityLogListener
             $this->log(array(
                 'element' => 'Institution',
                 'type_action' => 'Ajout',
-                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getName(),
+                'comment' => $user_email.' a ajouté '.$entity->getName(),
                 'institution' => $entity->getId()
             ));
 
@@ -110,11 +124,17 @@ class EntityLogListener
         }
         elseif ($entity instanceof EntityUser) {
 
+            if( null != $entity->getInstitution()){
+                $institut_id = $entity->getInstitution()->getId();
+            } else {
+                $institut_id = null;
+            }
+
             $this->log(array(
                 'element' => 'Utilisateur',
                 'type_action' => 'Ajout',
-                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
-                'institution' => $entity->getInstitution()->getId()
+                'comment' => $user_email.' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
+                'institution' => $institut_id
             ));
 
 
@@ -152,11 +172,17 @@ class EntityLogListener
         }
         elseif ($entity instanceof EntityUser) {
 
+            if( null != $entity->getInstitution()){
+                $institut_id = $entity->getInstitution()->getId();
+            } else {
+                $institut_id = null;
+            }
+
             $this->log(array(
                 'element' => 'Utilisateur',
                 'type_action' => 'Suppression',
                 'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a supprimé '.$entity->getFirstName().' '.$entity->getLastName(),
-                'institution' => $entity->getInstitution()->getId()
+                'institution' => $institut_id
             ));
 
 
