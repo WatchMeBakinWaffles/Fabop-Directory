@@ -35,7 +35,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/dashboard, roles: ROLE_USER }
-        - { path: ^/manager, roles: ROLE_USER }
-        - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/dashboard, roles: [ROLE_USER, ROLE_CONTRIBUTEUR, ROLE_ADMIN] }
+        - { path: ^/manager/imp-exp/export, roles: [ROLE_USER, ROLE_CONTRIBUTEUR, ROLE_ADMIN]  }
+        - { path: ^/manager/imp-exp/export_selectif, roles: [ROLE_USER, ROLE_CONTRIBUTEUR, ROLE_ADMIN] }
+        - { path: ^/api, roles: [ROLE_USER, ROLE_CONTRIBUTEUR, ROLE_ADMIN] }
+        - { path: ^/manager, roles: [ROLE_CONTRIBUTEUR, ROLE_ADMIN] }
         - { path: ^/admin, roles: ROLE_ADMIN }
