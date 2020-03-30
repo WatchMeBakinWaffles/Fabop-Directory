@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityPeople;
 use App\Entity\Log;
 use App\Form\EntityPeopleType;
+use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,9 @@ class EntityPeopleController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if ($this->getDoctrine()->getManager()->getRepository(\App\Entity\EntityInstitutions::class)->countAll()<1){
+            return $this->redirectToRoute('entity_institutions_new');
+        }
         $entityPerson = new EntityPeople();
         $form = $this->createForm(EntityPeopleType::class, $entityPerson);
         $form->handleRequest($request);

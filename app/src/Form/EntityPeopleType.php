@@ -46,6 +46,7 @@ class EntityPeopleType extends AbstractType
                     'class' => 'cm-input'
                 )))
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
