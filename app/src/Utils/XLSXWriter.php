@@ -19,7 +19,7 @@ class XLSXWriter
 
         // Récupération participants
         $people = array();
-            
+
 
         if(isset($institution_id))
             $people = $entityPeopleRepository->findBy(['institution' => $institution_id]);
@@ -30,6 +30,7 @@ class XLSXWriter
 
 
         // Création première ligne avec noms de colonnes
+
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
         $writer->addRow($firstRow);
@@ -76,7 +77,7 @@ class XLSXWriter
             $row = WriterEntityFactory::createRowFromArray($rowcells);
             $writer->addRow($row);
         }
-        
+
         $writer->close();
     }
 
