@@ -70,9 +70,11 @@
     </table>
     <div class="row">
         <div class="col">
-            <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
             {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
                 <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+            {% else %}
+                <a class="btn btn-light m-1" href="{{ path('dashboard') }}"><i class="fas fa-arrow-left"></i> Retour</a>
             {% endif %}
         </div>
     </div>
