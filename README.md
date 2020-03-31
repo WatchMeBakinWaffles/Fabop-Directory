@@ -46,11 +46,11 @@ The project handle a Docker configuration made for a 4 containers stack :
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
-0:1. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
-0:2. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
-0:3. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
+1. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
+2. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
+3. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
     
-1. Install nodejs and yarn.
+4. Install nodejs and yarn.
 
     `apt-get install nodejs npm`
     
@@ -60,7 +60,7 @@ These instructions will get you a copy of the project up and running on your loc
     
     `apt-get update && apt-get install yarn`
 
-2. Docker dependencies
+5. Docker dependencies
 
     Ubuntu : https://docs.docker.com/install/linux/docker-ce/ubuntu/
 
@@ -72,7 +72,7 @@ These instructions will get you a copy of the project up and running on your loc
 
     Windows : https://docs.docker.com/docker-for-windows/install/
     
-3. Install git for being able to clone the project, make commits and push, etc...
+6. Install git for being able to clone the project, make commits and push, etc...
 
     `apt-get install git`
 
