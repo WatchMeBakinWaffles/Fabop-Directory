@@ -46,6 +46,9 @@ The project handle a Docker configuration made for a 4 containers stack :
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
+0:1. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
+0:2. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
+0:3. LIRE LA DOCUMENTATION dans le dossier /fabop-directory/doc-fab-op/docs-2020
     
 1. Install nodejs and yarn.
 
