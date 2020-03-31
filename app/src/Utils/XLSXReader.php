@@ -51,7 +51,11 @@ class XLSXReader
                     $entityPerson->setFirstname($cells[$i]->getValue());
                     $i++;
                     // BirthDate
-                    $date = $cells[$i]->getValue();
+                    if (is_string($cells[$i]->getValue())){
+                        $date = new \DateTime($cells[$i]->getValue());
+                    }else{
+                        $date = $cells[$i]->getValue();
+                    }
                     $entityPerson->setBirthdate($date);
                     $i++;
                     // postal_code
