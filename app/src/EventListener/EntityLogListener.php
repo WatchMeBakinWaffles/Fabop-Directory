@@ -137,7 +137,7 @@ class EntityLogListener
                 'type_action' => 'Ajout',
                 'comment' => $user_email.' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
                 'institution' => $institut_id,
-                'comment' => $this->securityContext->getToken()->getUser()->getEmail().' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
+                'comment' => $user_email.' a ajouté '.$entity->getFirstName().' '.$entity->getLastName(),
                 'institution' => $institut_id
             ));
 
