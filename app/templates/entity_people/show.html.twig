@@ -69,16 +69,20 @@
         </tbody>
     </table>
     <div class="row">
-        <div class="col-lg-1">
-            <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
-        </div>
-        <div class="col-lg-1">
-            <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
-        </div>
-        <div class="col-lg-1">
-            {{ include('entity_people/_delete_form.html.twig') }}
+        <div class="col">
+            {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-light m-1" href="{{ path('entity_people_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+                <a class="btn btn-success m-1" href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+            {% else %}
+                <a class="btn btn-light m-1" href="{{ path('dashboard') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+            {% endif %}
         </div>
     </div>
+    {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+    <div style="text-align: center">
+        {{ include('entity_people/_delete_form.html.twig') }}
+    </div>
+    {% endif %}
     <hr>
 
     <h4><i class="fas fa-tags"></i> Affectation de TAGs</h4>
@@ -94,8 +98,8 @@
                         <!-- The options are automatically added thanks to the ajax function in script.js -->
                     </select>
                 </div>
-                <button type="button" id="btn-add-tag" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    <i class="fas fa-plus"></i> Ajouter
+                <button type="button" id="btn-add-tag" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="fas fa-plus"></i> Ajouter un tag à la liste
                 </button>
             </div>
             <div class="form-inline">
@@ -105,15 +109,15 @@
                         <!-- The options are automatically added thanks to the ajax function in script.js -->
                     </select>
                 </div>
-                <button type="button" id="btn-add-performance" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                    <i class="fas fa-plus"></i> Ajouter
+                <button type="button" id="btn-add-performance" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="fas fa-plus"></i> Ajouter une représentation à la liste
                 </button>
             </div>
 
             <input type="hidden" id="tags_affect_person" name="tags_affect[person]" value="{{ entity_person.id }}">
             <input type="hidden" id="tags_affect__token" name="tags_affect[_token]" value="{{ csrf_token('new-tags-affect') }}">
         </div>
-        <button class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
+        <button class="btn btn-primary m-1"><i class="fas fa-check"></i> Enregistrer le tag et la representation pour la personne</button>
     </form>
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

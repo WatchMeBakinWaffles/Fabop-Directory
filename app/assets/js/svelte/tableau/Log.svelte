@@ -33,9 +33,12 @@ function createTable(res){
   tfoot.innerHTML = str;
   str="";
   res.forEach(function(elem){
+    const options = {year: 'numeric', month: 'long', day: 'numeric', hour:"2-digit", minute:"2-digit", second:"2-digit" };
+    options.timeZone = "UTC";
+    const d = new Date(elem.date).toLocaleDateString("fr-FR",options);
     str += "<tr role='row' class='odd'>"+
               "<td>"+elem.id+"</td>"+
-              "<td>"+new Date(elem.date).toLocaleDateString('en-GB')+"</td>"+
+              "<td>"+d+"</td>"+
               "<td>"+elem.element+"</td>"+
               "<td>"+elem.typeAction+"</td>"+
               "<td>"+elem.comment+"</td>"

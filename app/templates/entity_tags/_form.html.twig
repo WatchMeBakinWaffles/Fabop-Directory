@@ -2,7 +2,11 @@
 
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
+    <button id='validForm' class="btn btn-primary m-1"><i class="fas fa-check"></i> {{ button_label|default('Valider') }}</button>
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTRIBUTEUR') %}
     <a class="btn btn-light m-1" href="{{ path('entity_tags_index') }}"><i class="fas fa-undo"></i> Annuler</a>
+{% else %}
+    <a class="btn btn-light m-1" href="{{ path('dashboard') }}"><i class="fas fa-undo"></i> Annuler</a>
+{% endif %}
 {{ form_end(form) }}
 
