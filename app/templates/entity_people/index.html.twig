@@ -8,8 +8,8 @@
     <div class="row m-3">
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CONTRIBUTEUR') %}
             <button id="mailingBtn" type="button" class="btn btn-primary mr-2" data-toggle="modal" data-target="#modal-mail" ><i class="fas fa-envelope"></i> Mail </button>
-            
-            
+
+
             <div class="modal fade" id="modal-mail" aria-labelledby="modal-mail" tabindex="-1" aria-hidden="true" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -20,14 +20,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="contact-form" class="form" action="#" method="POST" role="form">                                                 
+                        <form id="contact-form" class="form" action="#" method="POST" role="form">
                             <div class="form-group">
                                 <label class="form-label" for="subject">Sujet</label>
                                 <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet" tabindex="3">
-                            </div>                            
+                            </div>
                             <div class="form-group">
                                 <label class="form-label" for="message">Message</label>
-                                <textarea rows="5" cols="50" name="message" class="form-control" id="message" placeholder="Message..." tabindex="4" ></textarea>                                 
+                                <textarea rows="5" cols="50" name="message" class="form-control" id="message" placeholder="Message..." tabindex="4" ></textarea>
                             </div>
                             <div class="text-center">
                                 <button id="sendMailBtn" type="button" class="btn btn-primary">Envoyer le message</button>
@@ -42,7 +42,7 @@
             </div>
 
 
-            
+
             <a class="btn btn-primary mr-2" href="{{ path('entity_people_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
             <span class="not-allowed"><a class="btn text-warning mr-2" href="{{ path('import_export') }}"><i class="fas fa-file-import"></i> Import des données</a></span>
         {% endif %}
@@ -93,11 +93,12 @@
                     <th><input type="checkbox" id="select-all"></th>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Mailing</th>
+                    <th>Mail</th>
                     <th>Date de naissance</th>
                     <th>Abonnement à la newsletter</th>
                     <th>Code postal</th>
                     <th>Ville</th>
+                    <th>Institution</th>
                     <th>Date d'ajout</th>
                     <th><i class="fas fa-cog"></i></th>
                 </tr>
