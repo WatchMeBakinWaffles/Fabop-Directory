@@ -67,13 +67,13 @@ function table_init(id_table){
           }
           if (liste_id.length > 0) {
               $.ajax({
-                  url: URL + '/manager/imp-exp/export_selectif',
+                  url: '/manager/imp-exp/export_selectif',
                   method: "POST",
                   data: {
                       ids: liste_id
                   }
               }).done(function () {
-                  window.location = URL + "/export_selectif.xlsx";
+                  window.location = "/export_selectif.xlsx";
               }).fail(function () {
                   alert("Le serveur a rencontré des difficultés avec votre demande.");
               });
