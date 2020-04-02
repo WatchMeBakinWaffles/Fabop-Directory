@@ -5,7 +5,7 @@ let route = "none";
 let list;
 async function fetchAsync () {
   // await response of fetch call
-  let response = await fetch('http://localhost/api/entity_'+entity);
+  let response = await fetch('/api/entity_'+entity);
   // only proceed once promise is resolved
   let res = await response.json();
   // only proceed once second promise is resolved

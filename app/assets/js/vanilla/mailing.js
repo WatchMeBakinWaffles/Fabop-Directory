@@ -15,7 +15,7 @@ $(document).on('click', '#sendMailBtn', function(e){
         console.log(mails);
         e.preventDefault();
         $.ajax({
-            url:URL+'/mail',
+            url:'/mail',
             method: "POST",
             data: { message: $('#message').val(),
                     subject: $('#subject').val(),

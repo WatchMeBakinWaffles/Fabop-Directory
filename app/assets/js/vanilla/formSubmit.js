@@ -3,7 +3,7 @@
 $(document).on("submit", "#form_entity_tags_new", function(e){
     e.preventDefault();
     $.ajax({
-        url:URL+'/manager/tags/new',
+        url:'/manager/tags/new',
         method: "POST",
         data: $('#form_entity_tags_new').serialize(),
     }).done(function(data, status, xhr){
@@ -11,7 +11,7 @@ $(document).on("submit", "#form_entity_tags_new", function(e){
             alert("Le tag a bien été ajouté");
             $('#exampleModalCenter').modal("hide");
             $.ajax({
-                url: URL+"/manager/tags/list",
+                url: "/manager/tags/list",
                 method: "get"
             }).done(function(content){
                 $('#tags_affect_tag').empty();
@@ -27,7 +27,7 @@ $(document).on("submit", "#form_entity_tags_new", function(e){
 $(document).on("submit", "#form_entity_performances_new", function(e){
     e.preventDefault();
     $.ajax({
-        url:URL+'/manager/performances/new',
+        url:'/manager/performances/new',
         method: "POST",
         data:     $('#form_entity_performances_new').serialize(),
     }).done(function(data, status, xhr){
@@ -35,7 +35,7 @@ $(document).on("submit", "#form_entity_performances_new", function(e){
             alert("La représentation a bien été ajoutée");
             $('#exampleModalCenter').modal("hide");
             $.ajax({
-                url: URL+"/manager/performances/list",
+                url: "/manager/performances/list",
                 method: "get"
             }).done(function(content){
                 $('#tags_affect_performance').empty();
@@ -51,14 +51,14 @@ $(document).on("submit", "#form_entity_performances_new", function(e){
 $(document).on("submit", "#form_tags_affect_new", function(e){
     e.preventDefault();
     $.ajax({
-        url:URL+'/manager/tags-affect/new',
+        url:'/manager/tags-affect/new',
         method: "POST",
         data: $('#form_tags_affect_new').serialize(),
     }).done(function(data, status, xhr){
         if(status == "success") {
             alert("L'affectation de tag a bien été ajoutée");
             $.ajax({
-                url: URL+"/manager/tags-affect/",
+                url: "/manager/tags-affect/",
                 method: "get"
             }).done(function(content){
                 // On peut commenter car on reload la page

@@ -1,7 +1,7 @@
 // Ajax function to append the content of the form to create new tags
 $('#btn-add-tag').click(function() {
     $.ajax({
-        url: URL+"/manager/tags/modal/new",
+        url: "/manager/tags/modal/new",
         method: "GET"
     }).done(function(content){
         appendContentToModal(content);
@@ -11,7 +11,7 @@ $('#btn-add-tag').click(function() {
 // Ajax function to append the content of the form to create new performance
 $('#btn-add-performance').click(function() {
     $.ajax({
-        url: URL+"/manager/performances/new",
+        url: "/manager/performances/new",
         method: "get"
     }).done(function(content){
         appendContentToModal(content);

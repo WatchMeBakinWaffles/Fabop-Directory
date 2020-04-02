@@ -1,7 +1,7 @@
 <script type="text/javascript">
 async function fetchAsync () {
   // await response of fetch call
-  let response = await fetch('http://localhost/api/logs/');
+  let response = await fetch('/api/logs/');
   // only proceed once promise is resolved
   let res = await response.json();
   // only proceed once second promise is resolved
