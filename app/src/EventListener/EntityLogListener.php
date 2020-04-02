@@ -78,12 +78,16 @@ class EntityLogListener
         }
         elseif ($entity instanceof EntityUser) {
             foreach ($this->fields_user as $field) {
+                if (null!=$entity->getInstitution())
+                    $institut_id = $entity->getInstitution()->getId();
+                else
+                    $institut_id = null;
                 if ( $args->hasChangedField($field)){
                     $this->log(array(
                         'element' => 'Utilisateur',
                         'type_action' => 'Modification',
                         'comment' => $field." : '".$args->getOldValue($field)."' => '".$args->getNewValue($field)."'",
-                        'institution' => $entity->getInstitution()
+                        'institution' => $institut_id
                     ));
                 }
             }
