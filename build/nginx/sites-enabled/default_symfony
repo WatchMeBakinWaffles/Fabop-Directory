@@ -1,6 +1,7 @@
 server {
     listen 80;
     root /var/www/html/symfony/public;
+    server_name lfovdl.com www.lfovdl.com;
 
     location / {
         try_files $uri /index.php$is_args$args;
