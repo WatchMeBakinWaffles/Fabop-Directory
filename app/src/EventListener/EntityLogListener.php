@@ -7,7 +7,7 @@ use App\Entity\EntityInstitutions;
 use App\Entity\EntityUser;
 use App\Entity\Log;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 
 class EntityLogListener

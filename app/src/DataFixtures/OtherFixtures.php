@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\EntityPeople;
 use App\Entity\EntityInstitutions;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Utils\MongoManager;
 
 class OtherFixtures extends Fixture

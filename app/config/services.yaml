@@ -38,10 +38,10 @@ services:
             - { name: api_platform.doctrine.orm.query_extension.collection }
             - { name: api_platform.doctrine.orm.query_extension.item }
 
-    twig.extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
+    # twig.extension.intl:
+    #     class: Twig_Extensions_Extension_Intl
+    #     tags:
+    #         - { name: twig.extension }
 
     entity.log_listener:
         class: App\EventListener\EntityLogListener

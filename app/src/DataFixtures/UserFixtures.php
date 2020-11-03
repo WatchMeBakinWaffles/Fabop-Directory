@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\EntityUser;
 use App\Entity\EntityInstitutions;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
