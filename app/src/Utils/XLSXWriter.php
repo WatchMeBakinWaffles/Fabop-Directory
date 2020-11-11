@@ -131,4 +131,47 @@ class XLSXWriter
         $writer->close();
     }
 
+    public function writeModelPersonne()
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("modele_personne.xlsx");
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
+        $firstLineCells = array_merge($firstLineCells);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $writer->addRow($firstRow);
+        $writer->close();
+    }
+
+    public function writeModelInstitution()
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("modele_institution.xlsx");
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = ["Nom", "Rôle"];
+        $firstLineCells = array_merge($firstLineCells);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $writer->addRow($firstRow);
+        $writer->close();
+    }
+
+    public function writeModelSpectacle()
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("modele_spectacle.xlsx");
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = ["Nom", "Année"];
+        $firstLineCells = array_merge($firstLineCells);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $writer->addRow($firstRow);
+        $writer->close();
+    }
+
+
 }

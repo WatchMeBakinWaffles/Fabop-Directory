@@ -18,8 +18,6 @@
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
 
-../.idea/
-
 # Logs (Symfony4)
 /var/log/*
 !var/log/.gitkeep
@@ -71,3 +69,10 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 yarn.lock
 package-lock.json
+
+###> phpunit/phpunit ###
+.phpunit.result.cache
+
+###< phpunit/phpunit ###
+/phpunit.xml.dist.bak
+!/phpunit.xml.dist

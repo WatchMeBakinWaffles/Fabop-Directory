@@ -4,7 +4,7 @@ $('#import-file').change(function(){
     $('#labelChoose').text(m);
 });
 
-if (path == "/manager/people/"){
+if (path === "/manager/people/"){
     document.getElementById("exportClick").addEventListener("click", function () {
         let checkboxs = document.getElementsByClassName("checkImport");
         let liste_id = [];

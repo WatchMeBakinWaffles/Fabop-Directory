@@ -112,7 +112,74 @@ class ImportExportController extends AbstractController
         {
             return $this->redirectToRoute("import_export",['error'=>$erreur]);
         }
+    }
 
+    /**
+     * @Route("/modele_personne", name="modele_personne")
+     */
+    public function modele_personne(Request $request)
+    {
+        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
+        $writer = new XLSXWriter();
+
+        $writer->writeModelPersonne();
+
+        $file = "modele_personne.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/modele_institution", name="modele_institution")
+     */
+    public function modele_institution(Request $request)
+    {
+        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeModelInstitution();
+
+        $file = "modele_institution.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/modele_spectacle", name="modele_spectacle")
+     */
+    public function modele_spectacle(Request $request)
+    {
+        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeModelSpectacle();
+
+        $file = "modele_spectacle.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
     }
 }
