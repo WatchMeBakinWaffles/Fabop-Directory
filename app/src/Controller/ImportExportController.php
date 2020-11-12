@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityInstitutions;
+use App\Entity\EntityShows;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,6 +65,52 @@ class ImportExportController extends AbstractController
         $writer = new XLSXWriter();
 
         $writer->write($_POST['ids'], $people);
+
+        $file = "export_selectif.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/export_institutions", name="export_institutions")
+     */
+    public function export_institution(Request $request)
+    {
+        $institution = $this->getDoctrine()->getRepository(EntityInstitutions::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeInstitution($_POST['ids'], $institution);
+
+        $file = "export_selectif.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/export_shows", name="export_shows")
+     */
+    public function export_shows(Request $request)
+    {
+        $shows = $this->getDoctrine()->getRepository(EntityShows::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeShow($_POST['ids'], $shows);
 
         $file = "export_selectif.xlsx";
         header('Content-Description: File Transfer');

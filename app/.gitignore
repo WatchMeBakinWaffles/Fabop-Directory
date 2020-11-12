@@ -72,7 +72,5 @@ package-lock.json
 
 ###> phpunit/phpunit ###
 .phpunit.result.cache
-
-###< phpunit/phpunit ###
 /phpunit.xml.dist.bak
 !/phpunit.xml.dist

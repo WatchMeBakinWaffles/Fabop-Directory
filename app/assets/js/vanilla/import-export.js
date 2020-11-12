@@ -30,3 +30,57 @@ if (path === "/manager/people/"){
         }
     });
 }
+
+if (path === "/manager/institutions/"){
+    document.getElementById("exportClick").addEventListener("click", function () {
+        let checkboxs = document.getElementsByClassName("checkExport");
+        let liste_id = [];
+        for (const checkbox of checkboxs) {
+            if (checkbox.checked === true) {
+                liste_id.push(checkbox.parentNode.id);
+            }
+        }
+        if (liste_id.length > 0) {
+            $.ajax({
+                url: '/manager/imp-exp/export_institutions',
+                method: "POST",
+                data: {
+                    ids: liste_id
+                }
+            }).done(function () {
+                window.location = "/export_selectif.xlsx";
+            }).fail(function () {
+                alert("Le serveur a rencontré des difficultés avec votre demande.");
+            });
+        } else {
+            alert("Vous n'avez rien sélectionné");
+        }
+    });
+}
+
+if (path === "/manager/shows/"){
+    document.getElementById("exportClick").addEventListener("click", function () {
+        let checkboxs = document.getElementsByClassName("checkExport");
+        let liste_id = [];
+        for (const checkbox of checkboxs) {
+            if (checkbox.checked === true) {
+                liste_id.push(checkbox.parentNode.id);
+            }
+        }
+        if (liste_id.length > 0) {
+            $.ajax({
+                url: '/manager/imp-exp/export_shows',
+                method: "POST",
+                data: {
+                    ids: liste_id
+                }
+            }).done(function () {
+                window.location = "/export_selectif.xlsx";
+            }).fail(function () {
+                alert("Le serveur a rencontré des difficultés avec votre demande.");
+            });
+        } else {
+            alert("Vous n'avez rien sélectionné");
+        }
+    });
+}

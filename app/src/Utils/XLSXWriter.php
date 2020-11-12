@@ -3,7 +3,9 @@
 namespace App\Utils;
 
 use App\Entity\EntityPeople;
+use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
+use App\Repository\EntityShowsRepository;
 use App\Utils\MongoManager;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Common\Entity\Row;
@@ -129,6 +131,106 @@ class XLSXWriter
         }
 
         $writer->close();
+    }
+
+    public function writeInstitution(Array $liste_id, EntityInstitutionsRepository $eir)
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("export_selectif.xlsx");
+
+        //Création des champs dynamique
+        $mongoman = new MongoManager();
+        $dynArray = array();
+        foreach ($liste_id as $id) {
+            $person = $eir->find($id);
+            $array = $mongoman->getDocById("Entity_institution_sheet",$person->getSheetId());
+            array_splice($array,0,1);
+            foreach($array as $key=>$value){
+                if (!in_array($key,$dynArray))
+                    $dynArray[] = $key;
+            }
+        }
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = ["nom", "role"];
+        $firstLineCells = array_merge($firstLineCells,$dynArray);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $writer->addRow($firstRow);
+
+        foreach ($liste_id as $id) {
+            $institution = $eir->find($id);
+            $rowcells = [$institution->getName(),
+                         $institution->getRole()];
+
+            // AJOUT DES VALEURS MONGODB
+            $array = $mongoman->getDocById("Entity_institution_sheet",$institution->getSheetId());
+            array_splice($array,0,1);
+            foreach($array as $key=>$value){
+                for($i=2;sizeof($firstLineCells)>$i;$i++){
+                    if (!isset($rowcells[$i])){
+                        $rowcells[$i] = ''; // Mise à vide dans le cas où il n'y a pas de valeur
+                    }
+                    if ($firstLineCells[$i]==$key)
+                        $rowcells[$i] = $value;
+                }
+            }
+            $row = WriterEntityFactory::createRowFromArray($rowcells);
+            $writer->addRow($row);
+        }
+
+        $writer->close();
+
+    }
+
+    public function writeShow(Array $liste_id, EntityShowsRepository $esr)
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("export_selectif.xlsx");
+
+        //Création des champs dynamique
+        $mongoman = new MongoManager();
+        $dynArray = array();
+        foreach ($liste_id as $id) {
+            $shows = $esr->find($id);
+            $array = $mongoman->getDocById("Entity_show_sheet",$shows->getSheetId());
+            array_splice($array,0,1);
+            foreach($array as $key=>$value){
+                if (!in_array($key,$dynArray))
+                    $dynArray[] = $key;
+            }
+        }
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = ["nom", "année"];
+        $firstLineCells = array_merge($firstLineCells,$dynArray);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $writer->addRow($firstRow);
+
+        foreach ($liste_id as $id) {
+            $institution = $esr->find($id);
+            $rowcells = [$shows->getName(),
+                         $shows->getYear()];
+
+            // AJOUT DES VALEURS MONGODB
+            $array = $mongoman->getDocById("Entity_show_sheet",$shows->getSheetId());
+            array_splice($array,0,1);
+            foreach($array as $key=>$value){
+                for($i=2;sizeof($firstLineCells)>$i;$i++){
+                    if (!isset($rowcells[$i])){
+                        $rowcells[$i] = ''; // Mise à vide dans le cas où il n'y a pas de valeur
+                    }
+                    if ($firstLineCells[$i]==$key)
+                        $rowcells[$i] = $value;
+                }
+            }
+            $row = WriterEntityFactory::createRowFromArray($rowcells);
+            $writer->addRow($row);
+        }
+
+        $writer->close();
+
     }
 
     public function writeModelPersonne()

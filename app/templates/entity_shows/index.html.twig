@@ -24,7 +24,7 @@
         <tbody>
         {% for entity_show in entity_shows %}
             <tr>
-                <td id="{{ entity_show.id }}"><input type="checkbox" name="selected[{{ entity_show.id }}]"></td>
+                <td id="{{ entity_show.id }}"><input type="checkbox" name="selected[{{ entity_show.id }}]" class="checkExport"></td>
                 <td>{{ entity_show.name }}</td>
                 <td>{{ entity_show.year }}</td>
                 <td>
