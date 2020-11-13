@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <th>Date d'ajout</th>
-                <td>{{ entity_person.addDate ? entity_person.addDate|localizeddate('none', 'none', 'fr', null,'d MMMM Y') : '' }}</td>
+                <td>{{ entity_person.addDate ? entity_person.addDate|format_date('full') : '' }}</td>
             </tr>
             {% for key,value in entity_person_data  %}
             <tr>
