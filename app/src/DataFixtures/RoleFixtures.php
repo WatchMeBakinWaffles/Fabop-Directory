@@ -13,9 +13,45 @@ class RoleFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $mongoman = new MongoManager();
-	$sheetPermissionAdmin=$mongoman->insertSingle("PermissionAdmin",[]);
-	$sheetPermissionContributeur=$mongoman->insertSingle("PermissionContributeur",[]);
-	$sheetPermissionUtilisateur=$mongoman->insertSingle("PermissionUtilisateur",[]);
+	$sheetPermissionAdmin=$mongoman->insertSingle("permissions_user",[
+		'shows'=>'RW',
+		'tags'=>'RW',
+		'peoples'=>'RW',
+		'users'=>'RW',
+		'models'=>'RW',
+		'institutions'=>'RW',
+		'roles'=>'RW',
+		'import'=>True,
+		'export'=>True,
+		'connection'=>True,
+		'restaurations'=>'RW'
+	]);
+	$sheetPermissionContributeur=$mongoman->insertSingle("permission_user",[
+		'shows'=>'RW',
+		'tags'=>'RW',
+		'peoples'=>'RW',
+		'users'=>'',
+		'models'=>'',
+		'institutions'=>'RW',
+		'roles'=>'',
+		'import'=>True,
+		'export'=>True,
+		'connection'=>True,
+		'restaurations'=>''
+	]);
+	$sheetPermissionUtilisateur=$mongoman->insertSingle("permission_user",[
+		'shows'=>'R',
+		'tags'=>'R',
+		'peoples'=>'R',
+		'users'=>'',
+		'models'=>'',
+		'institutions'=>'',
+		'roles'=>'',
+		'import'=>False,
+		'export'=>True,
+		'connection'=>True,
+		'restaurations'=>''
+	]);
 
 	$PermissionsAdmin = new Permissions();
         $PermissionsAdmin->setSheetId($sheetPermissionAdmin);
