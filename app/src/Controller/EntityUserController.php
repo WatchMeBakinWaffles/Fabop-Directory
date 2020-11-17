@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityRoles;
+use App\Form\EntityRolesType;
+use App\Repository\EntityRolesRepository;
+
 use App\Entity\EntityUser;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
@@ -11,12 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/users")
+ * @Route("/admin/")
  */
 class EntityUserController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_user_index", methods={"GET"})
+     * @Route("users/", name="admin_user_index", methods={"GET"})
      */
     public function index(EntityUserRepository $entityUserRepository): Response
     {
@@ -24,9 +28,18 @@ class EntityUserController extends AbstractController
             'entity_users' => $entityUserRepository->findAll(),
         ]);
     }
-
     /**
-     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
+     * @Route("roles/", name="admin_roles_index", methods={"GET"})
+     */
+    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
+    {
+        return $this->render('entity_roles/index.html.twig', [
+            'entity_roles' => $entityRolesRepository->findAll(),
+
+        ]);
+    }
+    /**
+     * @Route("users/new", name="admin_user_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -55,7 +68,7 @@ class EntityUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_user_show", methods={"GET"})
+     * @Route("users/{id}", name="admin_user_show", methods={"GET"})
      */
     public function show(EntityUser $entityUser): Response
     {
@@ -65,7 +78,7 @@ class EntityUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
+     * @Route("users/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, EntityUser $entityUser): Response
     {
@@ -93,7 +106,7 @@ class EntityUserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin_user_delete", methods={"DELETE"})
+     * @Route("users/{id}", name="admin_user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, EntityUser $entityUser): Response
     {

@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('admin_roles_delete', {'id': entity_roles.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity_roles.id) }}">
+    <button class="btn">Supprimer</button>
+</form>

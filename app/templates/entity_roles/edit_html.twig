@@ -1,0 +1,12 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Édition de {{ entity_roles.nom }}{% endblock %}
+
+{% block content %}
+    <h1><i class="fas fa-edit"></i> Édition de {{ entity_roles.nom }}</h1>
+
+    {{ include('entity_roles/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {{ include('entity_roles/_delete_form.html.twig') }}
+
+{% endblock %}
