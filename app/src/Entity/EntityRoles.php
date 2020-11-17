@@ -34,6 +34,11 @@ class EntityRoles
      */
     private $nom;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Permissions::class, mappedBy="role_id", cascade={"persist", "remove"})
+     */
+    private $permissions;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -88,6 +93,24 @@ class EntityRoles
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPermissions(): ?Permissions
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(?Permissions $permissions): self
+    {
+        $this->permissions = $permissions;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newRole_id = null === $permissions ? null : $this;
+        if ($permissions->getRoleId() !== $newRole_id) {
+            $permissions->setRoleId($newRole_id);
+        }
 
         return $this;
     }
