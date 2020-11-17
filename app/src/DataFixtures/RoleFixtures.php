@@ -18,28 +18,28 @@ class RoleFixtures extends Fixture
 	$sheetPermissionUtilisateur=$mongoman->insertSingle("PermissionUtilisateur",[]);
 
 	$PermissionsAdmin = new Permissions();
-        $PermissionsAdmin->setSheetId("ROLE_ADMIN");
+        $PermissionsAdmin->setSheetId($sheetPermissionAdmin);
 
 	$PermissionsContributeur = new Permissions();
-        $PermissionsContributeur->setSheetId("ROLE_CONTRIBUTEUR");
+        $PermissionsContributeur->setSheetId($sheetPermissionContributeur);
 
 	$PermissionsUtilisateur = new Permissions();
-        $PermissionsUtilisateur->setSheetId("ROLE_UTILISATEUR");
+        $PermissionsUtilisateur->setSheetId($sheetPermissionUtilisateur);
 
 	$entityRoleAdmin = new EntityRoles();
-        $entityRoleAdmin->setName("ROLE_ADMIN");
+        $entityRoleAdmin->setNom("ROLE_ADMIN");
         $entityRoleAdmin->setEditable(False);
-	$entityRoleAdmin->setPermissions($sheetPermissionAdmin);
+	$entityRoleAdmin->setPermissions($PermissionsAdmin);
 
 	$entityRoleContributeur = new EntityRoles();
-        $entityRoleContributeur->setName("ROLE_CONTRIBUTEUR");
+        $entityRoleContributeur->setNom("ROLE_CONTRIBUTEUR");
         $entityRoleContributeur->setEditable(False);
-	$entityRoleContributeur->setPermissions($sheetPermissionContributeur);
+	$entityRoleContributeur->setPermissions($PermissionsContributeur);
 
 	$entityRoleUtilisateur = new EntityRoles();
-        $entityRoleUtilisateur->setName("ROLE_UTILISATEUR");
+        $entityRoleUtilisateur->setNom("ROLE_UTILISATEUR");
         $entityRoleUtilisateur->setEditable(False);
-	$entityRoleUtilisateur->setPermissions($sheetPermissionUtilisateur);
+	$entityRoleUtilisateur->setPermissions($PermissionsUtilisateur);
 
         $manager->persist($PermissionsAdmin);
         $manager->persist($PermissionsContributeur);
