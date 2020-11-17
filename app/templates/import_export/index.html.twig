@@ -4,24 +4,45 @@
 
 {% block content %}
 
-    <div class="col">
-        <h2><i class="fa fa-file-import"></i> Télécharger un modèle de base</h2>
-        <section class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="selectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Selectionner un modèle de base
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="custom-file mb-1">
-                        <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
-                        <a type="submit" class="dropdown-item" href="{{ path('modele_institution') }}">Institution</a>
-                        <a type="submit" class="dropdown-item" href="{{ path('modele_spectacle') }}">Spectacle</a>
-                    </div>
-                </form>
-            </div>
-        </section>
-        <br>
-        <br>
+    <div class="row">
+        <div class="col">
+            <h2><i class="fa fa-file-import"></i> Télécharger un modèle de base</h2>
+            <section class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="selectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Selectionner un modèle de base
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="" enctype="multipart/form-data" method="POST">
+                        <div class="custom-file mb-1">
+                            <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
+                            <a type="submit" class="dropdown-item" href="{{ path('modele_institution') }}">Institution</a>
+                            <a type="submit" class="dropdown-item" href="{{ path('modele_spectacle') }}">Spectacle</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <br>
+            <br>
+        </div>
+
+
+        <div class="col">
+            <h2><i class="fa fa-file-import"></i> Télécharger vos modèles customisés</h2>
+            <section class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="selectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Selectionner un de vos modèles
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form action="" enctype="multipart/form-data" method="POST">
+                        <div class="custom-file mb-1">
+                            <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <br>
+            <br>
+        </div>
     </div>
 
     <div class="col">
