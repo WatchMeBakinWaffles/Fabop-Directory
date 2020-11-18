@@ -6,9 +6,12 @@ use App\Repository\EntityModeleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=EntityModeleRepository::class)
+ * @Vich\Uploadable()
  */
 class EntityModele
 {
@@ -25,9 +28,38 @@ class EntityModele
     private $modele_default;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $modele_custom;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $name;
+
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @var File|null
+     * @Vich\UploadableField(mapping="user_modeles", fileNameProperty="filename")
+     */
+    private $modeleFile;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
 
     /**
      * @ORM\ManyToMany(targetEntity=EntityUser::class, inversedBy="modeles")
@@ -37,6 +69,12 @@ class EntityModele
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime();
+    }
+
+    public function __toString(){
+        return $this->getModeleDefault()." ".$this->getModeleCustom();
     }
 
     public function getId(): ?int
@@ -68,6 +106,56 @@ class EntityModele
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getModeleFile(): ?File
+    {
+        return $this->modeleFile;
+    }
+
+    public function setModeleFile(?File $modeleFile)
+    {
+        $this->modeleFile = $modeleFile;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+
+    public function setFilename(?string $filename)
+    {
+        $this->filename = $filename;
+    }
+
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updatedAt = $updated_at;
+
+        return $this;
+    }
+
     /**
      * @return Collection|EntityUser[]
      */
@@ -91,4 +179,5 @@ class EntityModele
 
         return $this;
     }
+
 }

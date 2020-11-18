@@ -26,8 +26,10 @@
         </div>
 
 
+
+
         <div class="col">
-            <h2><i class="fa fa-file-import"></i> Télécharger vos modèles customisés</h2>
+            <h2><i class="fa fa-file-import"></i> <a href="{{ path('modele_custom') }}">Vos modèles customisés</a></h2>
             <section class="dropdown">
                 <button class="btn btn-success dropdown-toggle" type="button" id="selectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Selectionner un de vos modèles
@@ -35,7 +37,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="custom-file mb-1">
-                            <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
+                            <a type="submit" class="dropdown-item" href="">Personne</a>
                         </div>
                     </form>
                 </div>

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\EntityInstitutions;
+use App\Entity\EntityModele;
 use App\Entity\EntityShows;
+use App\Form\EntityModeleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,7 @@ use App\Utils\XLSXReader;
  */
 class ImportExportController extends AbstractController
 {
+
     /**
      * @Route("/", name="import_export")
      */
@@ -30,6 +33,7 @@ class ImportExportController extends AbstractController
 
     /**
      * @Route("/export", name="export")
+     * @param EntityPeopleRepository $epr
      */
     public function export(EntityPeopleRepository $epr)
     {
@@ -58,7 +62,7 @@ class ImportExportController extends AbstractController
     /**
      * @Route("/export_selectif", name="export_selectif")
      */
-    public function export_selectif(Request $request)
+    public function export_selectif()
     {
         $people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
@@ -160,6 +164,27 @@ class ImportExportController extends AbstractController
         {
             return $this->redirectToRoute("import_export",['error'=>$erreur]);
         }
+    }
+
+    /**
+     * @Route("/modele_custom", name="modele_custom", methods="GET|POST")
+     */
+    public function modele_custom(Request $request)
+    {
+        $modele = new EntityModele();
+        $form = $this->createForm(EntityModeleType::class, $modele);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($modele);
+            $em->flush();
+            return $this->redirectToRoute('modele_custom');
+        }
+
+        return $this->render('modele/index.html.twig', [
+            "form" => $form->createView(),
+        ]);
     }
 
     /**
