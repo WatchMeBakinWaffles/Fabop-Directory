@@ -101,6 +101,7 @@ class EntityPeopleController extends AbstractController
 		    'tags_affects' => $tagsAffectRepository->findAll(),
 		    'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
 		]);
+	}
 	return $this->redirectToRoute('entity_people_index');
     }
 
