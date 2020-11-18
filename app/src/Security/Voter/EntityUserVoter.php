@@ -3,6 +3,8 @@
 namespace App\Security\Voter;
 
 use App\Entity\EntityRoles;
+use App\Entity\Permissions;
+use App\Utils\MongoManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,17 +27,23 @@ class EntityUserVoter extends Voter
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case 'POST_EDIT':
-                // logic to determine if the user can EDIT
-                // return true or false
-                break;
-            case 'POST_VIEW':
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
-        }
+	$roles = $user->getEntityRoles();
+	foreach ($roles as $role){
+		$permissions = $role->getPermissions();
+	        $mongoman = new MongoManager();
+		$data_permissions = $mongoman->find($permissions->getSheetId());
+		// ... (check conditions and return true to grant permission) ...
+		switch ($attribute) {
+		    case 'POST_EDIT':
+		        if ($data_permissions["peoples"] = "W" || $data_permissions["peoples"] = "RW"){
+		         	return true;
+			}
+		    case 'POST_VIEW':
+		        if ($data_permissions["peoples"] = "R" || $data_permissions["peoples"] = "RW"){
+		         	return true;
+			}
+		}
+	}
 
         return false;
     }
