@@ -11,7 +11,7 @@ class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        
+        /**
         $user_root = new EntityUser();
         $user_root->setEmail("root@root.fr");
         $user_root->setRoles(array("ROLE_ADMIN"));
@@ -21,6 +21,7 @@ class UserFixtures extends Fixture
         $user_root->setApiToken("API_ROOT");
 
         $manager->persist($user_root);
+	*/
 
         $manager->flush();
 
