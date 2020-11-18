@@ -31,7 +31,7 @@ class EntityUserVoter extends Voter
 	foreach ($roles as $role){
 		$permissions = $role->getPermissions();
 	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->find($permissions->getSheetId());
+		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
 		    case 'POST_EDIT':

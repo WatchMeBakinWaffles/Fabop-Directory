@@ -56,6 +56,7 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -69,6 +70,7 @@ class EntityUserController extends AbstractController
 		    'entity_user' => $entityUser,
 		]);
 	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -100,6 +102,7 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**

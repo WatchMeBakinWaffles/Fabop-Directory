@@ -27,7 +27,7 @@ class RoleFixtures extends Fixture
 		'connection'=>True,
 		'restaurations'=>'RW'
 	]);
-	$sheetPermissionContributeur=$mongoman->insertSingle("permission_user",[
+	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",[
 		'shows'=>'RW',
 		'tags'=>'RW',
 		'peoples'=>'RW',
@@ -40,7 +40,7 @@ class RoleFixtures extends Fixture
 		'connection'=>True,
 		'restaurations'=>''
 	]);
-	$sheetPermissionUtilisateur=$mongoman->insertSingle("permission_user",[
+	$sheetPermissionUtilisateur=$mongoman->insertSingle("permissions_user",[
 		'shows'=>'R',
 		'tags'=>'R',
 		'peoples'=>'R',
@@ -63,6 +63,11 @@ class RoleFixtures extends Fixture
 	$PermissionsUtilisateur = new Permissions();
         $PermissionsUtilisateur->setSheetId($sheetPermissionUtilisateur);
 
+	$manager->persist($PermissionsAdmin);
+        $manager->persist($PermissionsContributeur);
+        $manager->persist($PermissionsUtilisateur);
+	$manager->flush();
+
 	$entityRoleAdmin = new EntityRoles();
         $entityRoleAdmin->setNom("ROLE_ADMIN");
         $entityRoleAdmin->setEditable(False);
@@ -78,12 +83,10 @@ class RoleFixtures extends Fixture
         $entityRoleUtilisateur->setEditable(False);
 	$entityRoleUtilisateur->setPermissions($PermissionsUtilisateur);
 
-        $manager->persist($PermissionsAdmin);
-        $manager->persist($PermissionsContributeur);
-        $manager->persist($PermissionsUtilisateur);
         $manager->persist($entityRoleAdmin);
         $manager->persist($entityRoleContributeur);
         $manager->persist($entityRoleUtilisateur);
+	$manager->flush();
 
 	$user_root = new EntityUser();
         $user_root->setEmail("root@root.fr");
