@@ -34,23 +34,25 @@ class ImportExportController extends AbstractController
 
         $institution_id = null;
 
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
-            $institution_id = $this->getUser()->getInstitution();        
+	if(!$this->isGranted('EXPORT',$institution_id)){
+		if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
+		    $institution_id = $this->getUser()->getInstitution();        
 
 
-        $writer = new XLSXWriter();
-        $writer->writeAll($epr, $institution_id);
+		$writer = new XLSXWriter();
+		$writer->writeAll($epr, $institution_id);
 
-        $file = "export.xlsx";
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-        exit;
+		$file = "export.xlsx";
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($file).'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		readfile($file);
+		exit;
+	}
     }
 
     /**
@@ -58,22 +60,26 @@ class ImportExportController extends AbstractController
      */
     public function export_selectif(Request $request)
     {
-        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+        $institution_id = null;
 
-        $writer = new XLSXWriter();
+	if(!$this->isGranted('EXPORT',$institution_id)){
+		$people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
-        $writer->write($_POST['ids'], $people);
+		$writer = new XLSXWriter();
 
-        $file = "export_selectif.xlsx";
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-        exit;
+		$writer->write($_POST['ids'], $people);
+
+		$file = "export_selectif.xlsx";
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($file).'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		readfile($file);
+		exit;
+	}
     }
 
     /**
@@ -81,38 +87,41 @@ class ImportExportController extends AbstractController
      */
     public function import(Request $request)
     {
-        $fichier = basename($_FILES['import']['name']);
-        $taille = filesize($_FILES['import']['tmp_name']);
-        $extensions = array('.xlsx', '.ods', '.csv');
-        $extension = strrchr($_FILES['import']['name'], '.');
-        //Début des vérifications de sécurité...
-        if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
-        {
-            $erreur = 'Vous devez uploader un fichier de type xlsx';
-        }
-        if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
-        {
-            //On formate le nom du fichier ici...
-            $fichier = strtr($fichier,
-                'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
-                'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
-            $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
-            if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
-            {
-                $reader = new XLSXReader($this->getDoctrine()->getManager(), $this->getUser());
-                $reader->readAll($request, $fichier);
-                return $this->redirectToRoute('entity_people_index');
-            }
-            else //Sinon (la fonction renvoie FALSE).
-            {
-                return $this->redirectToRoute("import_export",['error'=>'Echec de l\'upload !']);
-            }
-        }
-        else
-        {
-            return $this->redirectToRoute("import_export",['error'=>$erreur]);
-        }
+	$institution_id = null;
 
+	if(!$this->isGranted('IMPORT',$institution_id)){
+		$fichier = basename($_FILES['import']['name']);
+		$taille = filesize($_FILES['import']['tmp_name']);
+		$extensions = array('.xlsx', '.ods', '.csv');
+		$extension = strrchr($_FILES['import']['name'], '.');
+		//Début des vérifications de sécurité...
+		if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
+		{
+		    $erreur = 'Vous devez uploader un fichier de type xlsx';
+		}
+		if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
+		{
+		    //On formate le nom du fichier ici...
+		    $fichier = strtr($fichier,
+		        'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
+		        'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+		    $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
+		    if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+		    {
+		        $reader = new XLSXReader($this->getDoctrine()->getManager(), $this->getUser());
+		        $reader->readAll($request, $fichier);
+		        return $this->redirectToRoute('entity_people_index');
+		    }
+		    else //Sinon (la fonction renvoie FALSE).
+		    {
+		        return $this->redirectToRoute("import_export",['error'=>'Echec de l\'upload !']);
+		    }
+		}
+		else
+		{
+		    return $this->redirectToRoute("import_export",['error'=>$erreur]);
+		}
+	}
 
     }
 }
