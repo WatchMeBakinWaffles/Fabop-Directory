@@ -60,6 +60,7 @@ class EntityPerformancesController extends AbstractController
 		    'entity_performance' => $entityPerformance,
 		    'form' => $form->createView(),
 		]);
+	}
 	return $this->redirectToRoute('entity_performances_index');
     }
 

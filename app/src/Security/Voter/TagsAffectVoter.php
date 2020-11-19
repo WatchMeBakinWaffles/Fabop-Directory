@@ -9,14 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class EntityShowsVoter extends Voter
+class TagsAffectVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['POST_EDIT', 'POST_VIEW'])
-            && $subject instanceof \App\Entity\EntityShows;
+            && $subject instanceof \App\Entity\TagsAffect;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -26,8 +26,8 @@ class EntityShowsVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-	
-	$roles = $user->getEntityRoles();
+
+        $roles = $user->getEntityRoles();
 	foreach ($roles as $role){
 		$permissions = $role->getPermissions();
 	        $mongoman = new MongoManager();
@@ -37,13 +37,13 @@ class EntityShowsVoter extends Voter
 		    case 'POST_EDIT':
 		        // logic to determine if the user can EDIT
 		        // return true or false
-		        if ($data_permissions["shows"] = "W" || $data_permissions["shows"] = "RW"){
+		        if ($data_permissions["tags"] = "W" || $data_permissions["tags"] = "RW"){
 		         	return true;
 			}
 		    case 'POST_VIEW':
 		        // logic to determine if the user can VIEW
 		        // return true or false
-		        if ($data_permissions["shows"] = "R" || $data_permissions["shows"] = "RW"){
+		        if ($data_permissions["tags"] = "R" || $data_permissions["tags"] = "RW"){
 		         	return true;
 			}
 		}
