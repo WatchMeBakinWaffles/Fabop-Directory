@@ -15,7 +15,7 @@ class ImportExportVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['IMPORT', 'EXPORT']);
+        return in_array($attribute, ['IMPORT', 'EXPORT', 'CONNECTION']);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -43,6 +43,12 @@ class ImportExportVoter extends Voter
 		        // logic to determine if the user can VIEW
 		        // return true or false
 		        if ($data_permissions["export"] = True){
+		         	return true;
+			}
+		    case 'CONNECTION':
+		        // logic to determine if the user can VIEW
+		        // return true or false
+		        if ($data_permissions["connection"] = True){
 		         	return true;
 			}
 		}
