@@ -31,25 +31,44 @@
                             </a>
                         </li>
 
+                        {% if is_granted('SUB_MENU','') %}
                         <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{entity(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-atlas"></i> &nbsp; Annuaire<span class="arrow"></span></a>
                         </li>
                         <ul class="sub-menu collapse {{ app.request.get('_route') matches '{entity(.+)}' ? 'show' }}" id="directory">
+                            {% if is_granted('PEOPLES','') %}
                             <li class="{{ app.request.get('_route') matches '{entity_people(.+)}' ? 'active' }}"><a href="{{ path('entity_people_index') }}">Personnes</a></li>
+                            {% endif %}
+                            {% if is_granted('INSTITUTIONS','') %}
                             <li class="{{ app.request.get('_route') matches '{entity_institutions(.+)}' ? 'active' }}"><a href="{{ path('entity_institutions_index') }}">Institutions</a></li>
+                            {% endif %}
+                            {% if is_granted('SHOWS','') %}
                             <li class="{{ app.request.get('_route') matches '{entity_shows(.+)}' ? 'active' }}"><a href="{{ path('entity_shows_index') }}">Spectacles</a></li>
+                            {% endif %}
+                            {% if is_granted('TAGS','') %}
                             <li class="{{ app.request.get('_route') matches '{entity_tags(.+)}' ? 'active' }}"><a href="{{ path('entity_tags_index') }}">TAGs</a></li>
+                            {% endif %}
                         </ul>
-                        
+                        {% endif %}
+                        {% if is_granted('ADMIN','') %}
                         <li data-toggle="collapse" data-target="#config" class="collapsed {{ app.request.get('_route') matches '{admin(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-wrench"></i> &nbsp; Administration <span class="arrow"></span></a>
                         </li>
                         <ul class="sub-menu collapse {{ app.request.get('_route') matches '{admin(.+)}' ? 'show' }}" id="config">
+                            {% if is_granted('USERS','') %}
                             <li class="{{ app.request.get('_route') matches '{admin_user(.+)}' ? 'active' }}"><a href="{{ path('admin_user_index') }}">Gestion des utilisateurs et rôles</a></li>
+                            {% endif %}
+                            {% if is_granted('MODELS','') %}
                             <li><a href="#">Gestion des modèles</a></li>
+                            {% endif %}
+                            {% if is_granted('RESTAURATIONS','') %}
                             <li><a href="#">Configuration</a></li>
+                            {% endif %}
+                            {% if is_granted('RESTAURATIONS','') %}
                             <li><a href="#">Sauvegardes / restaurations</a></li>
+                            {% endif %}
                         </ul>
+                        {% endif %}
                     </ul>
                 </div>
         </aside>
