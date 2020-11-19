@@ -1,6 +1,6 @@
 {% extends 'baselayout.html.twig' %}
 
-{% block title %}Utilisateurs{% endblock %}
+{% block title %}Roles{% endblock %}
 
 {% block content %}
     <h2><i class="fas fa-roless"></i> Liste des roles</h2>
@@ -18,17 +18,24 @@
             <tr>
                 <th><input type="checkbox" id="select-all"></th>
                 <th>Nom</th>
+                <th>permissions</th>
                 <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
         <tbody>
-        {% for entity_roles in entity_roles | sort %}
+        {% for entity_role in entity_roles | sort %}
+        
             <tr>
-                <td id="{{ entity_roles.id }}"><input type="checkbox" name="selected[{{ entity_roles.id }}]"></td> <!--VALUE !-->
-                <td>{{ entity_roles.nom }}</td>
+                <td id="{{ entity_role.id }}"><input type="checkbox" name="selected[{{ entity_role.id }}]"></td> <!--VALUE !-->
+                <td>{{ entity_role.nom }}</td>
+                {% for perm,per in permi %}
+                <td>{{perm}}</td>
+
+                {% endfor %}
+ 
                 <td>
-                    <a href="{{ path('admin_roles_show', {'id': entity_roles.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('admin_roles_edit', {'id': entity_roles.id}) }}"><i class="far fa-edit"></i></a>
+                    <a href="{{ path('admin_roles_show', {'id': entity_role.id}) }}"><i class="fas fa-eye"></i></a>
+                    <a href="{{ path('admin_roles_edit', {'id': entity_role.id}) }}"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}

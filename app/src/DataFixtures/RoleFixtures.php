@@ -27,7 +27,7 @@ class RoleFixtures extends Fixture
 		'connection'=>True,
 		'restaurations'=>'RW'
 	]);
-	$sheetPermissionContributeur=$mongoman->insertSingle("permission_user",[
+	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",[
 		'shows'=>'RW',
 		'tags'=>'RW',
 		'peoples'=>'RW',
@@ -40,7 +40,7 @@ class RoleFixtures extends Fixture
 		'connection'=>True,
 		'restaurations'=>''
 	]);
-	$sheetPermissionUtilisateur=$mongoman->insertSingle("permission_user",[
+	$sheetPermissionUtilisateur=$mongoman->insertSingle("permissions_user",[
 		'shows'=>'R',
 		'tags'=>'R',
 		'peoples'=>'R',
@@ -95,7 +95,6 @@ class RoleFixtures extends Fixture
         $user_root->setApiToken("API_ROOT");
 
         $manager->persist($user_root);
-
         $manager->flush();
     }
 }

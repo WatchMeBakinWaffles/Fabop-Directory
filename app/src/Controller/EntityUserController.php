@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityRoles;
 use App\Form\EntityRolesType;
 use App\Repository\EntityRolesRepository;
-
+use App\Repository\PermissionsRepository;
 use App\Entity\EntityUser;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
@@ -31,11 +31,12 @@ class EntityUserController extends AbstractController
     /**
      * @Route("roles/", name="admin_roles_index", methods={"GET"})
      */
-    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
+    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository,PermissionsRepository $permissionsRepository): Response
     {
+
         return $this->render('entity_roles/index.html.twig', [
             'entity_roles' => $entityRolesRepository->findAll(),
-
+            'permi' => $permissionsRepository->findAll(),
         ]);
     }
     /**

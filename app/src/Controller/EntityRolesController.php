@@ -6,6 +6,8 @@ use App\Entity\EntityUser;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
 
+use App\Repository\PermissionsRepository;
+
 use App\Entity\EntityRoles;
 use App\Form\EntityRolesType;
 use App\Repository\EntityRolesRepository;
@@ -22,7 +24,7 @@ class EntityRolesController extends AbstractController
     /**
     * @Route("/users/", name="admin_roles_index", methods={"GET"})
     */
-   public function index(EntityRolesRepository $entityRolesRepository): Response
+   public function index(EntityRolesRepository $entityRolesRepository,PermissionsRepository $permissionsRepository): Response
    {
        return $this->render('entity_roles/index.html.twig', [
         'entity_roles' => $entityRolesRepository->findAll(),
@@ -31,10 +33,12 @@ class EntityRolesController extends AbstractController
     /**
      * @Route("/", name="admin_user_index", methods={"GET"})
      */
-    public function index_to_users_list(EntityUserRepository $entityUserRepository): Response
+    public function index_to_users_list(EntityRolesRepository $entityRolesRepository,EntityUserRepository $entityUserRepository): Response
     {
         return $this->render('entity_user/index.html.twig', [
             'entity_users' => $entityUserRepository->findAll(),
+            'entity_roles' => $entityRolesRepository->findAll(),
+
         ]);
     }
 
