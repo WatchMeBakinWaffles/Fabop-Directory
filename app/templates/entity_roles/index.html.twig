@@ -17,10 +17,7 @@
         <thead class="bg-secondary text-white">
             <tr>
                 <th><input type="checkbox" id="select-all"></th>
-                <th>Nom</th>
-              {% for key,valeur in trey %}
-                <td>{{key}}</td>
-                {% endfor %}                
+                <th>Nom</th>         
                 <th><i class="fas fa-cog"></i></th>
             </tr>
         </thead>
@@ -30,9 +27,6 @@
             <tr>
                 <td id="{{ entity_role.id }}"><input type="checkbox" name="selected[{{ entity_role.id }}]"></td> <!--VALUE !-->
                 <td>{{ entity_role.nom }}</td>
-                <td>{{entity_role.permissions.getSheetId()}}</td>
-             
-
  
                 <td>
                     <a href="{{ path('admin_roles_show', {'id': entity_role.id}) }}"><i class="fas fa-eye"></i></a>

@@ -3,14 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\EntityUser;
-use App\Form\EntityUserType;
-use App\Repository\EntityUserRepository;
-
-use App\Repository\PermissionsRepository;
-
 use App\Entity\EntityRoles;
+use App\Entity\Permissions;
+use App\Utils\MongoManager;
+ 
+use App\Form\EntityUserType;
 use App\Form\EntityRolesType;
+
+use App\Repository\EntityUserRepository;
+use App\Repository\PermissionsRepository;
 use App\Repository\EntityRolesRepository;
+
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,15 +52,76 @@ class EntityRolesController extends AbstractController
      * @Route("roles/new", name="admin_roles_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
-    {
+    {  
+
+        //droits à attribuer
+        $choicesPerm = array(
+        'rien' => ' ',
+        'R' => 'R',
+        'W'=> 'W',
+        'RW' => 'RW'
+    );
+
+    //droits sous forme booleen
+    $choicesBool = array(
+        'True'=> True,
+        'False'=>False
+    );
+        //test des droits 
         $entityRoles = new EntityRoles();
-        $form = $this->createForm(EntityRolesType::class, $entityRoles);
+        if(!$this->isGranted('POST_EDIT',$entityRoles)){
+
+        //formulaire de permissions constituée de droits 
+        $defaultData = ['message' => 'Type your message here'];
+        $form = $this->createFormBuilder($defaultData)
+        ->add('nom', null,array('required' => true))
+        ->add('User_listing', EntityType::class, array('class' =>EntityUser::class, 'choice_label'=>'firstName','multiple'=>true, 'expanded'=>true))
+        ->add('shows',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('tags',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('shows',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('peoples',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('users',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('models',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('institutions',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('roles',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->add('import',ChoiceType::class, [
+            'choices' => $choicesBool])
+        ->add('export',ChoiceType::class, [
+            'choices' => $choicesBool])
+        ->add('connection',ChoiceType::class, [
+            'choices' => $choicesBool])
+        ->add('restaurations',ChoiceType::class, [
+            'choices' => $choicesPerm])
+        ->getForm();
+    
         $form->handleRequest($request);
+
+        $mongoman = new MongoManager();
+
+        //l'ajout
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityRoles);
-            $entityManager->flush();
+            $data = $form->getData();
+            $RoleInForm = new EntityRoles();
+            $RoleInForm->setNom($data['nom']);
+            $PermissionsInForm= new Permissions();
+
+            if (null != $request->request->get('roles_data')){
+		        $sheetId=$mongoman->insertSingle("permission_users",$request->request->get('roles_data'));
+		    }else{
+		        $sheetId=$mongoman->insertSingle("permission_users",[]);
+		    }
+
+		    // Mise en bdd MySQL de l'ID de fiche de données
 
             return $this->redirectToRoute('admin_roles_index');
         }
@@ -63,6 +130,8 @@ class EntityRolesController extends AbstractController
             'entity_roles' => $entityRoles,
             'form' => $form->createView(),
         ]);
+    }
+    return $this->redirectToRoute('admin_roles_index');
     }
 
 
