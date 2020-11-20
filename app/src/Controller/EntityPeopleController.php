@@ -48,11 +48,11 @@ class EntityPeopleController extends AbstractController
      */
     public function new(Request $request): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityPerson)){
+	$entityPerson = new EntityPeople();
+	if($this->isGranted('POST_EDIT',$entityPerson)){
 		if ($this->getDoctrine()->getManager()->getRepository(\App\Entity\EntityInstitutions::class)->countAll()<1){
 		    return $this->redirectToRoute('entity_institutions_new');
 		}
-		$entityPerson = new EntityPeople();
 		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -94,7 +94,7 @@ class EntityPeopleController extends AbstractController
      */
     public function show(EntityPeople $entityPerson, TagsAffectRepository $tagsAffectRepository): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityPerson)){
+	if($this->isGranted('POST_VIEW',$entityPerson)){
 		$mongoman = new MongoManager();
 		return $this->render('entity_people/show.html.twig', [
 		    'entity_person' => $entityPerson,
@@ -110,7 +110,7 @@ class EntityPeopleController extends AbstractController
      */
     public function edit(Request $request, EntityPeople $entityPerson): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityPerson)){
+	if($this->isGranted('POST_EDIT',$entityPerson)){
 		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -146,7 +146,7 @@ class EntityPeopleController extends AbstractController
      */
     public function delete(Request $request, EntityPeople $entityPerson): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityPerson)){
+	if($this->isGranted('POST_EDIT',$entityPerson)){
 
 		if ($this->isCsrfTokenValid('delete'.$entityPerson->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();

@@ -30,7 +30,7 @@ class TagsAffectController extends AbstractController
     public function new(Request $request): Response
     {
         $tagsAffect = new TagsAffect();
-	if(!$this->isGranted('POST_EDIT',$tagsAffect)){
+	if($this->isGranted('POST_EDIT',$tagsAffect)){
 		$form = $this->createForm(TagsAffectType::class, $tagsAffect, array(
 		    'attr' => array(
 		        'id' => 'form_tags_affect_new',
@@ -61,7 +61,7 @@ class TagsAffectController extends AbstractController
      */
     public function show(TagsAffect $tagsAffect): Response
     {
-	if(!$this->isGranted('POST_VIEW',$tagsAffect)){
+	if($this->isGranted('POST_VIEW',$tagsAffect)){
         	return $this->render('tags_affect/show.html.twig', ['tags_affect' => $tagsAffect]);
 	}
 	return $this->redirectToRoute('manager/tags_affect_index');
@@ -72,7 +72,7 @@ class TagsAffectController extends AbstractController
      */
     public function edit(Request $request, TagsAffect $tagsAffect): Response
     {
-	if(!$this->isGranted('POST_EDIT',$tagsAffect)){
+	if($this->isGranted('POST_EDIT',$tagsAffect)){
 		$form = $this->createForm(TagsAffectType::class, $tagsAffect);
 		$form->handleRequest($request);
 
@@ -95,7 +95,7 @@ class TagsAffectController extends AbstractController
      */
     public function delete(Request $request, TagsAffect $tagsAffect): Response
     {
-	if(!$this->isGranted('POST_EDIT',$tagsAffect)){
+	if($this->isGranted('POST_EDIT',$tagsAffect)){
 		if ($this->isCsrfTokenValid('delete'.$tagsAffect->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $em->remove($tagsAffect);

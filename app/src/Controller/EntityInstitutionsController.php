@@ -32,7 +32,7 @@ class EntityInstitutionsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityInstitution = new EntityInstitutions();
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -69,7 +69,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function show(EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityInstitution)){
+	if($this->isGranted('POST_VIEW',$entityInstitution)){
         	return $this->render('entity_institutions/show.html.twig', ['entity_institution' => $entityInstitution]);
 	}
 	return $this->redirectToRoute('entity_institutions_index');
@@ -80,7 +80,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function edit(Request $request, EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -117,7 +117,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function delete(Request $request, EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		if ($this->isCsrfTokenValid('delete'.$entityInstitution->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $mongoman = new MongoManager();

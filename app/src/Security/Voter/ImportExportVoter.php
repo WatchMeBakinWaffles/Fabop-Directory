@@ -33,72 +33,72 @@ class ImportExportVoter extends Voter
 		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
 		switch ($attribute) {
 		    case 'IMPORT':
-		        if ($data_permissions["import"] = True){
+		        if ($data_permissions["import"] == True){
 		         	return true;
 			}
 		    case 'EXPORT':
-		        if ($data_permissions["export"] = True){
+		        if ($data_permissions["export"] == True){
 		         	return true;
 			}
 		    case 'CONNECTION':
-		        if ($data_permissions["connection"] = True){
+		        if ($data_permissions["connection"] == True){
 		         	return true;
 			}
 		    case 'SUB_MENU':
-		        if ($data_permissions["peoples"] = "R"  || $data_permissions["peoples"] = "W" || $data_permissions["peoples"] = "RW"){
+		        if ($data_permissions["peoples"] == "R"  || $data_permissions["peoples"] == "W" || $data_permissions["peoples"] == "RW"){
 		         	return true;
 			}
-		        if ($data_permissions["institutions"] = "R"  || $data_permissions["institutions"] = "W" || $data_permissions["institutions"] = "RW"){
+		        if ($data_permissions["institutions"] == "R"  || $data_permissions["institutions"] == "W" || $data_permissions["institutions"] == "RW"){
 		         	return true;
 			}
-		        if ($data_permissions["shows"] = "R"  || $data_permissions["shows"] = "W" || $data_permissions["shows"] = "RW"){
+		        if ($data_permissions["shows"] == "R"  || $data_permissions["shows"] == "W" || $data_permissions["shows"] == "RW"){
 		         	return true;
 			}
-		        if ($data_permissions["tags"] = "R"  || $data_permissions["tags"] = "W" || $data_permissions["tags"] = "RW"){
+		        if ($data_permissions["tags"] == "R"  || $data_permissions["tags"] == "W" || $data_permissions["tags"] == "RW"){
 		         	return true;
 			}
 		    case 'PEOPLES':
-		        if ($data_permissions["peoples"] = "R"  || $data_permissions["peoples"] = "W" || $data_permissions["peoples"] = "RW"){
+		        if ($data_permissions["peoples"] == "R"  || $data_permissions["peoples"] == "W" || $data_permissions["peoples"] == "RW"){
 		         	return true;
 			}
 		    case 'INSTITUTIONS':
-		        if ($data_permissions["institutions"] = "R"  || $data_permissions["institutions"] = "W" || $data_permissions["institutions"] = "RW"){
+		        if ($data_permissions["institutions"] == "R"  || $data_permissions["institutions"] == "W" || $data_permissions["institutions"] == "RW"){
 		         	return true;
 			}
 		    case 'SHOWS':
-		        if ($data_permissions["shows"] = "R"  || $data_permissions["shows"] = "W" || $data_permissions["shows"] = "RW"){
+		        if ($data_permissions["shows"] == "R"  || $data_permissions["shows"] == "W" || $data_permissions["shows"] == "RW"){
 		         	return true;
 			}
 		    case 'TAGS':
-		        if ($data_permissions["tags"] = "R"  || $data_permissions["tags"] = "W" || $data_permissions["tags"] = "RW"){
+		        if ($data_permissions["tags"] == "R"  || $data_permissions["tags"] == "W" || $data_permissions["tags"] == "RW"){
 		         	return true;
 			}
 		    case 'ADMIN':
-		        if ($data_permissions["users"] = "R"  || $data_permissions["users"] = "W" || $data_permissions["users"] = "RW"){
+		        if ($data_permissions["users"] == "R"  || $data_permissions["users"] == "W" || $data_permissions["users"] == "RW"){
 		         	return true;
 			}
-			if ($data_permissions["roles"] = "R"  || $data_permissions["roles"] = "W" || $data_permissions["roles"] = "RW"){
+			if ($data_permissions["roles"] == "R"  || $data_permissions["roles"] == "W" || $data_permissions["roles"] == "RW"){
 		         	return true;
 			}
-		        if ($data_permissions["models"] = "R"  || $data_permissions["models"] = "W" || $data_permissions["models"] = "RW"){
+		        if ($data_permissions["models"] == "R"  || $data_permissions["models"] == "W" || $data_permissions["models"] == "RW"){
 		         	return true;
 			}
-		        if ($data_permissions["restaurations"] = "R"  || $data_permissions["restaurations"] = "W" || $data_permissions["restaurations"] = "RW"){
+		        if ($data_permissions["restaurations"] == "R"  || $data_permissions["restaurations"] == "W" || $data_permissions["restaurations"] == "RW"){
 		         	return true;
 			}
 		    case 'USERS':
-		        if ($data_permissions["users"] = "R"  || $data_permissions["users"] = "W" || $data_permissions["users"] = "RW"){
+		        if ($data_permissions["users"] == "R"  || $data_permissions["users"] == "W" || $data_permissions["users"] == "RW"){
 		         	return true;
 			}
-			if ($data_permissions["roles"] = "R"  || $data_permissions["roles"] = "W" || $data_permissions["roles"] = "RW"){
+			if ($data_permissions["roles"] == "R"  || $data_permissions["roles"] == "W" || $data_permissions["roles"] == "RW"){
 		         	return true;
 			}
 		    case 'MODELS':
-		        if ($data_permissions["models"] = "R"  || $data_permissions["models"] = "W" || $data_permissions["models"] = "RW"){
+		        if ($data_permissions["models"] == "R"  || $data_permissions["models"] == "W" || $data_permissions["models"] == "RW"){
 		         	return true;
 			}
 		    case 'RESTAURATIONS':
-		        if ($data_permissions["restaurations"] = "R"  || $data_permissions["restaurations"] = "W" || $data_permissions["restaurations"] = "RW"){
+		        if ($data_permissions["restaurations"] == "R"  || $data_permissions["restaurations"] == "W" || $data_permissions["restaurations"] == "RW"){
 		         	return true;
 			}
 		}

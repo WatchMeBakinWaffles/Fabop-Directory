@@ -39,7 +39,7 @@ class EntityTagsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityTag = new EntityTags();
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityTag)){
 		$form = $this->createForm(EntityTagsType::class, $entityTag, array(
 		    'attr' => array(
 		        'id' => 'form_entity_tags_new',
@@ -93,7 +93,7 @@ class EntityTagsController extends AbstractController
      */
     public function show(EntityTags $entityTag): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityTag)){
+	if($this->isGranted('POST_VIEW',$entityTag)){
         	return $this->render('entity_tags/show.html.twig', ['entity_tag' => $entityTag]);
 	}
 	return $this->redirectToRoute('entity_tags_index');
@@ -104,7 +104,7 @@ class EntityTagsController extends AbstractController
      */
     public function edit(Request $request, EntityTags $entityTag): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityUser)){
 		$form = $this->createForm(EntityTagsType::class, $entityTag);
 		$form->handleRequest($request);
 
@@ -127,7 +127,7 @@ class EntityTagsController extends AbstractController
      */
     public function delete(Request $request, EntityTags $entityTag): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityUser)){
 		if ($this->isCsrfTokenValid('delete'.$entityTag->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $em->remove($entityTag);

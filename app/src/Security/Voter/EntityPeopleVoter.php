@@ -37,13 +37,13 @@ class EntityPeopleVoter extends Voter
 		    case 'POST_EDIT':
 		        // logic to determine if the user can EDIT
 		        // return true or false
-		        if ($data_permissions["peoples"] = "W" || $data_permissions["peoples"] = "RW"){
+		        if ($data_permissions["peoples"] == "W" || $data_permissions["peoples"] == "RW"){
 		         	return true;
 			}
 		    case 'POST_VIEW':
 		        // logic to determine if the user can VIEW
 		        // return true or false
-		        if ($data_permissions["peoples"] = "R" || $data_permissions["peoples"] = "RW"){
+		        if ($data_permissions["peoples"] == "R" || $data_permissions["peoples"] == "RW"){
 		         	return true;
 			}
 		}

@@ -40,7 +40,7 @@ class EntityPerformancesController extends AbstractController
     public function new(Request $request): Response
     {
         $entityPerformance = new EntityPerformances();
-	if(!$this->isGranted('POST_EDIT',$entityPerformance)){
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
 		$form = $this->createForm(EntityPerformancesType::class, $entityPerformance, array(
 		    'attr' => array(
 		        'id' => 'form_entity_performances_new',
@@ -69,7 +69,7 @@ class EntityPerformancesController extends AbstractController
      */
     public function show(EntityPerformances $entityPerformance): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityPerformance)){
+	if($this->isGranted('POST_VIEW',$entityPerformance)){
         	return $this->render('entity_performances/show.html.twig', ['entity_performance' => $entityPerformance]);
 	}
         return $this->redirectToRoute('entity_performances_index');
@@ -80,7 +80,7 @@ class EntityPerformancesController extends AbstractController
      */
     public function edit(Request $request, EntityPerformances $entityPerformance): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityPerformance)){
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
 		$form = $this->createForm(EntityPerformancesType::class, $entityPerformance);
 		$form->handleRequest($request);
 
@@ -103,7 +103,7 @@ class EntityPerformancesController extends AbstractController
      */
     public function delete(Request $request, EntityPerformances $entityPerformance): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityPerformance)){
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
 		if ($this->isCsrfTokenValid('delete'.$entityPerformance->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $em->remove($entityPerformance);
