@@ -9,14 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class EntityUserVoter extends Voter
+class EntityPeopleVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['POST_EDIT', 'POST_VIEW'])
-            && $subject instanceof \App\Entity\EntityUser;
+            && $subject instanceof \App\Entity\EntityPeople;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -35,16 +35,19 @@ class EntityUserVoter extends Voter
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
 		    case 'POST_EDIT':
-		        if ($data_permissions["restaurations"] = "W" || $data_permissions["restaurations"] = "RW"){
+		        // logic to determine if the user can EDIT
+		        // return true or false
+		        if ($data_permissions["peoples"] = "W" || $data_permissions["peoples"] = "RW"){
 		         	return true;
 			}
 		    case 'POST_VIEW':
-		        if ($data_permissions["restaurations"] = "R" || $data_permissions["restaurations"] = "RW"){
+		        // logic to determine if the user can VIEW
+		        // return true or false
+		        if ($data_permissions["peoples"] = "R" || $data_permissions["peoples"] = "RW"){
 		         	return true;
 			}
 		}
 	}
-
         return false;
     }
 }

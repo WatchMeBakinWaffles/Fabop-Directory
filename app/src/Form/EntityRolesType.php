@@ -7,20 +7,23 @@ use App\Entity\Permissions;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Utils\MongoManager;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EntityRolesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $perm = new Permissions;
-        $choices = array(
-            'oui' => 'oui',
-            'non' => 'non',
-        );
+
+	        $mongoman = new MongoManager();
+        $data_permissions = $mongoman->getDocById("permissions_user","5fb6aa76ff0f877fab155dd3");
+        foreach($data_permissions as $perm => $droit)
+        {$try = $perm;}
         $choicesPerm = array(
-            'rien' => 'rien',
+            'rien' => '',
             'R' => 'R',
             'W'=> 'W',
             'RW' => 'RW'
@@ -28,12 +31,16 @@ class EntityRolesType extends AbstractType
         $builder
             ->add('nom', null,array('required' => true))
             ->add('users', null,array('label' => 'user','attr' => array('class' => 'cm-input')))
-            ->add('editable', ChoiceType::class, array(
+            /*->add('editable', ChoiceType::class, array(
                 'choices' => $choices,
                 'multiple' => false,)
-            )
-            ->add('permissions', null,array('label' => 'permission','attr' => array('class' => 'cm-input')))
-        ;
+            )*/
+            ->add('permissions' ,
+            
+                ChoiceType::class, array(
+                'label' => $try,
+                'choices' => $choicesPerm,
+                'attr' => array('class' => 'cm-input')));
     }
 
     public function configureOptions(OptionsResolver $resolver)

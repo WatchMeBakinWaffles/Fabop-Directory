@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\MongoManager;
+
 
 /**
  * @Route("/admin/")
@@ -31,12 +33,13 @@ class EntityUserController extends AbstractController
     /**
      * @Route("roles/", name="admin_roles_index", methods={"GET"})
      */
-    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository,PermissionsRepository $permissionsRepository): Response
+    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
     {
-
+		$mongoman = new MongoManager();
+		$data_permissions = $mongoman->getDocById("permissions_user","5fb6aa76ff0f877fab155dd3");
         return $this->render('entity_roles/index.html.twig', [
-            'entity_roles' => $entityRolesRepository->findAll(),
-            'permi' => $permissionsRepository->findAll(),
+			'entity_roles' => $entityRolesRepository->findAll(),
+			'trey' => $data_permissions,
         ]);
     }
     /**
@@ -45,27 +48,32 @@ class EntityUserController extends AbstractController
     public function new(Request $request): Response
     {
         $entityUser = new EntityUser();
-        $form = $this->createForm(EntityUserType::class, $entityUser);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityUser);
-            /**
-            * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
-            */
-            $entityUser->bCryptPassword($entityUser->getPassword());
-            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-                $entityUser->setInstitution(NULL);
-            $entityManager->flush();
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
 
-            return $this->redirectToRoute('admin_user_index');
-        }
+		$form = $this->createForm(EntityUserType::class, $entityUser);
+		$form->handleRequest($request);
 
-        return $this->render('entity_user/new.html.twig', [
-            'entity_user' => $entityUser,
-            'form' => $form->createView(),
-        ]);
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    $entityManager->persist($entityUser);
+		    /**
+		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+		    */
+		    $entityUser->bCryptPassword($entityUser->getPassword());
+		    if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
+		        $entityUser->setInstitution(NULL);
+		    $entityManager->flush();
+
+		    return $this->redirectToRoute('admin_user_index');
+		}
+
+		return $this->render('entity_user/new.html.twig', [
+		    'entity_user' => $entityUser,
+		    'form' => $form->createView(),
+		]);
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -73,9 +81,13 @@ class EntityUserController extends AbstractController
      */
     public function show(EntityUser $entityUser): Response
     {
-        return $this->render('entity_user/show.html.twig', [
-            'entity_user' => $entityUser,
-        ]);
+	if(!$this->isGranted('POST_VIEW',$entityUser)){
+
+		return $this->render('entity_user/show.html.twig', [
+		    'entity_user' => $entityUser,
+		]);
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -83,27 +95,31 @@ class EntityUserController extends AbstractController
      */
     public function edit(Request $request, EntityUser $entityUser): Response
     {
-        $form = $this->createForm(EntityUserType::class, $entityUser);
-        $form->handleRequest($request);
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityUser);
-            /**
-             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
-             */
-            $entityUser->bCryptPassword($entityUser->getPassword());
-            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-                $entityUser->setInstitution(NULL);
-            $entityManager->flush();
+		$form = $this->createForm(EntityUserType::class, $entityUser);
+		$form->handleRequest($request);
 
-            return $this->redirectToRoute('admin_user_index');
-        }
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    $entityManager->persist($entityUser);
+		    /**
+		     * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+		     */
+		    $entityUser->bCryptPassword($entityUser->getPassword());
+		    if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
+		        $entityUser->setInstitution(NULL);
+		    $entityManager->flush();
 
-        return $this->render('entity_user/edit.html.twig', [
-            'entity_user' => $entityUser,
-            'form' => $form->createView(),
-        ]);
+		    return $this->redirectToRoute('admin_user_index');
+		}
+
+		return $this->render('entity_user/edit.html.twig', [
+		    'entity_user' => $entityUser,
+		    'form' => $form->createView(),
+		]);
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
@@ -111,11 +127,14 @@ class EntityUserController extends AbstractController
      */
     public function delete(Request $request, EntityUser $entityUser): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityUser->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($entityUser);
-            $entityManager->flush();
-        }
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
+
+		if ($this->isCsrfTokenValid('delete'.$entityUser->getId(), $request->request->get('_token'))) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    $entityManager->remove($entityUser);
+		    $entityManager->flush();
+		}
+	}
 
         return $this->redirectToRoute('admin_user_index');
     }

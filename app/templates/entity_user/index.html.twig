@@ -33,7 +33,11 @@
                 <td>{{ entity_user.firstName }}</td>
                 <td>{{ entity_user.lastName }}</td>
                 <td>{{ entity_user.email }}</td>
-                <td>{{ entity_user.roles ? entity_user.roles|json_encode : '' }}</td>
+		<td>
+		{% for role in entity_user.entityRoles | sort %}
+                	{{ role.nom }}
+		{% endfor %}
+		</td>
                 <td>{{ entity_user.institution ? entity_user.institution.getName() }}</td>
                 <td>{{ entity_user.ApiToken }}</td>
                 <td>

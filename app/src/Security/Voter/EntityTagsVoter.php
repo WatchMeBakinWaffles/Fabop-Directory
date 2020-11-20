@@ -9,14 +9,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class EntityUserVoter extends Voter
+class EntityTagsVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, ['POST_EDIT', 'POST_VIEW'])
-            && $subject instanceof \App\Entity\EntityUser;
+            && $subject instanceof \App\Entity\EntityTags;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -26,7 +26,7 @@ class EntityUserVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-
+	
 	$roles = $user->getEntityRoles();
 	foreach ($roles as $role){
 		$permissions = $role->getPermissions();
@@ -35,16 +35,19 @@ class EntityUserVoter extends Voter
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
 		    case 'POST_EDIT':
-		        if ($data_permissions["restaurations"] = "W" || $data_permissions["restaurations"] = "RW"){
+		        // logic to determine if the user can EDIT
+		        // return true or false
+		        if ($data_permissions["tags"] = "W" || $data_permissions["tags"] = "RW"){
 		         	return true;
 			}
 		    case 'POST_VIEW':
-		        if ($data_permissions["restaurations"] = "R" || $data_permissions["restaurations"] = "RW"){
+		        // logic to determine if the user can VIEW
+		        // return true or false
+		        if ($data_permissions["tags"] = "R" || $data_permissions["tags"] = "RW"){
 		         	return true;
 			}
 		}
 	}
-
         return false;
     }
 }

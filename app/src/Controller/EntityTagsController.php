@@ -39,25 +39,28 @@ class EntityTagsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityTag = new EntityTags();
-        $form = $this->createForm(EntityTagsType::class, $entityTag, array(
-            'attr' => array(
-                'id' => 'form_entity_tags_new',
-            )
-        ));
-        $form->handleRequest($request);
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
+		$form = $this->createForm(EntityTagsType::class, $entityTag, array(
+		    'attr' => array(
+		        'id' => 'form_entity_tags_new',
+		    )
+		));
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entityTag);
-            $em->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $em = $this->getDoctrine()->getManager();
+		    $em->persist($entityTag);
+		    $em->flush();
 
-            return $this->redirectToRoute('entity_tags_index');
-        }
+		    return $this->redirectToRoute('entity_tags_index');
+		}
 
-        return $this->render('entity_tags/new.html.twig', [
-            'entity_tag' => $entityTag,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_tags/new.html.twig', [
+		    'entity_tag' => $entityTag,
+		    'form' => $form->createView(),
+		]);
+	}
+	return $this->redirectToRoute('entity_tags_index');
     }
 
     /**
@@ -90,7 +93,10 @@ class EntityTagsController extends AbstractController
      */
     public function show(EntityTags $entityTag): Response
     {
-        return $this->render('entity_tags/show.html.twig', ['entity_tag' => $entityTag]);
+	if(!$this->isGranted('POST_VIEW',$entityTag)){
+        	return $this->render('entity_tags/show.html.twig', ['entity_tag' => $entityTag]);
+	}
+	return $this->redirectToRoute('entity_tags_index');
     }
 
     /**
@@ -98,19 +104,22 @@ class EntityTagsController extends AbstractController
      */
     public function edit(Request $request, EntityTags $entityTag): Response
     {
-        $form = $this->createForm(EntityTagsType::class, $entityTag);
-        $form->handleRequest($request);
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
+		$form = $this->createForm(EntityTagsType::class, $entityTag);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_tags_index', ['id' => $entityTag->getId()]);
-        }
+		    return $this->redirectToRoute('entity_tags_index', ['id' => $entityTag->getId()]);
+		}
 
-        return $this->render('entity_tags/edit.html.twig', [
-            'entity_tag' => $entityTag,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_tags/edit.html.twig', [
+		    'entity_tag' => $entityTag,
+		    'form' => $form->createView(),
+		]);
+	}
+        return $this->redirectToRoute('entity_tags_index');
     }
 
     /**
@@ -118,12 +127,13 @@ class EntityTagsController extends AbstractController
      */
     public function delete(Request $request, EntityTags $entityTag): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityTag->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($entityTag);
-            $em->flush();
-        }
-
+	if(!$this->isGranted('POST_EDIT',$entityUser)){
+		if ($this->isCsrfTokenValid('delete'.$entityTag->getId(), $request->request->get('_token'))) {
+		    $em = $this->getDoctrine()->getManager();
+		    $em->remove($entityTag);
+		    $em->flush();
+		}
+	}
         return $this->redirectToRoute('entity_tags_index');
     }
 }

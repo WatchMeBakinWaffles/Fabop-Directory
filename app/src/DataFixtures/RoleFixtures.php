@@ -63,6 +63,11 @@ class RoleFixtures extends Fixture
 	$PermissionsUtilisateur = new Permissions();
         $PermissionsUtilisateur->setSheetId($sheetPermissionUtilisateur);
 
+	$manager->persist($PermissionsAdmin);
+        $manager->persist($PermissionsContributeur);
+        $manager->persist($PermissionsUtilisateur);
+	$manager->flush();
+
 	$entityRoleAdmin = new EntityRoles();
         $entityRoleAdmin->setNom("ROLE_ADMIN");
         $entityRoleAdmin->setEditable(False);
@@ -78,12 +83,10 @@ class RoleFixtures extends Fixture
         $entityRoleUtilisateur->setEditable(False);
 	$entityRoleUtilisateur->setPermissions($PermissionsUtilisateur);
 
-        $manager->persist($PermissionsAdmin);
-        $manager->persist($PermissionsContributeur);
-        $manager->persist($PermissionsUtilisateur);
         $manager->persist($entityRoleAdmin);
         $manager->persist($entityRoleContributeur);
         $manager->persist($entityRoleUtilisateur);
+	$manager->flush();
 
 	$user_root = new EntityUser();
         $user_root->setEmail("root@root.fr");
@@ -94,7 +97,18 @@ class RoleFixtures extends Fixture
         $user_root->setPassword('$2y$12$eGhtebnhdb0BDs72VBLYneNt6Fz9QYM5FLL6P86irhhwahamUDhEm');
         $user_root->setApiToken("API_ROOT");
 
+	$user_test = new EntityUser();
+        $user_test->setEmail("test@test.fr");
+        $user_test->setRoles(array());
+	$user_test->addEntityRole($entityRoleUtilisateur);
+        $user_test->setFirstname("test");
+        $user_test->setLastname("test");
+        $user_test->setPassword('$2y$12$eGhtebnhdb0BDs72VBLYneNt6Fz9QYM5FLL6P86irhhwahamUDhEm');
+        $user_test->setApiToken("API_TEST");
+
         $manager->persist($user_root);
+        $manager->persist($user_test);
+
         $manager->flush();
     }
 }

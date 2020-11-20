@@ -9,14 +9,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class EntityUserVoter extends Voter
+class ImportExportVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['POST_EDIT', 'POST_VIEW'])
-            && $subject instanceof \App\Entity\EntityUser;
+        return in_array($attribute, ['IMPORT', 'EXPORT', 'CONNECTION']);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -27,24 +26,33 @@ class EntityUserVoter extends Voter
             return false;
         }
 
-	$roles = $user->getEntityRoles();
+        $roles = $user->getEntityRoles();
 	foreach ($roles as $role){
 		$permissions = $role->getPermissions();
 	        $mongoman = new MongoManager();
 		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
-		    case 'POST_EDIT':
-		        if ($data_permissions["restaurations"] = "W" || $data_permissions["restaurations"] = "RW"){
+		    case 'IMPORT':
+		        // logic to determine if the user can EDIT
+		        // return true or false
+		        if ($data_permissions["import"] = True){
 		         	return true;
 			}
-		    case 'POST_VIEW':
-		        if ($data_permissions["restaurations"] = "R" || $data_permissions["restaurations"] = "RW"){
+		    case 'EXPORT':
+		        // logic to determine if the user can VIEW
+		        // return true or false
+		        if ($data_permissions["export"] = True){
+		         	return true;
+			}
+		    case 'CONNECTION':
+		        // logic to determine if the user can VIEW
+		        // return true or false
+		        if ($data_permissions["connection"] = True){
 		         	return true;
 			}
 		}
 	}
-
         return false;
     }
 }
