@@ -86,6 +86,9 @@ class EntityPeopleController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_people_index');
     }
 
@@ -101,6 +104,9 @@ class EntityPeopleController extends AbstractController
 		    'tags_affects' => $tagsAffectRepository->findAll(),
 		    'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
 		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('entity_people_index');
     }
@@ -138,6 +144,9 @@ class EntityPeopleController extends AbstractController
 		    'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_people_index');
     }
 
@@ -156,6 +165,9 @@ class EntityPeopleController extends AbstractController
 		    $em->remove($entityPerson);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
         return $this->redirectToRoute('entity_people_index');

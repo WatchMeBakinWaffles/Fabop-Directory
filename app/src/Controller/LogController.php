@@ -35,6 +35,9 @@ class LogController extends AbstractController
 		    'log' => $log,
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('log_index');
     }
 
@@ -49,6 +52,9 @@ class LogController extends AbstractController
 		    $entityManager->remove($log);
 		    $entityManager->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('log_index');
     }

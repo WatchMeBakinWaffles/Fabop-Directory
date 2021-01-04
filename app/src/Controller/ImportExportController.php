@@ -51,6 +51,9 @@ class ImportExportController extends AbstractController
 		readfile($file);
 		exit;
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
     }
 
     /**
@@ -75,6 +78,9 @@ class ImportExportController extends AbstractController
 		header('Content-Length: ' . filesize($file));
 		readfile($file);
 		exit;
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
     }
 
@@ -117,6 +123,9 @@ class ImportExportController extends AbstractController
 		{
 		    return $this->redirectToRoute("import_export",['error'=>$erreur]);
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
     }

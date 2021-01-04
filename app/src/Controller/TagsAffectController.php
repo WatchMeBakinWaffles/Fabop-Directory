@@ -53,6 +53,9 @@ class TagsAffectController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('manager/tags_affect_index');
     }
 
@@ -63,6 +66,9 @@ class TagsAffectController extends AbstractController
     {
 	if($this->isGranted('POST_VIEW',$tagsAffect)){
         	return $this->render('tags_affect/show.html.twig', ['tags_affect' => $tagsAffect]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('manager/tags_affect_index');
     }
@@ -87,6 +93,9 @@ class TagsAffectController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('manager/tags_affect_index');
     }
 
@@ -101,6 +110,9 @@ class TagsAffectController extends AbstractController
 		    $em->remove($tagsAffect);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('manager/tags_affect_index');
     }

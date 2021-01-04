@@ -60,6 +60,9 @@ class EntityShowsController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_shows_index');
     }
 
@@ -70,6 +73,9 @@ class EntityShowsController extends AbstractController
     {
 	if($this->isGranted('POST_VIEW',$entityShow)){
         	return $this->render('entity_shows/show.html.twig', ['entity_show' => $entityShow]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('entity_shows_index');
     }
@@ -107,6 +113,9 @@ class EntityShowsController extends AbstractController
 		    'entity_show_data' => $mongoman->getDocById("Entity_show_sheet",$entityShow->getSheetId()),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_shows_index');
     }
 
@@ -123,6 +132,9 @@ class EntityShowsController extends AbstractController
 		    $em->remove($entityShow);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
         return $this->redirectToRoute('entity_shows_index');

@@ -61,6 +61,9 @@ class EntityPerformancesController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_performances_index');
     }
 
@@ -71,6 +74,9 @@ class EntityPerformancesController extends AbstractController
     {
 	if($this->isGranted('POST_VIEW',$entityPerformance)){
         	return $this->render('entity_performances/show.html.twig', ['entity_performance' => $entityPerformance]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('entity_performances_index');
     }
@@ -95,6 +101,9 @@ class EntityPerformancesController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
         return $this->redirectToRoute('entity_performances_index');
     }
 
@@ -109,6 +118,9 @@ class EntityPerformancesController extends AbstractController
 		    $em->remove($entityPerformance);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('entity_performances_index');
     }

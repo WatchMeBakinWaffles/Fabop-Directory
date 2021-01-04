@@ -60,6 +60,9 @@ class EntityTagsController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_tags_index');
     }
 
@@ -96,6 +99,9 @@ class EntityTagsController extends AbstractController
 	if($this->isGranted('POST_VIEW',$entityTag)){
         	return $this->render('entity_tags/show.html.twig', ['entity_tag' => $entityTag]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_tags_index');
     }
 
@@ -119,6 +125,9 @@ class EntityTagsController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
         return $this->redirectToRoute('entity_tags_index');
     }
 
@@ -133,6 +142,9 @@ class EntityTagsController extends AbstractController
 		    $em->remove($entityTag);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('entity_tags_index');
     }

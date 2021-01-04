@@ -56,6 +56,9 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('admin_user_index');
     }
 
@@ -69,6 +72,9 @@ class EntityUserController extends AbstractController
 		return $this->render('entity_user/show.html.twig', [
 		    'entity_user' => $entityUser,
 		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('admin_user_index');
     }
@@ -102,6 +108,9 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('admin_user_index');
     }
 
@@ -117,6 +126,9 @@ class EntityUserController extends AbstractController
 		    $entityManager->remove($entityUser);
 		    $entityManager->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
         return $this->redirectToRoute('admin_user_index');
