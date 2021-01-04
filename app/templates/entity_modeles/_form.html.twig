@@ -1,0 +1,12 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<div class="container">
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.modele_default) }}
+    {{ form_row(form.modele_custom) }}
+    {{ form_row(form.modeleFile) }}
+    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    <a class="btn btn-light m-1" href="{{ path('entity_modele_index') }}"><i class="fas fa-undo"></i> Retour</a>
+    {{ form_end(form) }}
+</div>

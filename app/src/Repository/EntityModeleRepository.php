@@ -19,6 +19,16 @@ class EntityModeleRepository extends ServiceEntityRepository
         parent::__construct($registry, EntityModele::class);
     }
 
+    public function findByUserIdJoinToUser($id){
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('em')
+            ->from('App\Entity\EntityModele', 'em')
+            ->join('em.user', 'u')
+            ->where('u.id=:val')
+            ->setParameter('val', $id);
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return EntityModele[] Returns an array of EntityModele objects
     //  */

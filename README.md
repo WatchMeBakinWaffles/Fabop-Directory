@@ -100,8 +100,8 @@ These instructions will get you a copy of the project up and running on your loc
     
     `yarn run gulp fonts`
 
-3. Edit app/.env and set `APP_ENV` to `dev`
 
+3. Edit app/.env and set `APP_ENV` to `dev`
 4. Set DB passwords in `docker-compose.yml` and copy them into `app/.env` by replacing `<SET PASSWORD HERE>` placeholders. Set also mongodb password in `build/mongodb/mongo-init.js`.
 
 5. Now, build docker images and start it :
@@ -114,8 +114,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 6. Install composer dependencies by your php container : 
    
-   `docker exec <php container> composer install `
-   `docker exec <php container> chown -R :www-data /var/www`
+   `docker exec <php container | php> composer install `
+   `docker exec <php container | php> chown -R :www-data /var/www`
             
 7. Make db migrations by using following commands :
 

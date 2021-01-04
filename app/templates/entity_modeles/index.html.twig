@@ -1,0 +1,51 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Modeles{% endblock %}
+
+{% block content %}
+    <h2><i class="fa fa-file"></i> Liste des modeles personnalisés</h2>
+    <div class="row m-3">
+        <a class="btn btn-primary mr-2" href="{{ path('entity_modeles_new') }}"><i class="fas fa-plus"></i> Ajouter</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="bg-secondary text-white">
+        <tr>
+            <th><input type="checkbox" id="select-all"></th>
+            <th>Nom</th>
+            <th>Modele par defaut</th>
+            <th>Modele personnalisé</th>
+            <th>Date création</th>
+            <th>Date modification</th>
+            <th>Nom du fichier</th>
+            <th>Utilisateur</th>
+            <th><i class="fas fa-cog"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for modele in entity_modeles | sort %}
+            <tr>
+                <td id="{{ modele.id }}"><input type="checkbox" name="selected[{{ modele.id }}]"></td> <!--VALUE !-->
+                <td>{{ modele.name }}</td>
+                <td>{{ modele.getModeleDefault() }}</td>
+                <td>{{ modele.getModeleCustom() }}</td>
+                <td>{{ modele.createdAt | format_datetime()  }}</td>
+                <td>{{ modele.updatedAt | format_datetime()  }}</td>
+                <td>{{ modele.filename }}</td>
+                {% for users in modele.user %}
+                <td>{{ users.firstName }}</td>
+                {% endfor %}
+                <td>
+                    <a href="{{ path('entity_modeles_show', {'id': modele.id}) }}"><i class="fas fa-eye"></i></a>
+{#                    <a href="{{ path('entity_modeles_edit', {'id': modele.id}) }}"><i class="far fa-edit"></i></a>#}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucune entrée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityInstitutions;
 use App\Entity\EntityModele;
 use App\Entity\EntityShows;
-use App\Form\EntityModeleType;
+use App\Entity\EntityUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,12 @@ class ImportExportController extends AbstractController
      */
     public function index()
     {
-        return $this->render('import_export/index.html.twig');
+        $userId = $this->getUser()->getId();
+
+        $modele_repo = $this->getDoctrine()->getRepository(EntityModele::class);
+        return $this->render('import_export/index.html.twig',[
+            'modeles' => $modele_repo->findByUserIdJoinToUser($userId)
+        ]);
     }
 
     /**
@@ -167,28 +172,8 @@ class ImportExportController extends AbstractController
     }
 
     /**
-     * @Route("/modele_custom", name="modele_custom", methods="GET|POST")
-     */
-    public function modele_custom(Request $request)
-    {
-        $modele = new EntityModele();
-        $form = $this->createForm(EntityModeleType::class, $modele);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($modele);
-            $em->flush();
-            return $this->redirectToRoute('modele_custom');
-        }
-
-        return $this->render('modele/index.html.twig', [
-            "form" => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/modele_personne", name="modele_personne")
+     *
      */
     public function modele_personne(Request $request)
     {
@@ -215,7 +200,7 @@ class ImportExportController extends AbstractController
      */
     public function modele_institution(Request $request)
     {
-        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+        $institution = $this->getDoctrine()->getRepository(EntityInstitutions::class);
 
         $writer = new XLSXWriter();
 
@@ -238,7 +223,7 @@ class ImportExportController extends AbstractController
      */
     public function modele_spectacle(Request $request)
     {
-        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+        $show = $this->getDoctrine()->getRepository(EntityShows::class);
 
         $writer = new XLSXWriter();
 

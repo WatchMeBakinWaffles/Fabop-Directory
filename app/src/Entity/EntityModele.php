@@ -74,7 +74,7 @@ class EntityModele
     }
 
     public function __toString(){
-        return $this->getModeleDefault()." ".$this->getModeleCustom();
+        return $this->getModeleDefault()." ".$this->getModeleCustom()." ".$this->getUser();
     }
 
     public function getId(): ?int
@@ -141,6 +141,24 @@ class EntityModele
     public function setFilename(?string $filename)
     {
         $this->filename = $filename;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return EntityModele
+     */
+    public function setCreatedAt(\DateTime $createdAt): EntityModele
+    {
+        $this->createdAt = $createdAt;
+        return $this;
     }
 
 

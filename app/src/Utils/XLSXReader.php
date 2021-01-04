@@ -24,7 +24,6 @@ class XLSXReader
 
     public function readAll(Request $request, string $filename)
     {
-
         $mongoman = new MongoManager();
 
         $reader = ReaderEntityFactory::createReaderFromFile($filename);

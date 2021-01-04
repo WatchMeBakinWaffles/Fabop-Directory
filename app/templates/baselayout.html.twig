@@ -50,7 +50,7 @@
                         </li>
                         <ul class="sub-menu collapse {{ app.request.get('_route') matches '{admin(.+)}' ? 'show' }}" id="config">
                             <li class="{{ app.request.get('_route') matches '{admin_user(.+)}' ? 'active' }}"><a href="{{ path('admin_user_index') }}">Gestion des utilisateurs et rôles</a></li>
-                            <li><a href="#">Gestion des modèles</a></li>
+                            <li class="{{ app.request.get('_route') matches '{admin_user(.+)}' ? 'active' ? 'show' }}"><a href="{{ path('entity_modele_index') }}">Gestion des modèles</a></li>
                             <li><a href="#">Configuration</a></li>
                             <li><a href="#">Sauvegardes / restaurations</a></li>
                         </ul>

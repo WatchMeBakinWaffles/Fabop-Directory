@@ -5,6 +5,7 @@
 {% block content %}
 
     <div class="row">
+
         <div class="col">
             <h2><i class="fa fa-file-import"></i> Télécharger un modèle de base</h2>
             <section class="dropdown">
@@ -17,6 +18,11 @@
                             <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
                             <a type="submit" class="dropdown-item" href="{{ path('modele_institution') }}">Institution</a>
                             <a type="submit" class="dropdown-item" href="{{ path('modele_spectacle') }}">Spectacle</a>
+                            {% for modele in modeles %}
+                                {% if modele.getModeleDefault() %}
+                                    <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </form>
                 </div>
@@ -25,19 +31,20 @@
             <br>
         </div>
 
-
-
-
         <div class="col">
-            <h2><i class="fa fa-file-import"></i> <a href="{{ path('modele_custom') }}">Vos modèles customisés</a></h2>
+            <h2><i class="fa fa-file-import"></i> Vos modèles customisés</h2>
             <section class="dropdown">
                 <button class="btn btn-success dropdown-toggle" type="button" id="selectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Selectionner un de vos modèles
+                    Télécharger un modele
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="custom-file mb-1">
-                            <a type="submit" class="dropdown-item" href="">Personne</a>
+                            {% for modele in modeles %}
+                                {% if modele.getModeleCustom() %}
+                                    <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </form>
                 </div>
@@ -45,6 +52,7 @@
             <br>
             <br>
         </div>
+
     </div>
 
     <div class="col">
@@ -61,11 +69,4 @@
         </section>
     </div>
 
-{#        <section class="col-6">
-            <h2><i class="fa fa-upload"></i> Exporter des données</h2>
-            <form action="{{ path('export') }}">
-                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Exporter</button>
-            </form>
-        </section>
-    </section>#}
 {% endblock %}
