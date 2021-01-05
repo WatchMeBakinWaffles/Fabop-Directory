@@ -51,7 +51,7 @@ class EntityRolesController extends AbstractController
     /**
      * @Route("roles/new", name="admin_roles_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,EntityUserRepository $entityUserRepository): Response
     {  
 
         //droits à attribuer
@@ -75,7 +75,7 @@ class EntityRolesController extends AbstractController
         $defaultData = ['message' => 'Type your message here'];
         $form = $this->createFormBuilder($defaultData)
         ->add('nom', null,array('required' => true))
-        ->add('User_listing', EntityType::class, array('class' =>EntityUser::class, 'choice_label'=>'firstName','multiple'=>true, 'expanded'=>true))
+        ->add('User_listing', EntityType::class, array('class' =>EntityUser::class, 'choice_label'=>'email','multiple'=>true, 'expanded'=>true))
         ->add('shows',ChoiceType::class, [
             'choices' => $choicesPerm])
         ->add('tags',ChoiceType::class, [
@@ -113,8 +113,35 @@ class EntityRolesController extends AbstractController
             $data = $form->getData();
             $RoleInForm = new EntityRoles();
             $RoleInForm->setNom($data['nom']);
-            $PermissionsInForm= new Permissions();
+            $sheetPermission=$mongoman->insertSingle("permissions_user",[
+                'shows'=> $data["shows"],
+                'tags'=>$data["tags"],
+                'peoples'=>$data["peoples"],
+                'users'=>$data["users"],
+                'models'=>$data["models"],
+                'institutions'=>$data["institutions"],
+                'roles'=>$data["roles"],
+                'import'=>$data["import"],
+                'export'=>$data["export"],
+                'connection'=>$data["connection"],
+                'restaurations'=>$data["restaurations"]
+            ]);
+            $PermissionsInForm = new Permissions();
+            $PermissionsInForm->setSheetId($sheetPermission);
+            $RoleInForm->setPermissions($PermissionsInForm);
+            $RoleInForm->setEditable(False);
 
+            $entityManager->persist($PermissionsInForm);
+            $entityManager->flush();
+            foreach($data['User_listing'] as $userEmail){
+                if($userEmail != null){
+                $userem = strval($userEmail);
+                $user = $entityUserRepository->findOneByemail($userem);
+                    $user->addEntityRole($RoleInForm);
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                }
+            }
             if (null != $request->request->get('roles_data')){
 		        $sheetId=$mongoman->insertSingle("permission_users",$request->request->get('roles_data'));
 		    }else{

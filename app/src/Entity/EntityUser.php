@@ -230,6 +230,6 @@ class EntityUser implements UserInterface
 
     public function __toString()
     {
-        return $this->getFirstName();
+        return $this->getEmail();
     }
 }
