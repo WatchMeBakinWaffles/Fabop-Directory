@@ -31,7 +31,7 @@ class EntityShowsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityShow = new EntityShows();
-	if(!$this->isGranted('POST_EDIT',$entityShow)){
+	if($this->isGranted('POST_EDIT',$entityShow)){
 		$form = $this->createForm(EntityShowsType::class, $entityShow);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -60,6 +60,9 @@ class EntityShowsController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_shows_index');
     }
 
@@ -68,8 +71,11 @@ class EntityShowsController extends AbstractController
      */
     public function show(EntityShows $entityShow): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityShow)){
+	if($this->isGranted('POST_VIEW',$entityShow)){
         	return $this->render('entity_shows/show.html.twig', ['entity_show' => $entityShow]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('entity_shows_index');
     }
@@ -79,7 +85,7 @@ class EntityShowsController extends AbstractController
      */
     public function edit(Request $request, EntityShows $entityShow): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityShow)){
+	if($this->isGranted('POST_EDIT',$entityShow)){
 		$form = $this->createForm(EntityShowsType::class, $entityShow);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -107,6 +113,9 @@ class EntityShowsController extends AbstractController
 		    'entity_show_data' => $mongoman->getDocById("Entity_show_sheet",$entityShow->getSheetId()),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_shows_index');
     }
 
@@ -115,7 +124,7 @@ class EntityShowsController extends AbstractController
      */
     public function delete(Request $request, EntityShows $entityShow): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityShow)){
+	if($this->isGranted('POST_EDIT',$entityShow)){
 		if ($this->isCsrfTokenValid('delete'.$entityShow->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $mongoman = new MongoManager();
@@ -123,6 +132,9 @@ class EntityShowsController extends AbstractController
 		    $em->remove($entityShow);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
         return $this->redirectToRoute('entity_shows_index');

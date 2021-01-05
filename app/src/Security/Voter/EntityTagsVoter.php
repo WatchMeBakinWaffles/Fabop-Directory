@@ -37,13 +37,13 @@ class EntityTagsVoter extends Voter
 		    case 'POST_EDIT':
 		        // logic to determine if the user can EDIT
 		        // return true or false
-		        if ($data_permissions["tags"] = "W" || $data_permissions["tags"] = "RW"){
+		        if ($data_permissions["tags"] == "W" || $data_permissions["tags"] == "RW"){
 		         	return true;
 			}
 		    case 'POST_VIEW':
 		        // logic to determine if the user can VIEW
 		        // return true or false
-		        if ($data_permissions["tags"] = "R" || $data_permissions["tags"] = "RW"){
+		        if ($data_permissions["tags"] == "R" || $data_permissions["tags"] == "RW"){
 		         	return true;
 			}
 		}

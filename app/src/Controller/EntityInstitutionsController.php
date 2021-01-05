@@ -32,7 +32,7 @@ class EntityInstitutionsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityInstitution = new EntityInstitutions();
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -61,6 +61,9 @@ class EntityInstitutionsController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('entity_institutions_index');
     }
 
@@ -69,8 +72,11 @@ class EntityInstitutionsController extends AbstractController
      */
     public function show(EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityInstitution)){
+	if($this->isGranted('POST_VIEW',$entityInstitution)){
         	return $this->render('entity_institutions/show.html.twig', ['entity_institution' => $entityInstitution]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('entity_institutions_index');
     }
@@ -80,7 +86,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function edit(Request $request, EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
@@ -109,6 +115,9 @@ class EntityInstitutionsController extends AbstractController
 		    'entity_institution_data' => $mongoman->getDocById("Entity_institution_sheet",$entityInstitution->getSheetId()),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
         return $this->redirectToRoute('entity_institutions_index');
     }
 
@@ -117,7 +126,7 @@ class EntityInstitutionsController extends AbstractController
      */
     public function delete(Request $request, EntityInstitutions $entityInstitution): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityInstitution)){
+	if($this->isGranted('POST_EDIT',$entityInstitution)){
 		if ($this->isCsrfTokenValid('delete'.$entityInstitution->getId(), $request->request->get('_token'))) {
 		    $em = $this->getDoctrine()->getManager();
 		    $mongoman = new MongoManager();
@@ -125,6 +134,9 @@ class EntityInstitutionsController extends AbstractController
 		    $em->remove($entityInstitution);
 		    $em->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
         return $this->redirectToRoute('entity_institutions_index');
     }

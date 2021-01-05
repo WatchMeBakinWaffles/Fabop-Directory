@@ -32,9 +32,7 @@ class ImportExportController extends AbstractController
     public function export(EntityPeopleRepository $epr)
     {
 
-        $institution_id = null;
-
-	if(!$this->isGranted('EXPORT',$institution_id)){
+	if($this->isGranted('EXPORT','')){
 		if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
 		    $institution_id = $this->getUser()->getInstitution();        
 
@@ -53,6 +51,9 @@ class ImportExportController extends AbstractController
 		readfile($file);
 		exit;
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
     }
 
     /**
@@ -60,9 +61,7 @@ class ImportExportController extends AbstractController
      */
     public function export_selectif(Request $request)
     {
-        $institution_id = null;
-
-	if(!$this->isGranted('EXPORT',$institution_id)){
+	if($this->isGranted('EXPORT',$institution_id)){
 		$people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
 		$writer = new XLSXWriter();
@@ -80,6 +79,9 @@ class ImportExportController extends AbstractController
 		readfile($file);
 		exit;
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
     }
 
     /**
@@ -89,7 +91,7 @@ class ImportExportController extends AbstractController
     {
 	$institution_id = null;
 
-	if(!$this->isGranted('IMPORT',$institution_id)){
+	if($this->isGranted('IMPORT',$institution_id)){
 		$fichier = basename($_FILES['import']['name']);
 		$taille = filesize($_FILES['import']['tmp_name']);
 		$extensions = array('.xlsx', '.ods', '.csv');
@@ -121,6 +123,9 @@ class ImportExportController extends AbstractController
 		{
 		    return $this->redirectToRoute("import_export",['error'=>$erreur]);
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
     }

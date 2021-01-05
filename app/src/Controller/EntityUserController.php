@@ -47,7 +47,7 @@ class EntityUserController extends AbstractController
     {
         $entityUser = new EntityUser();
 
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityUser)){
 
 		$form = $this->createForm(EntityUserType::class, $entityUser);
 		$form->handleRequest($request);
@@ -71,6 +71,9 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('admin_user_index');
     }
 
@@ -79,11 +82,14 @@ class EntityUserController extends AbstractController
      */
     public function show(EntityUser $entityUser): Response
     {
-	if(!$this->isGranted('POST_VIEW',$entityUser)){
+	if($this->isGranted('POST_VIEW',$entityUser)){
 
 		return $this->render('entity_user/show.html.twig', [
 		    'entity_user' => $entityUser,
 		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 	return $this->redirectToRoute('admin_user_index');
     }
@@ -93,7 +99,7 @@ class EntityUserController extends AbstractController
      */
     public function edit(Request $request, EntityUser $entityUser): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityUser)){
 
 		$form = $this->createForm(EntityUserType::class, $entityUser);
 		$form->handleRequest($request);
@@ -117,6 +123,9 @@ class EntityUserController extends AbstractController
 		    'form' => $form->createView(),
 		]);
 	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 	return $this->redirectToRoute('admin_user_index');
     }
 
@@ -125,13 +134,16 @@ class EntityUserController extends AbstractController
      */
     public function delete(Request $request, EntityUser $entityUser): Response
     {
-	if(!$this->isGranted('POST_EDIT',$entityUser)){
+	if($this->isGranted('POST_EDIT',$entityUser)){
 
 		if ($this->isCsrfTokenValid('delete'.$entityUser->getId(), $request->request->get('_token'))) {
 		    $entityManager = $this->getDoctrine()->getManager();
 		    $entityManager->remove($entityUser);
 		    $entityManager->flush();
 		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
 	}
 
         return $this->redirectToRoute('admin_user_index');
