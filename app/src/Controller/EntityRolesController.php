@@ -167,8 +167,13 @@ class EntityRolesController extends AbstractController
      */
     public function show(EntityRoles $entityRoles): Response
     {
+        $permissions = $entityRoles->getPermissions();
+	    $mongoman = new MongoManager();
+		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
         return $this->render('entity_roles/show.html.twig', [
             'entity_roles' => $entityRoles,
+		    'permissions' => $data_permissions,
+            
         ]);
     }
 
@@ -177,22 +182,68 @@ class EntityRolesController extends AbstractController
      */
     public function edit(Request $request, EntityRoles $entityRoles): Response
     {
-        $form = $this->createForm(EntityRolesType::class, $entityRoles);
-        $form->handleRequest($request);
+                //droits à attribuer
+                $choicesPerm = array(
+                    'rien' => ' ',
+                    'R' => 'R',
+                    'W'=> 'W',
+                    'RW' => 'RW'
+                );
+            
+                //droits sous forme booleen
+                $choicesBool = array(
+                    'True'=> True,
+                    'False'=>False
+                );
+        //if(!$this->isGranted('POST_EDIT',$entityRoles)){
+            $defaultData = ['message' => 'Type your message here'];
+            $form = $this->createFormBuilder($defaultData)
+            ->add('nom', null,array('required' => true))
+            ->add('shows',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('tags',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('shows',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('peoples',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('users',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('models',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('institutions',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('roles',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->add('import',ChoiceType::class, [
+                'choices' => $choicesBool])
+            ->add('export',ChoiceType::class, [
+                'choices' => $choicesBool])
+            ->add('connection',ChoiceType::class, [
+                'choices' => $choicesBool])
+            ->add('restaurations',ChoiceType::class, [
+                'choices' => $choicesPerm])
+            ->getForm();
+        
+            $form->handleRequest($request);
+    		$mongoman = new MongoManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityRoles);
-            $entityManager->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($entityRoles);
+                $entityManager->flush();
 
-            return $this->redirectToRoute('admin_roles_index');
-        }
+                return $this->redirectToRoute('admin_roles_index', ['id' => $entityRoles->getId()]);
+            }
 
+          //  return $this->redirectToRoute('admin_roles_index');
         return $this->render('entity_roles/edit.html.twig', [
             'entity_roles' => $entityRoles,
             'form' => $form->createView(),
         ]);
-    }
+   // }
+    return $this->redirectToRoute('admin_roles_index');
+}
 
     /**
      * @Route("roles/{id}", name="admin_roles_delete", methods={"DELETE"})

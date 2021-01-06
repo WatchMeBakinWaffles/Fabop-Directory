@@ -15,6 +15,32 @@
                 <th>Nom</th>
                 <td>{{ entity_roles.nom }}</td>
             </tr>
+            <tr>
+                <th>Utilisateurs</th>
+                {% for user in entity_roles.users %}
+                <td>{{ user}}</td>
+                {% endfor %}
+            </tr>
+                {% set NotFirst = true %}
+                {% for key,value in permissions %}
+                <tr>
+                <th>{{ key }}</th>
+                {% if NotFirst  == true %}
+                {% for val in value %}
+                <td>{{ val }}</td>
+                {% set NotFirst = false %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                    {% if value == 1 %}
+                        <td>Vrai</td>
+                    {% elseif value == ' ' %}
+                        <td>Aucun droit<td>
+                    {% else %}
+                        <td>{{value}}</td>
+                    {% endif %} 
+                {% endif %}
+                {% endfor %}
         </tbody>
     </table>
 
