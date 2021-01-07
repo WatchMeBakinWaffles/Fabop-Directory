@@ -16,6 +16,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "jms/serializer-bundle": "^3.7",
+        "mongodb/mongodb": "^1.7",
         "nelmio/cors-bundle": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^5.1",
@@ -44,9 +45,16 @@
         "symfony/webpack-encore-bundle": "^1.8",
         "symfony/yaml": "4.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
+<<<<<<< HEAD
         "twig/twig": "^2.0"
+=======
+        "twig/intl-extra": "^3.1",
+        "twig/twig": "^2.12|^3.0",
+        "vich/uploader-bundle": "^1.15"
+>>>>>>> c8d2bff9b4a7f52d1905c7a10adabcf05b924f0b
     },
     "require-dev": {
+        "phpunit/phpunit": "^9.4",
         "symfony/browser-kit": "^4.4",
         "symfony/css-selector": "^4.4",
         "symfony/debug-bundle": "^4.4",

@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityInstitutions;
+use App\Entity\EntityModele;
+use App\Entity\EntityShows;
+use App\Entity\EntityUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,16 +22,23 @@ use App\Utils\XLSXReader;
  */
 class ImportExportController extends AbstractController
 {
+
     /**
      * @Route("/", name="import_export")
      */
     public function index()
     {
-        return $this->render('import_export/index.html.twig');
+        $userId = $this->getUser()->getId();
+
+        $modele_repo = $this->getDoctrine()->getRepository(EntityModele::class);
+        return $this->render('import_export/index.html.twig',[
+            'modeles' => $modele_repo->findByUserIdJoinToUser($userId)
+        ]);
     }
 
     /**
      * @Route("/export", name="export")
+     * @param EntityPeopleRepository $epr
      */
     public function export(EntityPeopleRepository $epr)
     {
@@ -56,13 +67,59 @@ class ImportExportController extends AbstractController
     /**
      * @Route("/export_selectif", name="export_selectif")
      */
-    public function export_selectif(Request $request)
+    public function export_selectif()
     {
         $people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
         $writer = new XLSXWriter();
 
         $writer->write($_POST['ids'], $people);
+
+        $file = "export_selectif.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/export_institutions", name="export_institutions")
+     */
+    public function export_institution(Request $request)
+    {
+        $institution = $this->getDoctrine()->getRepository(EntityInstitutions::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeInstitution($_POST['ids'], $institution);
+
+        $file = "export_selectif.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/export_shows", name="export_shows")
+     */
+    public function export_shows(Request $request)
+    {
+        $shows = $this->getDoctrine()->getRepository(EntityShows::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeShow($_POST['ids'], $shows);
 
         $file = "export_selectif.xlsx";
         header('Content-Description: File Transfer');
@@ -112,7 +169,75 @@ class ImportExportController extends AbstractController
         {
             return $this->redirectToRoute("import_export",['error'=>$erreur]);
         }
+    }
 
+    /**
+     * @Route("/modele_personne", name="modele_personne")
+     *
+     */
+    public function modele_personne(Request $request)
+    {
+        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
+        $writer = new XLSXWriter();
+
+        $writer->writeModelPersonne();
+
+        $file = "modele_personne.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/modele_institution", name="modele_institution")
+     */
+    public function modele_institution(Request $request)
+    {
+        $institution = $this->getDoctrine()->getRepository(EntityInstitutions::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeModelInstitution();
+
+        $file = "modele_institution.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
+    }
+
+    /**
+     * @Route("/modele_spectacle", name="modele_spectacle")
+     */
+    public function modele_spectacle(Request $request)
+    {
+        $show = $this->getDoctrine()->getRepository(EntityShows::class);
+
+        $writer = new XLSXWriter();
+
+        $writer->writeModelSpectacle();
+
+        $file = "modele_spectacle.xlsx";
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($file).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        readfile($file);
+        exit;
     }
 }

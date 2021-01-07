@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -53,6 +55,16 @@ class EntityUser implements UserInterface
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $institution;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=EntityModele::class, mappedBy="user")
+     */
+    private $modeles;
+
+    public function __construct()
+    {
+        $this->modeles = new ArrayCollection();
+    }
 
 
 
@@ -185,6 +197,33 @@ class EntityUser implements UserInterface
     public function setInstitution(?EntityInstitutions $institution): self
     {
         $this->institution = $institution;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EntityModele[]
+     */
+    public function getModeles(): Collection
+    {
+        return $this->modeles;
+    }
+
+    public function addModele(EntityModele $modele): self
+    {
+        if (!$this->modeles->contains($modele)) {
+            $this->modeles[] = $modele;
+            $modele->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModele(EntityModele $modele): self
+    {
+        if ($this->modeles->removeElement($modele)) {
+            $modele->removeUser($this);
+        }
 
         return $this;
     }

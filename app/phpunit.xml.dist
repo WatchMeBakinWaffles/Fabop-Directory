@@ -1,41 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.5/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         bootstrap="vendor/autoload.php"
->
-    <php>
-        <ini name="error_reporting" value="-1" />
-        <env name="KERNEL_CLASS" value="App\Kernel" />
-        <env name="APP_ENV" value="test" />
-        <env name="APP_DEBUG" value="1" />
-        <env name="APP_SECRET" value="s$cretf0rt3st" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="DATABASE_URL" value="mysql://db_access:MgWhXBaBm9QvMucX2GQNkyzJdMNcS3Ftj6WhU9n3P3uc6TF3aMpvfHLr6jCkTQ8e@127.0.0.1:3306/fabop_directory" />
-        <env name="MONGODB_URL" value="mongodb://app_access:3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug@127.0.0.1:27017/fabop_directory" />
-        <!-- define your env variables for the test env here -->
-
-        <!-- ###+ nelmio/cors-bundle ### -->
-        <env name="CORS_ALLOW_ORIGIN" value="^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$"/>
-        <!-- ###- nelmio/cors-bundle ### -->
-    </php>
-
-    <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src</directory>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="vendor/autoload.php">
+  <coverage>
+    <include>
+      <directory>src</directory>
+    </include>
+  </coverage>
+  <php>
+    <ini name="error_reporting" value="-1"/>
+    <env name="KERNEL_CLASS" value="App\Kernel"/>
+    <env name="APP_ENV" value="test"/>
+    <env name="APP_DEBUG" value="1"/>
+    <env name="APP_SECRET" value="s$cretf0rt3st"/>
+    <env name="SHELL_VERBOSITY" value="-1"/>
+    <env name="DATABASE_URL" value="mysql://db_access:MgWhXBaBm9QvMucX2GQNkyzJdMNcS3Ftj6WhU9n3P3uc6TF3aMpvfHLr6jCkTQ8e@127.0.0.1:3306/fabop_directory"/>
+    <env name="MONGODB_URL" value="mongodb://app_access:3zzHK7bVrchfZrRy33a9P2VpVq2QnzwGjcAYFNtDQFcYZ3nyFpwDFCWEELaXfEug@127.0.0.1:27017/fabop_directory"/>
+    <!-- define your env variables for the test env here -->
+    <!-- ###+ nelmio/cors-bundle ### -->
+    <env name="CORS_ALLOW_ORIGIN" value="^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$"/>
+    <!-- ###- nelmio/cors-bundle ### -->
+  </php>
+  <testsuites>
+    <testsuite name="Project Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+  </listeners>
 </phpunit>

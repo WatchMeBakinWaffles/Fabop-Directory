@@ -19,6 +19,8 @@ class EntityInstitutionsController extends AbstractController
 {
     /**
      * @Route("/", name="entity_institutions_index", methods="GET")
+     * @param EntityInstitutionsRepository $entityInstitutionsRepository
+     * @return Response
      */
     public function index(EntityInstitutionsRepository $entityInstitutionsRepository): Response
     {
