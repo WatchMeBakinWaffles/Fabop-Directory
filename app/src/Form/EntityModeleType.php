@@ -17,7 +17,6 @@ class EntityModeleType extends AbstractType
             ->add('name')
             ->add('modele_default')
             ->add('modele_custom')
-            ->add('modeleFile',VichFileType::class)
         ;
     }
 
@@ -29,3 +28,4 @@ class EntityModeleType extends AbstractType
         ]);
     }
 }
+

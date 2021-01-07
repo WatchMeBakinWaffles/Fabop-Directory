@@ -6,7 +6,6 @@ use App\Repository\EntityModeleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -50,16 +49,10 @@ class EntityModele
     private $updatedAt;
 
     /**
-     * @var File|null
-     * @Vich\UploadableField(mapping="user_modeles", fileNameProperty="filename")
-     */
-    private $modeleFile;
-
-    /**
      * @var string|null
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=24)
      */
-    private $filename;
+    private $sheet_id;
 
     /**
      * @ORM\ManyToMany(targetEntity=EntityUser::class, inversedBy="modeles")
@@ -117,33 +110,6 @@ class EntityModele
     }
 
     /**
-     * @return File|null
-     */
-    public function getModeleFile(): ?File
-    {
-        return $this->modeleFile;
-    }
-
-    public function setModeleFile(?File $modeleFile)
-    {
-        $this->modeleFile = $modeleFile;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFilename(): ?string
-    {
-        return $this->filename;
-    }
-
-
-    public function setFilename(?string $filename)
-    {
-        $this->filename = $filename;
-    }
-
-    /**
      * @return \DateTime
      */
     public function getCreatedAt(): \DateTime
@@ -173,6 +139,26 @@ class EntityModele
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getSheetId(): ?string
+    {
+        return $this->sheet_id;
+    }
+
+    /**
+     * @param string|null $sheet_id
+     * @return EntityModele
+     */
+    public function setSheetId(?string $sheet_id): EntityModele
+    {
+        $this->sheet_id = $sheet_id;
+        return $this;
+    }
+
+
 
     /**
      * @return Collection|EntityUser[]

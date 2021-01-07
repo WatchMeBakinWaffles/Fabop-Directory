@@ -114,8 +114,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 6. Install composer dependencies by your php container : 
    
-   `docker exec <php container | php> composer install `
-   `docker exec <php container | php> chown -R :www-data /var/www`
+   `docker exec <php container | fabop-directory_php_1> composer install `
+   `docker exec <php container | fabop-directory_php_1> chown -R :www-data /var/www`
             
 7. Make db migrations by using following commands :
 
