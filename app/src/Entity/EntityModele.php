@@ -22,11 +22,6 @@ class EntityModele
     private $id;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $modele_default;
-
-    /**
      * @ORM\Column(type="boolean", nullable=false)
      */
     private $modele_custom;
@@ -67,7 +62,7 @@ class EntityModele
     }
 
     public function __toString(){
-        return $this->getModeleDefault()." ".$this->getModeleCustom()." ".$this->getUser();
+        return $this->getModeleCustom()." ".$this->getUser();
     }
 
     public function getId(): ?int
@@ -75,17 +70,6 @@ class EntityModele
         return $this->id;
     }
 
-    public function getModeleDefault(): ?bool
-    {
-        return $this->modele_default;
-    }
-
-    public function setModeleDefault(bool $modele_default): self
-    {
-        $this->modele_default = $modele_default;
-
-        return $this;
-    }
 
     public function getModeleCustom(): ?bool
     {

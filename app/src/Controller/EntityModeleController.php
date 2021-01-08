@@ -49,9 +49,6 @@ class EntityModeleController extends AbstractController
             ->getRepository(EntityUser::class)
             ->findOneByEmail($userName);
 
-        //Récupère les métadatas de l'entité Institutions
-//        $em_people = $this->getDoctrine()->getManager();
-//        $metadata = $em_people->getClassMetadata(EntityPeople::class);
         $entity_people = new EntityPeople();
         $form_people = $this->createForm(EntityPeopleType::class, $entity_people);
         $form_people->handleRequest($request);

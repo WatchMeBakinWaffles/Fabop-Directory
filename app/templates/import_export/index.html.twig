@@ -18,11 +18,11 @@
                             <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
                             <a type="submit" class="dropdown-item" href="{{ path('modele_institution') }}">Institution</a>
                             <a type="submit" class="dropdown-item" href="{{ path('modele_spectacle') }}">Spectacle</a>
-                            {% for modele in modeles %}
-                                {% if modele.getModeleDefault() %}
-                                    <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>
-                                {% endif %}
-                            {% endfor %}
+{#                            {% for modele in modeles %}#}
+{#                                {% if modele.getModeleDefault() %}#}
+{#                                    <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>#}
+{#                                {% endif %}#}
+{#                            {% endfor %}#}
                         </div>
                     </form>
                 </div>
@@ -38,15 +38,15 @@
                     Télécharger un modele
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-{#                    <form action="" enctype="multipart/form-data" method="POST">#}
-{#                        <div class="custom-file mb-1">#}
-{#                            {% for modele in modeles %}#}
-{#                                {% if modele.getModeleCustom() %}#}
+                    <form action="" enctype="multipart/form-data" method="POST">
+                        <div class="custom-file mb-1">
+                            {% for modele in modeles %}
+                                {% if modele.getModeleCustom() %}
 {#                                    <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>#}
-{#                                {% endif %}#}
-{#                            {% endfor %}#}
-{#                        </div>#}
-{#                    </form>#}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </form>
                 </div>
             </section>
             <br>
