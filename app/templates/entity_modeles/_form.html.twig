@@ -4,14 +4,12 @@
 
     {{ form_start(form) }}
     {{ form_row(form.name) }}
-    {{ form_row(form.modele_default) }}
     {{ form_row(form.modele_custom) }}
 
     <div id="person_data">
         {%  if entity_person_data is defined %}
             {% for key,value in entity_person_data  %}
                 {% if key != '_id' %}
-                    <label>Nom</label><input name="Nom" class="form-control" value="{{ value }}">
                     <label>{{ key }}</label><input name="custom_data[{{ key }}]" class="form-control" value="{{ value }}">
                 {% endif %}
             {% endfor %}

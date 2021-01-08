@@ -6,19 +6,23 @@ if(path=="/manager/modeles/new") {
 
     let titre = document.createElement('h6');
     titre.innerHTML = "Champs additionnels";
+
     document.getElementById("add_custom_data").addEventListener('click',function () {
 
         let label_div = document.createElement("div");
         let input_div = document.createElement("div");
-
         let input_label = document.createElement("input");
-        input_label.className = "form-control";
+
         input_label.name = "custom_data["+indice_tableau+"][label]"
+        input_label.className = "form-control";
+        input_label.name = "custom_data["+indice_tableau+"][label]";
+        input_label.readOnly = true;
         if(indice_tableau < 7){
-            input_label.disabled = "disabled";
             input_label.placeholder = tab[indice_tableau];
+            input_label.value = tab[indice_tableau];
         }else{
             input_label.placeholder = "Champs complémentaires";
+            input_label.value = "Complémentaires "+indice_tableau;
         }
 
         let input_value = document.createElement("input");

@@ -27,7 +27,6 @@
             <tr>
                 <td id="{{ modele.id }}"><input type="checkbox" name="selected[{{ modele.id }}]"></td> <!--VALUE !-->
                 <td>{{ modele.name }}</td>
-                <td>{{ modele.getModeleDefault() }}</td>
                 <td>{{ modele.getModeleCustom() }}</td>
                 <td>{{ modele.createdAt | format_datetime()  }}</td>
                 <td>{{ modele.updatedAt | format_datetime()  }}</td>

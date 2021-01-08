@@ -134,6 +134,10 @@ class XLSXReader
                     $i++;
 
                     //Rôle
+
+
+
+
                     $entityInstitutions->setRole($cells[$i]->getValue());
                     $i++;
 
