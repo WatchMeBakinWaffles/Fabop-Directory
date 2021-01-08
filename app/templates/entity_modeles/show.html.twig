@@ -1,0 +1,49 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Fiche du modèle : {{ entity_modeles.name }} {% endblock %}
+
+{% block content %}
+    <div class="col">
+        <h2><i class="fas fa-users"></i> Fiche du modèle : {{ entity_modeles.name }}</h2>
+
+        <table class="table">
+            <tbody>
+
+            {% for key,value in entity_modeles_data  %}
+                <tr>
+                    {% if key=='_id' %}
+                        <th>Identifiant champs dynamiques </th>
+                    {% else %}
+                        <th>{{ key }}</th>
+                    {% endif %}
+                    {% if value is iterable %}
+                        <td>
+                            {% for elem in value %}
+                                {{ elem }}<br>
+                            {% endfor %}
+                        </td>
+                    {% else %}
+                        <td>{{ value }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col">
+                {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+                               <a class="btn btn-light m-1" href="{{ path('entity_modeles_index') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+                    <a class="btn btn-success m-1" href="{{ path('entity_modeles_edit', {'id': entity_modeles.id}) }}"><i class="fas fa-edit"></i> Éditer</a>
+               {% else %}
+                    <a class="btn btn-light m-1" href="{{ path('dashboard') }}"><i class="fas fa-arrow-left"></i> Retour</a>
+                {% endif %}
+            </div>
+        </div>
+        {% if is_granted('ROLE_CONTRIBUTEUR') or is_granted('ROLE_ADMIN') %}
+            <div style="text-align: center">
+                {{ include('entity_modeles/_delete_form.html.twig') }}
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

@@ -15,7 +15,6 @@ class EntityModeleType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('modele_custom')
         ;
     }
 
