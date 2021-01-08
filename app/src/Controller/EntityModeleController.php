@@ -9,6 +9,7 @@ use App\Form\EntityModeleType;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityModeleRepository;
 use App\Utils\MongoManager;
+use App\Utils\XLSXWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,13 +59,17 @@ class EntityModeleController extends AbstractController
         $form = $this->createForm(EntityModeleType::class, $entity_modele);
         $form->handleRequest($request);
 
+        $writer = new XLSXWriter();
+
         $mongoman = new MongoManager();
 
         if($form->isSubmitted() && $form->isValid()) {
 
+            $value = [];
             if($request->request->get("custom_data") !== null){
                 foreach($request->request->get("custom_data") as $elem){
                     $data[$elem['label']] = $elem['value'];
+                    $value[] = $elem['value'];
                 }
             }
 
@@ -78,6 +83,9 @@ class EntityModeleController extends AbstractController
 
             // Mise en bdd MySQL de l'ID de fiche de données
             $entity_modele->setSheetId($sheetId);
+
+            //Appel la méthode writeCustomModele de XLSXWriter()
+            $writer->writeCustomModele($entity_modele->getName(),$entity_modele->getSheetId(),$value);
 
             $em_modele->persist($entity_modele);
             $em_modele->flush();

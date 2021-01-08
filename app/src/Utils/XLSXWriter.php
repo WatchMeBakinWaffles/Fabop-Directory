@@ -2,11 +2,9 @@
 
 namespace App\Utils;
 
-use App\Entity\EntityPeople;
 use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
 use App\Repository\EntityShowsRepository;
-use App\Utils\MongoManager;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Common\Entity\Row;
 
@@ -275,5 +273,20 @@ class XLSXWriter
         $writer->close();
     }
 
+    public function writeCustomModele($name,$id_sheet,$data)
+    {
+        // Création Writer XLSX
+        $writer = WriterEntityFactory::createXLSXWriter();
+        $writer->openToFile("$name.xlsx");
+
+        // Création première ligne avec noms de colonnes
+        $firstLineCells = $data;
+        $firstLineCells = array_merge($firstLineCells);
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        $id = WriterEntityFactory::createRowFromArray(array("id",$id_sheet));
+        $writer->addRow($id);
+        $writer->addRow($firstRow);
+        $writer->close();
+    }
 
 }

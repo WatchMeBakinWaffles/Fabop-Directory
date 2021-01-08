@@ -24,7 +24,7 @@ class EntityModele
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private $modele_custom;
+    private $modele_custom=true;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -76,12 +76,6 @@ class EntityModele
         return $this->modele_custom;
     }
 
-    public function setModeleCustom(?bool $modele_custom): self
-    {
-        $this->modele_custom = $modele_custom;
-
-        return $this;
-    }
 
     public function getName(): ?string
     {
