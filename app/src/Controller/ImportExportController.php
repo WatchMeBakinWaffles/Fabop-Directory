@@ -7,6 +7,7 @@ use App\Entity\EntityModele;
 use App\Entity\EntityShows;
 use App\Entity\EntityUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -135,9 +136,12 @@ class ImportExportController extends AbstractController
 
     /**
      * @Route("/import", name="import")
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function import(Request $request)
     {
+
         $fichier = basename($_FILES['import']['name']);
         $taille = filesize($_FILES['import']['tmp_name']);
         $extensions = array('.xlsx', '.ods', '.csv');
@@ -157,7 +161,12 @@ class ImportExportController extends AbstractController
             if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
             {
                 $reader = new XLSXReader($this->getDoctrine()->getManager(), $this->getUser());
-                $reader->readAll($request, $fichier);
+                // mettre l'appel à la fonction ici
+                if($reader->readFirstLine($fichier) == 'id'){
+                    $reader->readCustomSheet($request, $fichier);
+                }else{
+                    $reader->readAll($request, $fichier);
+                }
                 return $this->redirectToRoute('entity_people_index');
             }
             else //Sinon (la fonction renvoie FALSE).

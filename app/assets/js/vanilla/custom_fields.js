@@ -17,7 +17,7 @@ if(path=="/manager/modeles/new") {
         input_label.className = "form-control";
         input_label.name = "custom_data["+indice_tableau+"][label]";
         input_label.readOnly = true;
-        if(indice_tableau < 7){
+        if(indice_tableau < 8){
             input_label.placeholder = tab[indice_tableau];
             input_label.value = tab[indice_tableau];
         }else{

@@ -4,7 +4,6 @@
 
     {{ form_start(form) }}
     {{ form_row(form.name) }}
-    {{ form_row(form.modele_custom) }}
 
     <div id="person_data">
         {%  if entity_person_data is defined %}
@@ -19,56 +18,8 @@
     </div>
 
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-    <a class="btn btn-light m-1" href="{{ path('entity_modele_index') }}"><i class="fas fa-undo"></i> Retour</a>
+    <a class="btn btn-light m-1" href="{{ path('entity_modeles_index') }}"><i class="fas fa-undo"></i> Retour</a>
     {{ form_end(form) }}
 </div>
 
 
-{#    <p>Veuillez faire correspondre les champs avec ceux du modèle de base</p>#}
-{#    <div class="row justify-content-around">#}
-{#        <table class="table col-3">#}
-{#            <thead class="thead-dark">#}
-{#            <tr>#}
-{#                <th scope="col">Champs du modèle de base</th>#}
-{#            </tr>#}
-{#            </thead>#}
-{#            <tbody id='tdbody' data-toggle="buttons">#}
-{#            {% for md in metadata.columnNames | sort %}#}
-{#                {% if md == "id" or md == "add_date" or md == "sheet_id"%}#}
-{#                {% else %}#}
-{#                    <tr>#}
-{#                        <td>#}
-{#                            <label type="radio" class="btn btn-secondary">#}
-{#                                <input type="radio" name="columnNames" class="hatchback" ) checked>#}
-{#                                {{ md }}#}
-{#                            </label>#}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-
-{#        <br>#}
-{#        <br>#}
-
-{#        <table class="table col-3">#}
-{#            <thead class="thead-dark">#}
-{#            <tr>#}
-{#                <th scope="col">Champs du modèle customs  #}{#<button class="btn btn-info" onclick="addLine()"> Ajouter un champ </button>#}{#</th>#}
-{#            </tr>#}
-{#            </thead>#}
-
-{#            <tbody id="myTable">#}
-{#            {% for md in metadata.columnNames %}#}
-{#                {% if md == "id" or md == "add_date" or md == "sheet_id" %}#}
-{#                {% else %}#}
-{#                    <tr>#}
-{#                        <td><input class="input-field" type="text" placeholder="Empty">#}{#<button onclick="remove(this)" class="btn btn-danger fas fa-trash"></button>#}
-{#                    </tr>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-
-{#    </div>#}

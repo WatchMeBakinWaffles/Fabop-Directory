@@ -6,7 +6,7 @@ use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
 use App\Repository\EntityShowsRepository;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
-use Box\Spout\Common\Entity\Row;
+
 
 class XLSXWriter
 {
@@ -287,6 +287,7 @@ class XLSXWriter
         $writer->addRow($id);
         $writer->addRow($firstRow);
         $writer->close();
+
     }
 
 }

@@ -24,7 +24,7 @@ class EntityModele
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private $modele_custom=true;
+    private $modele_custom = true;
 
     /**
      * @ORM\Column(type="string", length=255)

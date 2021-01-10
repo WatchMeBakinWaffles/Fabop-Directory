@@ -23,7 +23,7 @@ class EntityModeleController extends AbstractController
 {
 
     /**
-     * @Route("/", name="entity_modele_index", methods="GET")
+     * @Route("/", name="entity_modeles_index", methods="GET")
      * @param EntityModeleRepository $entityModeleRepository
      * @return Response
      */
@@ -81,6 +81,7 @@ class EntityModeleController extends AbstractController
                 $sheetId=$mongoman->insertSingle("Entity_Custom_sheet",[]);
             }
 
+
             // Mise en bdd MySQL de l'ID de fiche de données
             $entity_modele->setSheetId($sheetId);
 
@@ -89,7 +90,7 @@ class EntityModeleController extends AbstractController
 
             $em_modele->persist($entity_modele);
             $em_modele->flush();
-            return $this->redirectToRoute('entity_modele_index');
+            return $this->redirectToRoute('entity_modeles_index');
         }
 
         return $this->render('entity_modeles/new.html.twig', [
@@ -104,11 +105,65 @@ class EntityModeleController extends AbstractController
      * @param EntityModele $entityModele
      * @return Response
      */
-    public function show(EntityModele $entityModele): Response
+    public function show(EntityModele $entity_modele): Response
     {
-        return $this->render('entity_modeles/show.html.twig', ['entityModele' => $entityModele]);
+        $mongoman = new MongoManager();
+        return $this->render('entity_modeles/show.html.twig', [
+            'entity_modeles' => $entity_modele,
+            'entity_modeles_data' => $mongoman->getDocById("Entity_Custom_sheet",$entity_modele->getSheetId()),
+        ]);
     }
 
 
+
+    /**
+     * @Route("/{id}", name="entity_modeles_delete", methods="DELETE")
+     */
+    public function delete(Request $request, EntityModele $entity_modele): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$entity_modele->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $mongoman = new MongoManager();
+            $mongoman->deleteSingleById("Entity_Custom_sheet",$entity_modele->getSheetId());
+
+            $em->remove($entity_modele);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('entity_modeles_index');
+    }
+
+    /**
+     * @Route("/{id}/edit", name="entity_modeles_edit", methods="GET|POST")
+     */
+    public function edit(Request $request, EntityModele $entity_modele): Response
+    {
+        $form = $this->createForm(EntityModeleType::class, $entity_modele);
+        $form->handleRequest($request);
+        $mongoman = new MongoManager();
+        $em = $this->getDoctrine()->getManager();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (null != $request->request->get('modele_data')){
+                $dataId=$entity_modele->getSheetId();
+                foreach( $request->request->get('modele_data') as $key=>$value){
+                    if ($value!=''){
+                        $mongoman->updateSingleValueById("Entity_Custom_sheet",$dataId,$key,$value);
+                    }else{
+                        $mongoman->unsetSingleValueById("Entity_Custom_sheet",$dataId,$key);
+                    }
+                }
+            }
+            $em->flush();
+
+            return $this->redirectToRoute('entity_modeles_index', ['id' => $entity_modele->getId()]);
+        }
+
+        return $this->render('entity_modeles/edit.html.twig', [
+            'entity_modeles' => $entity_modele,
+            'form' => $form->createView(),
+            'entity_Custom_data' => $mongoman->getDocById("Entity_Custom_sheet",$entity_modele->getSheetId()),
+        ]);
+    }
 
 }
