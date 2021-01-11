@@ -5,7 +5,7 @@ if(path=="/manager/modeles/new") {
 
 
     let titre = document.createElement('h6');
-    titre.innerHTML = "Champs additionnels";
+    titre.innerHTML = "Personnalisé les champs existant";
 
     document.getElementById("add_custom_data").addEventListener('click',function () {
 
@@ -26,6 +26,9 @@ if(path=="/manager/modeles/new") {
         }
 
         let input_value = document.createElement("input");
+        if(indice_tableau < 8){
+            input_value.required = true;
+        }
         input_value.className = "form-control";
         input_value.name = "custom_data["+indice_tableau+"][value]";
         input_value.placeholder = "Nom du champ...";
