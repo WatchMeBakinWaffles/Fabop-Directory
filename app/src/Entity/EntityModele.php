@@ -32,6 +32,11 @@ class EntityModele
      */
     private $name;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $filename;
 
     /**
      * @ORM\Column(type="datetime")
@@ -86,6 +91,23 @@ class EntityModele
     {
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
+    public function getFilename(): string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param string $filename
+     */
+    public function setFilename(string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
 
     /**
      * @return \DateTime

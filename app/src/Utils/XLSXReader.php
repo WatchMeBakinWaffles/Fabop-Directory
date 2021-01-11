@@ -67,6 +67,7 @@ class XLSXReader
                     // Mise en bdd MySQL des données venu d'excel
                     if ($fields['Nom']) {
                         $entityPeople->setName($row->getCells()[0]->getValue());
+
                     }
                     if ($fields['Prénom']) {
                         $entityPeople->setFirstname($row->getCells()[1]->getValue());

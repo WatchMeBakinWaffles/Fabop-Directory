@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityModele;
 use App\Entity\EntityPeople;
 use App\Entity\EntityUser;
+use App\Exception\DocumentNotFoundException;
 use App\Form\EntityModeleType;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityModeleRepository;
@@ -102,8 +103,9 @@ class EntityModeleController extends AbstractController
 
     /**
      * @Route("/{id}", name="entity_modeles_show", methods="GET")
-     * @param EntityModele $entityModele
+     * @param EntityModele $entity_modele
      * @return Response
+     * @throws DocumentNotFoundException
      */
     public function show(EntityModele $entity_modele): Response
     {
