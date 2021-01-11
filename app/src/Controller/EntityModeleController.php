@@ -12,6 +12,7 @@ use App\Repository\EntityModeleRepository;
 use App\Utils\MongoManager;
 use App\Utils\XLSXWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,7 +83,7 @@ class EntityModeleController extends AbstractController
                 $sheetId=$mongoman->insertSingle("Entity_Custom_sheet",[]);
             }
 
-
+            $entity_modele->setFilename($form->get('name')->getData().'.xlsx');
             // Mise en bdd MySQL de l'ID de fiche de données
             $entity_modele->setSheetId($sheetId);
 
@@ -123,10 +124,15 @@ class EntityModeleController extends AbstractController
      */
     public function delete(Request $request, EntityModele $entity_modele): Response
     {
+
+        $filesystem = new Filesystem();
+
         if ($this->isCsrfTokenValid('delete'.$entity_modele->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $mongoman = new MongoManager();
             $mongoman->deleteSingleById("Entity_Custom_sheet",$entity_modele->getSheetId());
+            // supprime le fichier
+            $filesystem->remove($entity_modele->getFilename());
 
             $em->remove($entity_modele);
             $em->flush();

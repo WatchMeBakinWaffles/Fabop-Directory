@@ -92,17 +92,12 @@ class EntityModele
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getFilename(): string
     {
         return $this->filename;
     }
 
-    /**
-     * @param string $filename
-     */
+
     public function setFilename(string $filename): void
     {
         $this->filename = $filename;
