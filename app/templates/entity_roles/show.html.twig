@@ -21,14 +21,14 @@
                 <td>{{ user}}</td>
                 {% endfor %}
             </tr>
-                {% set NotFirst = true %}
+                {% set JustFirst = true %}
                 {% for key,value in permissions %}
                 <tr>
                 <th>{{ key }}</th>
-                {% if NotFirst  == true %}
+                {% if JustFirst  == true %}
                 {% for val in value %}
                 <td>{{ val }}</td>
-                {% set NotFirst = false %}
+                {% set JustFirst = false %}
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -36,6 +36,8 @@
                         <td>Vrai</td>
                     {% elseif value == ' ' %}
                         <td>Aucun droit<td>
+                    {% elseif value == 0 %}
+                        <td>Faux<td>
                     {% else %}
                         <td>{{value}}</td>
                     {% endif %} 

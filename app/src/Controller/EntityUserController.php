@@ -43,7 +43,7 @@ class EntityUserController extends AbstractController
     /**
      * @Route("users/new", name="admin_user_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,EntityRolesRepository $entityRolesRepository): Response
     {
         $entityUser = new EntityUser();
 
@@ -54,20 +54,29 @@ class EntityUserController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 		    $entityManager = $this->getDoctrine()->getManager();
-		    $entityManager->persist($entityUser);
+		    //$entityManager->persist($entityUser);
 		    /**
 		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
 		    */
-		    $entityUser->bCryptPassword($entityUser->getPassword());
-		    if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-		        $entityUser->setInstitution(NULL);
-		    $entityManager->flush();
+			$entityUser->bCryptPassword($entityUser->getPassword());
+			$liste_role = [];
+			//var_dump($form->getdata()->getEntityRoles());
+			//array_push($aze);
+			foreach($form->getdata()->getEntityRoles() as $Role){
+				$entityUser->addEntityRole($Role);
+			}
 
+		    if(in_array('ROLE_ADMIN', $liste_role))
+				$entityUser->setInstitution(NULL);
+
+		$entityManager->persist($entityUser);
+		$entityManager->flush();
 		    return $this->redirectToRoute('admin_user_index');
 		}
 
 		return $this->render('entity_user/new.html.twig', [
-		    'entity_user' => $entityUser,
+			'entity_user' => $entityUser,
+			'entity_roles' => $entityRolesRepository->findAll(),
 		    'form' => $form->createView(),
 		]);
 	}
@@ -80,8 +89,10 @@ class EntityUserController extends AbstractController
     /**
      * @Route("users/{id}", name="admin_user_show", methods={"GET"})
      */
-    public function show(EntityUser $entityUser): Response
+	public function show(EntityUser $entityUser): Response
     {
+		var_dump($entityUser);
+
 	if($this->isGranted('POST_VIEW',$entityUser)){
 
 		return $this->render('entity_user/show.html.twig', [
@@ -111,15 +122,24 @@ class EntityUserController extends AbstractController
 		     * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
 		     */
 		    $entityUser->bCryptPassword($entityUser->getPassword());
-		    if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-		        $entityUser->setInstitution(NULL);
+			$liste_role = [];
+			foreach($entityUser->getEntityRoles() as $Role){
+				//var_dump($entityUser);
+				var_dump($Role->GetNom());
+				$entityUser->addEntityRole($Role);
+				array_push($liste_role,$Role->GetNom());
+			}
+			//var_dump($entityUser);
+			//$entityUser->setRoles($liste_role);
+			if(in_array('ROLE_ADMIN', $liste_role))
+				$entityUser->setInstitution(NULL);
 		    $entityManager->flush();
 
 		    return $this->redirectToRoute('admin_user_index');
 		}
 
 		return $this->render('entity_user/edit.html.twig', [
-		    'entity_user' => $entityUser,
+			'entity_user' => $entityUser,
 		    'form' => $form->createView(),
 		]);
 	}

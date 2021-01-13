@@ -17,7 +17,9 @@
             </tr>
             <tr>
                 <th>Roles</th>
-                <td>{{ entity_user.roles ? entity_user.roles|json_encode : '' }}</td>
+                {% for roles in entity_user.entityRoles %}
+                <td>{{ roles.nom }}</td>
+                {% endfor %}
             </tr>
             <tr>
                 <th>Password</th>

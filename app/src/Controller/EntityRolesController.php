@@ -230,7 +230,31 @@ class EntityRolesController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $entityManager = $this->getDoctrine()->getManager();
+                $data = $form->getData();
+                $permissions = $entityRoles->getPermissions();
+
+
+                $entityRoles->setNom($data['nom']);
                 $entityManager->persist($entityRoles);
+                //$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+                $entityManager->flush();
+
+                $sheetPermission=$mongoman->insertSingle("permissions_user",[
+                    'shows'=> $data["shows"],
+                    'tags'=>$data["tags"],
+                    'peoples'=>$data["peoples"],
+                    'users'=>$data["users"],
+                    'models'=>$data["models"],
+                    'institutions'=>$data["institutions"],
+                    'roles'=>$data["roles"],
+                    'import'=>$data["import"],
+                    'export'=>$data["export"],
+                    'connection'=>$data["connection"],
+                    'restaurations'=>$data["restaurations"]
+                ]);
+                $permissions->setSheetId($sheetPermission);
+                $entityRoles->setPermissions($permissions);
+                $entityManager->persist($permissions);
                 $entityManager->flush();
 
                 return $this->redirectToRoute('admin_roles_index', ['id' => $entityRoles->getId()]);
