@@ -81,19 +81,15 @@ class XLSXReader
                         $entityPeople->setBirthdate($date);
                     }
                     if ($fields['Code postal']) {
-                        // Mise en bdd MySQL des données venu d'excel
                         $entityPeople->setPostalCode($row->getCells()[3]->getValue());
                     }
                     if ($fields['Ville']) {
-                        // Mise en bdd MySQL des données venu d'excel
                         $entityPeople->setCity($row->getCells()[4]->getValue());
                     }
                     if ($fields['Abonné à la newsletter']) {
-                        // Mise en bdd MySQL des données venu d'excel
                         $entityPeople->setNewsletter($row->getCells()[5]->getValue());
                     }
                     if ($fields['Adresse mail']) {
-                        // Mise en bdd MySQL des données venu d'excel
                         $entityPeople->setAdresseMailing($row->getCells()[6]->getValue());
                     }
                     if ($fields['Institution']) {
@@ -105,7 +101,7 @@ class XLSXReader
                             // Si l'institut n'existe pas (null), on la crée
                             if ($institut == null) {
                                 $entityInstitution->setName($row->getCells()[7]->getValue());
-                                $entityInstitution->setRole("TEST");
+                                $entityInstitution->setRole("CONTRIBUTEUR");
 
                                 if (null != $request->request->get('institution_data')) {
                                     $sheetID = $mongoman->insertSingle("Entity_institution_sheet", $request->request->get('institution_data'));
@@ -121,7 +117,7 @@ class XLSXReader
                             $institut = $this->user->getInstitution();
                         }
                     }
-
+                    //Les champs supérieurs à 8 dans la lignes 2 vont directement dans mongodb
                     if ((sizeof($cells)) > 8) {
                         for ($i = 8; $i < (sizeof($cells)); $i++) {
                             $data[$fields['Complémentaires '.$i]] = $row->getCells()[$i]->getValue();

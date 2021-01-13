@@ -5,6 +5,11 @@ namespace App\Utils;
 use App\Repository\EntityInstitutionsRepository;
 use App\Repository\EntityPeopleRepository;
 use App\Repository\EntityShowsRepository;
+use Box\Spout\Common\Entity\Style\Border;
+use Box\Spout\Common\Entity\Style\CellAlignment;
+use Box\Spout\Common\Entity\Style\Color;
+use Box\Spout\Writer\Common\Creator\Style\BorderBuilder;
+use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 
 
@@ -282,12 +287,22 @@ class XLSXWriter
         // Création première ligne avec noms de colonnes
         $firstLineCells = $data;
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $id = WriterEntityFactory::createRowFromArray(array("id",$id_sheet));
+        $border = (new BorderBuilder())
+            ->setBorderRight(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderLeft(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderBottom(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->setBorderTop(Color::BLACK, Border::WIDTH_THIN, Border::STYLE_SOLID)
+            ->build();
+        $style = (new StyleBuilder())
+            ->setBorder($border)
+            ->setShouldWrapText(true)
+            ->setBackgroundColor(Color::RED)
+            ->build();
+        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells,$style);
+        $id = WriterEntityFactory::createRowFromArray(array("id",$id_sheet,"NE PAS MODIFIER CE QUI EST EN ROUGE"),$style);
         $writer->addRow($id);
         $writer->addRow($firstRow);
         $writer->close();
-
     }
 
 }
