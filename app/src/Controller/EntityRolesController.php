@@ -138,7 +138,7 @@ class EntityRolesController extends AbstractController
                 $userem = strval($userEmail);
                 $user = $entityUserRepository->findOneByemail($userem);
                     $user->addEntityRole($RoleInForm);
-                    $entityManager->persist($user);
+                    //$entityManager->persist($user);
                     $entityManager->flush();
                 }
             }

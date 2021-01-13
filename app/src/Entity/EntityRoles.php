@@ -73,6 +73,8 @@ class EntityRoles
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
+            $user->addEntityRole($this);
+
         }
 
         return $this;
