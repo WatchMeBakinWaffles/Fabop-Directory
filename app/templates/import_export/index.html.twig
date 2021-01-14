@@ -15,9 +15,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="custom-file mb-1">
-                            <button type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</button>
-                            <a type="submit" class="dropdown-item" href="{{ path('modele_institution') }}">Institution</a>
-                            <a type="submit" class="dropdown-item" href="{{ path('modele_spectacle') }}">Spectacle</a>
+                            <a type="submit" class="dropdown-item" href="{{ path('modele_personne') }}">Personne</a>
                         </div>
                     </form>
                 </div>
@@ -36,10 +34,7 @@
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="custom-file mb-1">
                             {% for modele in modeles %}
-{#                                {{ dump(modele.getNameXlsx()) }}#}
                                 <a class="dropdown-item" download href="{{ asset(modele.filename) }}">{{ modele.name }}</a>
-{#                               <a class="dropdown-item" download href="{{ asset (vich_uploader_asset(modele, 'name')) }}" target="_blank" >{{ modele.getNameXlsx() }}</a>#}
-{#                               <a class="dropdown-item" download href="{{asset (vich_uploader_asset (modele, 'modeleFile'))}}" target="_blank" >{{ modele.name }}</a>#}
                             {% endfor %}
                         </div>
                     </form>

@@ -73,27 +73,27 @@ class ImportExportController extends AbstractController
      */
     public function export_selectif()
     {
-	if($this->isGranted('EXPORT',$institution_id)){
-		$people = $this->getDoctrine()->getRepository(EntityPeople::class);
+        if($this->isGranted('EXPORT','')){
+		    $people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
-		$writer = new XLSXWriter();
+		    $writer = new XLSXWriter();
 
-		$writer->write($_POST['ids'], $people);
+	    	$writer->write($_POST['ids'], $people);
 
-		$file = "export_selectif.xlsx";
-		header('Content-Description: File Transfer');
-		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment; filename="'.basename($file).'"');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate');
-		header('Pragma: public');
-		header('Content-Length: ' . filesize($file));
-		readfile($file);
-		exit;
-	}
-	else{
-		return $this->render('error403forbidden.html.twig');
-	}
+		    $file = "export_selectif.xlsx";
+		    header('Content-Description: File Transfer');
+		    header('Content-Type: application/octet-stream');
+		    header('Content-Disposition: attachment; filename="'.basename($file).'"');
+		    header('Expires: 0');
+		    header('Cache-Control: must-revalidate');
+		    header('Pragma: public');
+		    header('Content-Length: ' . filesize($file));
+		    readfile($file);
+            exit;
+        }
+        else{
+            return $this->render('error403forbidden.html.twig');
+        }
     }
 
     /**
