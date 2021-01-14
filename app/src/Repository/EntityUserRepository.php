@@ -23,11 +23,11 @@ class EntityUserRepository extends ServiceEntityRepository
     // /**
     //  * @return EntityUser[] Returns an array of EntityUser objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findByEmail($value)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.email = :val')
             ->setParameter('val', $value)
             ->orderBy('e.id', 'ASC')
             ->setMaxResults(10)
@@ -35,17 +35,15 @@ class EntityUserRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?EntityUser
+    public function findOneByemail($value): ?EntityUser
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
+            ->andWhere('e.email = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

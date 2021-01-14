@@ -26,7 +26,6 @@ class EntityPeopleController extends AbstractController
     public function index(EntityPeopleRepository $entityPeopleRepository): Response
     {
         //filtres à appliquer ici
-
         // le role user ou contibuteur ne peut voir que les entités rattaché à son institution
         if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
             return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
@@ -47,42 +46,48 @@ class EntityPeopleController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        if ($this->getDoctrine()->getManager()->getRepository(\App\Entity\EntityInstitutions::class)->countAll()<1){
-            return $this->redirectToRoute('entity_institutions_new');
-        }
-        $entityPerson = new EntityPeople();
-        $form = $this->createForm(EntityPeopleType::class, $entityPerson);
-        $form->handleRequest($request);
-        $mongoman = new MongoManager();
+	$entityPerson = new EntityPeople();
+	if($this->isGranted('POST_EDIT',$entityPerson)){
+		if ($this->getDoctrine()->getManager()->getRepository(\App\Entity\EntityInstitutions::class)->countAll()<1){
+		    return $this->redirectToRoute('entity_institutions_new');
+		}
+		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
+		$form->handleRequest($request);
+		$mongoman = new MongoManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            if($request->request->get("person_data") !== null){
-                foreach($request->request->get("person_data") as $elem){
-                    $data[$elem['label']] = $elem['value'];
-                }  
-            }
-            if (isset($data)){
-                $sheetId=$mongoman->insertSingle("Entity_person_sheet",$data);
-            }
-            else{
-                $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
-            }
-            // Mise en bdd MySQL de l'ID de fiche de données
-            $entityPerson->setSheetId($sheetId);
-            $entityPerson->setAddDate(new \DateTime("now"));
-            if(!$this->isGranted('ROLE_ADMIN'))
-                $entityPerson->setInstitution($this->getUser()->getInstitution());
-            $em->persist($entityPerson);
-            $em->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $em = $this->getDoctrine()->getManager();
+		    if($request->request->get("person_data") !== null){
+		        foreach($request->request->get("person_data") as $elem){
+		            $data[$elem['label']] = $elem['value'];
+		        }  
+		    }
+		    if (isset($data)){
+		        $sheetId=$mongoman->insertSingle("Entity_person_sheet",$data);
+		    }
+		    else{
+		        $sheetId=$mongoman->insertSingle("Entity_person_sheet",[]);
+		    }
+		    // Mise en bdd MySQL de l'ID de fiche de données
+		    $entityPerson->setSheetId($sheetId);
+		    $entityPerson->setAddDate(new \DateTime("now"));
+		    if(!$this->isGranted('ROLE_ADMIN'))
+		        $entityPerson->setInstitution($this->getUser()->getInstitution());
+		    $em->persist($entityPerson);
+		    $em->flush();
 
-            return $this->redirectToRoute('entity_people_index');
-        }
+		    return $this->redirectToRoute('entity_people_index');
+		}
 
-        return $this->render('entity_people/new.html.twig', [
-            'entity_person' => $entityPerson,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_people/new.html.twig', [
+		    'entity_person' => $entityPerson,
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_people_index');
     }
 
     /**
@@ -90,12 +95,18 @@ class EntityPeopleController extends AbstractController
      */
     public function show(EntityPeople $entityPerson, TagsAffectRepository $tagsAffectRepository): Response
     {
-        $mongoman = new MongoManager();
-        return $this->render('entity_people/show.html.twig', [
-            'entity_person' => $entityPerson,
-            'tags_affects' => $tagsAffectRepository->findAll(),
-            'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
-        ]);
+	if($this->isGranted('POST_VIEW',$entityPerson)){
+		$mongoman = new MongoManager();
+		return $this->render('entity_people/show.html.twig', [
+		    'entity_person' => $entityPerson,
+		    'tags_affects' => $tagsAffectRepository->findAll(),
+		    'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_people_index');
     }
 
     /**
@@ -103,32 +114,38 @@ class EntityPeopleController extends AbstractController
      */
     public function edit(Request $request, EntityPeople $entityPerson): Response
     {
-        $form = $this->createForm(EntityPeopleType::class, $entityPerson);
-        $form->handleRequest($request);
-        $mongoman = new MongoManager();
-        $em = $this->getDoctrine()->getManager();
+	if($this->isGranted('POST_EDIT',$entityPerson)){
+		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
+		$form->handleRequest($request);
+		$mongoman = new MongoManager();
+		$em = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (null != $request->request->get('person_data')){
-                $dataId=$entityPerson->getSheetId();
-                foreach( $request->request->get('person_data') as $key=>$value){
-                    if ($value!=''){
-                        $mongoman->updateSingleValueById("Entity_person_sheet",$dataId,$key,$value);
-                    }else{
-                        $mongoman->unsetSingleValueById("Entity_person_sheet",$dataId,$key);
-                    }
-                }
-            }
-            $em->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    if (null != $request->request->get('person_data')){
+		        $dataId=$entityPerson->getSheetId();
+		        foreach( $request->request->get('person_data') as $key=>$value){
+		            if ($value!=''){
+		                $mongoman->updateSingleValueById("Entity_person_sheet",$dataId,$key,$value);
+		            }else{
+		                $mongoman->unsetSingleValueById("Entity_person_sheet",$dataId,$key);
+		            }
+		        }
+		    }
+		    $em->flush();
 
-            return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
-        }
+		    return $this->redirectToRoute('entity_people_index', ['id' => $entityPerson->getId()]);
+		}
 
-        return $this->render('entity_people/edit.html.twig', [
-            'entity_person' => $entityPerson,
-            'form' => $form->createView(),
-            'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
-        ]);
+		return $this->render('entity_people/edit.html.twig', [
+		    'entity_person' => $entityPerson,
+		    'form' => $form->createView(),
+		    'entity_person_data' => $mongoman->getDocById("Entity_person_sheet",$entityPerson->getSheetId()),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_people_index');
     }
 
     /**
@@ -136,14 +153,20 @@ class EntityPeopleController extends AbstractController
      */
     public function delete(Request $request, EntityPeople $entityPerson): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityPerson->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $mongoman = new MongoManager();
-            $mongoman->deleteSingleById("Entity_person_sheet",$entityPerson->getSheetId());
+	if($this->isGranted('POST_EDIT',$entityPerson)){
 
-            $em->remove($entityPerson);
-            $em->flush();
-        }
+		if ($this->isCsrfTokenValid('delete'.$entityPerson->getId(), $request->request->get('_token'))) {
+		    $em = $this->getDoctrine()->getManager();
+		    $mongoman = new MongoManager();
+		    $mongoman->deleteSingleById("Entity_person_sheet",$entityPerson->getSheetId());
+
+		    $em->remove($entityPerson);
+		    $em->flush();
+		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 
         return $this->redirectToRoute('entity_people_index');
     }

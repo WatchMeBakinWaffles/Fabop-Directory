@@ -30,9 +30,15 @@ class LogController extends AbstractController
      */
     public function show(Log $log): Response
     {
-        return $this->render('log/show.html.twig', [
-            'log' => $log,
-        ]);
+	if($this->isGranted('POST_VIEW',$log)){
+		return $this->render('log/show.html.twig', [
+		    'log' => $log,
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('log_index');
     }
 
     /**
@@ -40,12 +46,16 @@ class LogController extends AbstractController
      */
     public function delete(Request $request, Log $log): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$log->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($log);
-            $entityManager->flush();
-        }
-
+	if($this->isGranted('POST_VIEW',$log)){
+		if ($this->isCsrfTokenValid('delete'.$log->getId(), $request->request->get('_token'))) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    $entityManager->remove($log);
+		    $entityManager->flush();
+		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
         return $this->redirectToRoute('log_index');
     }
 }

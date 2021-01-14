@@ -31,33 +31,39 @@ class EntityShowsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityShow = new EntityShows();
-        $form = $this->createForm(EntityShowsType::class, $entityShow);
-        $form->handleRequest($request);
-        $mongoman = new MongoManager();
+	if($this->isGranted('POST_EDIT',$entityShow)){
+		$form = $this->createForm(EntityShowsType::class, $entityShow);
+		$form->handleRequest($request);
+		$mongoman = new MongoManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $em = $this->getDoctrine()->getManager();
 
-            // Mise en bdd Mongo de l fiche doc --> return IdMongo
-            if (null != $request->request->get('show_data')){
-                $sheetId=$mongoman->insertSingle("Entity_show_sheet",$request->request->get('show_data'));
-            }else{
-                $sheetId=$mongoman->insertSingle("Entity_show_sheet",[]);
-            }
+		    // Mise en bdd Mongo de l fiche doc --> return IdMongo
+		    if (null != $request->request->get('show_data')){
+		        $sheetId=$mongoman->insertSingle("Entity_show_sheet",$request->request->get('show_data'));
+		    }else{
+		        $sheetId=$mongoman->insertSingle("Entity_show_sheet",[]);
+		    }
 
-            // Mise en bdd MySQL de l'ID de fiche de données
-            $entityShow->setSheetId($sheetId);
+		    // Mise en bdd MySQL de l'ID de fiche de données
+		    $entityShow->setSheetId($sheetId);
 
-            $em->persist($entityShow);
-            $em->flush();
+		    $em->persist($entityShow);
+		    $em->flush();
 
-            return $this->redirectToRoute('entity_shows_index');
-        }
+		    return $this->redirectToRoute('entity_shows_index');
+		}
 
-        return $this->render('entity_shows/new.html.twig', [
-            'entity_show' => $entityShow,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_shows/new.html.twig', [
+		    'entity_show' => $entityShow,
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_shows_index');
     }
 
     /**
@@ -65,7 +71,13 @@ class EntityShowsController extends AbstractController
      */
     public function show(EntityShows $entityShow): Response
     {
-        return $this->render('entity_shows/show.html.twig', ['entity_show' => $entityShow]);
+	if($this->isGranted('POST_VIEW',$entityShow)){
+        	return $this->render('entity_shows/show.html.twig', ['entity_show' => $entityShow]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_shows_index');
     }
 
     /**
@@ -73,32 +85,38 @@ class EntityShowsController extends AbstractController
      */
     public function edit(Request $request, EntityShows $entityShow): Response
     {
-        $form = $this->createForm(EntityShowsType::class, $entityShow);
-        $form->handleRequest($request);
-        $mongoman = new MongoManager();
+	if($this->isGranted('POST_EDIT',$entityShow)){
+		$form = $this->createForm(EntityShowsType::class, $entityShow);
+		$form->handleRequest($request);
+		$mongoman = new MongoManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (null != $request->request->get('show_data')){
-                $dataId=$entityShow->getSheetId();
-                foreach( $request->request->get('show_data') as $key->$value){
-                    if ($value!=''){
-                        $mongoman->updateSingleValueById("Entity_show_sheet",$dataId,$key,$value);
-                    }else{
-                        $mongoman->unsetSingleValueById("Entity_show_sheet",$dataId,$key);
-                    }
-                }
-            }
+		if ($form->isSubmitted() && $form->isValid()) {
+		    if (null != $request->request->get('show_data')){
+		        $dataId=$entityShow->getSheetId();
+		        foreach( $request->request->get('show_data') as $key->$value){
+		            if ($value!=''){
+		                $mongoman->updateSingleValueById("Entity_show_sheet",$dataId,$key,$value);
+		            }else{
+		                $mongoman->unsetSingleValueById("Entity_show_sheet",$dataId,$key);
+		            }
+		        }
+		    }
 
-            $this->getDoctrine()->getManager()->flush();
+		    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_shows_index', ['id' => $entityShow->getId()]);
-        }
+		    return $this->redirectToRoute('entity_shows_index', ['id' => $entityShow->getId()]);
+		}
 
-        return $this->render('entity_shows/edit.html.twig', [
-            'entity_show' => $entityShow,
-            'form' => $form->createView(),
-            'entity_show_data' => $mongoman->getDocById("Entity_show_sheet",$entityShow->getSheetId()),
-        ]);
+		return $this->render('entity_shows/edit.html.twig', [
+		    'entity_show' => $entityShow,
+		    'form' => $form->createView(),
+		    'entity_show_data' => $mongoman->getDocById("Entity_show_sheet",$entityShow->getSheetId()),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_shows_index');
     }
 
     /**
@@ -106,13 +124,18 @@ class EntityShowsController extends AbstractController
      */
     public function delete(Request $request, EntityShows $entityShow): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityShow->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $mongoman = new MongoManager();
-            $mongoman->deleteSingleById("Entity_show_sheet",$entityShow->getSheetId());
-            $em->remove($entityShow);
-            $em->flush();
-        }
+	if($this->isGranted('POST_EDIT',$entityShow)){
+		if ($this->isCsrfTokenValid('delete'.$entityShow->getId(), $request->request->get('_token'))) {
+		    $em = $this->getDoctrine()->getManager();
+		    $mongoman = new MongoManager();
+		    $mongoman->deleteSingleById("Entity_show_sheet",$entityShow->getSheetId());
+		    $em->remove($entityShow);
+		    $em->flush();
+		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 
         return $this->redirectToRoute('entity_shows_index');
     }

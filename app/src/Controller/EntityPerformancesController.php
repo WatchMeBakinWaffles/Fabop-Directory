@@ -40,25 +40,31 @@ class EntityPerformancesController extends AbstractController
     public function new(Request $request): Response
     {
         $entityPerformance = new EntityPerformances();
-        $form = $this->createForm(EntityPerformancesType::class, $entityPerformance, array(
-            'attr' => array(
-                'id' => 'form_entity_performances_new',
-            )
-        ));
-        $form->handleRequest($request);
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
+		$form = $this->createForm(EntityPerformancesType::class, $entityPerformance, array(
+		    'attr' => array(
+		        'id' => 'form_entity_performances_new',
+		    )
+		));
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entityPerformance);
-            $em->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $em = $this->getDoctrine()->getManager();
+		    $em->persist($entityPerformance);
+		    $em->flush();
 
-            return $this->redirectToRoute('entity_performances_index');
-        }
+		    return $this->redirectToRoute('entity_performances_index');
+		}
 
-        return $this->render('entity_performances/new.html.twig', [
-            'entity_performance' => $entityPerformance,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_performances/new.html.twig', [
+		    'entity_performance' => $entityPerformance,
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('entity_performances_index');
     }
 
     /**
@@ -66,7 +72,13 @@ class EntityPerformancesController extends AbstractController
      */
     public function show(EntityPerformances $entityPerformance): Response
     {
-        return $this->render('entity_performances/show.html.twig', ['entity_performance' => $entityPerformance]);
+	if($this->isGranted('POST_VIEW',$entityPerformance)){
+        	return $this->render('entity_performances/show.html.twig', ['entity_performance' => $entityPerformance]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+        return $this->redirectToRoute('entity_performances_index');
     }
 
     /**
@@ -74,19 +86,25 @@ class EntityPerformancesController extends AbstractController
      */
     public function edit(Request $request, EntityPerformances $entityPerformance): Response
     {
-        $form = $this->createForm(EntityPerformancesType::class, $entityPerformance);
-        $form->handleRequest($request);
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
+		$form = $this->createForm(EntityPerformancesType::class, $entityPerformance);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('entity_performances_index', ['id' => $entityPerformance->getId()]);
-        }
+		    return $this->redirectToRoute('entity_performances_index', ['id' => $entityPerformance->getId()]);
+		}
 
-        return $this->render('entity_performances/edit.html.twig', [
-            'entity_performance' => $entityPerformance,
-            'form' => $form->createView(),
-        ]);
+		return $this->render('entity_performances/edit.html.twig', [
+		    'entity_performance' => $entityPerformance,
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+        return $this->redirectToRoute('entity_performances_index');
     }
 
     /**
@@ -94,12 +112,16 @@ class EntityPerformancesController extends AbstractController
      */
     public function delete(Request $request, EntityPerformances $entityPerformance): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityPerformance->getId(), $request->request->get('_token'))) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($entityPerformance);
-            $em->flush();
-        }
-
+	if($this->isGranted('POST_EDIT',$entityPerformance)){
+		if ($this->isCsrfTokenValid('delete'.$entityPerformance->getId(), $request->request->get('_token'))) {
+		    $em = $this->getDoctrine()->getManager();
+		    $em->remove($entityPerformance);
+		    $em->flush();
+		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
         return $this->redirectToRoute('entity_performances_index');
     }
 }

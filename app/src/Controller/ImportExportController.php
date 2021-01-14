@@ -44,25 +44,28 @@ class ImportExportController extends AbstractController
     public function export(EntityPeopleRepository $epr)
     {
 
-        $institution_id = null;
+	if($this->isGranted('EXPORT','')){
+		if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
+		    $institution_id = $this->getUser()->getInstitution();        
 
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))        
-            $institution_id = $this->getUser()->getInstitution();        
 
+		$writer = new XLSXWriter();
+		$writer->writeAll($epr, $institution_id);
 
-        $writer = new XLSXWriter();
-        $writer->writeAll($epr, $institution_id);
-
-        $file = "export.xlsx";
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-        exit;
+		$file = "export.xlsx";
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($file).'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		readfile($file);
+		exit;
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
     }
 
     /**
@@ -70,22 +73,27 @@ class ImportExportController extends AbstractController
      */
     public function export_selectif()
     {
-        $people = $this->getDoctrine()->getRepository(EntityPeople::class);
+	if($this->isGranted('EXPORT',$institution_id)){
+		$people = $this->getDoctrine()->getRepository(EntityPeople::class);
 
-        $writer = new XLSXWriter();
+		$writer = new XLSXWriter();
 
-        $writer->write($_POST['ids'], $people);
+		$writer->write($_POST['ids'], $people);
 
-        $file = "export_selectif.xlsx";
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-        exit;
+		$file = "export_selectif.xlsx";
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($file).'"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		readfile($file);
+		exit;
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
     }
 
     /**
@@ -141,7 +149,6 @@ class ImportExportController extends AbstractController
      */
     public function import(Request $request)
     {
-
         $fichier = basename($_FILES['import']['name']);
         $taille = filesize($_FILES['import']['tmp_name']);
         $extensions = array('.xlsx', '.ods', '.csv');
@@ -215,17 +222,55 @@ class ImportExportController extends AbstractController
         $writer = new XLSXWriter();
 
         $writer->writeModelInstitution();
-
-        $file = "modele_institution.xlsx";
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($file).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        readfile($file);
-        exit;
+        $institution_id = null;
+        
+        if($this->isGranted('IMPORT',$institution_id)){
+            $fichier = basename($_FILES['import']['name']);
+            $taille = filesize($_FILES['import']['tmp_name']);
+            $extensions = array('.xlsx', '.ods', '.csv');
+            $extension = strrchr($_FILES['import']['name'], '.');
+            //Début des vérifications de sécurité...
+            
+            if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
+		    {
+		        $erreur = 'Vous devez uploader un fichier de type xlsx';
+            }
+            if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
+		    {
+		        //On formate le nom du fichier ici...
+		        $fichier = strtr($fichier,
+                'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
+		        'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+                $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
+                if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+		        {
+		            $reader = new XLSXReader($this->getDoctrine()->getManager(), $this->getUser());
+		            $reader->readAll($request, $fichier);
+		            return $this->redirectToRoute('entity_people_index');
+                }
+                else //Sinon (la fonction renvoie FALSE).
+		        {
+		            return $this->redirectToRoute("import_export",['error'=>'Echec de l\'upload !']);
+		        }
+            }
+            else
+		    {
+		        return $this->redirectToRoute("import_export",['error'=>$erreur]);
+		    }
+	    }
+	    else{
+		    return $this->render('error403forbidden.html.twig');
+	    }
+            $file = "modele_institution.xlsx";
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
     }
 
     /**

@@ -61,12 +61,21 @@ class EntityUser implements UserInterface
      */
     private $modeles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=EntityRoles::class, mappedBy="users")
+     */
+    private $entityRoles;
+    
+    public function __toString()
+    {
+        return $this->getEmail();
+    }
+    
     public function __construct()
     {
         $this->modeles = new ArrayCollection();
+        $this->entityRoles = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -215,6 +224,22 @@ class EntityUser implements UserInterface
             $this->modeles[] = $modele;
             $modele->addUser($this);
         }
+    }
+    
+    /**
+     * @return Collection|EntityRoles[]
+     */
+    public function getEntityRoles(): Collection
+    {
+        return $this->entityRoles;
+    }
+
+    public function addEntityRole(EntityRoles $entityRole): self
+    {
+        if (!$this->entityRoles->contains($entityRole)) {
+            $this->entityRoles[] = $entityRole;
+            $entityRole->addUser($this);
+        }
 
         return $this;
     }
@@ -224,9 +249,15 @@ class EntityUser implements UserInterface
         if ($this->modeles->removeElement($modele)) {
             $modele->removeUser($this);
         }
+    }
+    
+    public function removeEntityRole(EntityRoles $entityRole): self
+    {
+        if ($this->entityRoles->removeElement($entityRole)) {
+            $entityRole->removeUser($this);
+        }
 
         return $this;
     }
 
- 
 }
