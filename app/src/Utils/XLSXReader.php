@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Entity\EntityShows;
+use App\Repository\EntityPeopleRepository;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,10 +39,11 @@ class XLSXReader
                 }
             }
         }
+        $reader->close();
         return $firsLine[0];
     }
 
-    public function readCustomSheet(Request $request, string $filename){
+    public function readCustomSheet(Request $request, string $filename, $emp){
 
         $mongoman = new MongoManager();
         $reader = ReaderEntityFactory::createReaderFromFile($filename);
@@ -60,14 +62,16 @@ class XLSXReader
                     foreach ($doc as $item => $value ){
                         $fields[$item] = $value;
                     }
-                } if ($rowNumber > 2) {
+                    // On passe sur la deuxieme ligne
+                }
+                if ($rowNumber > 2) {
                     $cells = $row->getCells();
                     $entityInstitution = new EntityInstitutions();
                     $entityPeople = new EntityPeople();
+
                     // Mise en bdd MySQL des données venu d'excel
                     if ($fields['Nom']) {
                         $entityPeople->setName($row->getCells()[0]->getValue());
-
                     }
                     if ($fields['Prénom']) {
                         $entityPeople->setFirstname($row->getCells()[1]->getValue());
@@ -97,7 +101,6 @@ class XLSXReader
                             // institution_id
                             $institut = $this->em->getRepository(EntityInstitutions::class)
                                 ->findOneByName($row->getCells()[7]->getValue());
-
                             // Si l'institut n'existe pas (null), on la crée
                             if ($institut == null) {
                                 $entityInstitution->setName($row->getCells()[7]->getValue());
@@ -117,7 +120,7 @@ class XLSXReader
                             $institut = $this->user->getInstitution();
                         }
                     }
-                    //Les champs supérieurs à 8 dans la lignes 2 vont directement dans mongodb
+                    //Les champs supérieurs à 8 vont directement dans mongodb
                     if ((sizeof($cells)) > 8) {
                         for ($i = 8; $i < (sizeof($cells)); $i++) {
                             $data[$fields['Complémentaires '.$i]] = $row->getCells()[$i]->getValue();
@@ -131,9 +134,12 @@ class XLSXReader
                     } else {
                         $sheetId = $mongoman->insertSingle("Entity_person_sheet", []);
                     }
+
                     //sheet_id
                     $entityPeople->setSheetId($sheetId);
                     $entityPeople->setAddDate(new \DateTime("now"));
+
+                    // persist data dans entity people
                     $this->em->persist($entityPeople);
                     $this->em->flush();
                 }

@@ -161,9 +161,10 @@ class ImportExportController extends AbstractController
             if(move_uploaded_file($_FILES['import']['tmp_name'], $fichier)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
             {
                 $reader = new XLSXReader($this->getDoctrine()->getManager(), $this->getUser());
+                $emp = $this->getDoctrine()->getRepository(EntityPeople::class);
                 // mettre l'appel à la fonction ici
                 if($reader->readFirstLine($fichier) == 'id'){
-                    $reader->readCustomSheet($request, $fichier);
+                    $reader->readCustomSheet($request, $fichier, $emp);
                 }else{
                     $reader->readAll($request, $fichier);
                 }
