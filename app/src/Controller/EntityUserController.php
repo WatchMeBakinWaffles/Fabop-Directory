@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityRoles;
+use App\Form\EntityRolesType;
+use App\Repository\EntityRolesRepository;
+use App\Repository\PermissionsRepository;
 use App\Entity\EntityUser;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
@@ -9,14 +13,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Utils\MongoManager;
+
 
 /**
- * @Route("/admin/users")
+ * @Route("/admin/")
  */
 class EntityUserController extends AbstractController
 {
     /**
-     * @Route("/", name="admin_user_index", methods={"GET"})
+     * @Route("users/", name="admin_user_index", methods={"GET"})
      */
     public function index(EntityUserRepository $entityUserRepository): Response
     {
@@ -24,84 +30,160 @@ class EntityUserController extends AbstractController
             'entity_users' => $entityUserRepository->findAll(),
         ]);
     }
-
     /**
-     * @Route("/new", name="admin_user_new", methods={"GET","POST"})
+     * @Route("roles/", name="admin_roles_index", methods={"GET"})
      */
-    public function new(Request $request): Response
+    public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
     {
+		$mongoman = new MongoManager();
+        return $this->render('entity_roles/index.html.twig', [
+			'entity_roles' => $entityRolesRepository->findAll(),
+        ]);
+    }
+    /**
+     * @Route("users/new", name="admin_user_new", methods={"GET","POST"})
+     */
+    public function new(Request $request,EntityRolesRepository $entityRolesRepository): Response
+    {
+		//creation d'un nouvelle utilisateur 
         $entityUser = new EntityUser();
-        $form = $this->createForm(EntityUserType::class, $entityUser);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityUser);
-            /**
-            * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
-            */
-            $entityUser->bCryptPassword($entityUser->getPassword());
-            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-                $entityUser->setInstitution(NULL);
-            $entityManager->flush();
+	if($this->isGranted('POST_EDIT',$entityUser)){
+		//création d'un formulaire de type User
+		$form = $this->createForm(EntityUserType::class, $entityUser);
+		$form->handleRequest($request);
 
-            return $this->redirectToRoute('admin_user_index');
-        }
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    //$entityManager->persist($entityUser);
+		    /**
+		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+		    */
+			$entityUser->bCryptPassword($entityUser->getPassword());
 
-        return $this->render('entity_user/new.html.twig', [
-            'entity_user' => $entityUser,
-            'form' => $form->createView(),
-        ]);
+
+			//parcours des entityRoles du formulaire pour leur attribuer le user actuellement créer 
+			foreach($form->getdata()->getEntityRoles() as $Role){
+				$Role->addUser($entityUser);
+			}
+			//ancienne liste qui stocker les roles (on utiliser array_push dans le foreach)
+			//$liste_role = [];
+
+			/*
+			permetter anciennement de tester si l'utilisateur avait un role admin est donc n'a aucune institution rattacher
+
+
+				if(in_array('ROLE_ADMIN', $liste_role))
+					$entityUser->setInstitution(NULL);
+			*/
+
+			//mise a jour de la base de données
+		    $entityManager->persist($entityUser);
+			$entityManager->flush();
+		    return $this->redirectToRoute('admin_user_index');
+		}
+
+		return $this->render('entity_user/new.html.twig', [
+			'entity_user' => $entityUser,
+			'entity_roles' => $entityRolesRepository->findAll(),
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
-     * @Route("/{id}", name="admin_user_show", methods={"GET"})
+     * @Route("users/{id}", name="admin_user_show", methods={"GET"})
      */
-    public function show(EntityUser $entityUser): Response
+	public function show(EntityUser $entityUser): Response
     {
-        return $this->render('entity_user/show.html.twig', [
-            'entity_user' => $entityUser,
-        ]);
+	if($this->isGranted('POST_VIEW',$entityUser)){
+
+		return $this->render('entity_user/show.html.twig', [
+		    'entity_user' => $entityUser,
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
-     * @Route("/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
+     * @Route("users/{id}/edit", name="admin_user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, EntityUser $entityUser): Response
-    {
-        $form = $this->createForm(EntityUserType::class, $entityUser);
-        $form->handleRequest($request);
+    {		
+		//parcours tous les roles de l'utilisateurs pour les supprimez	
+		foreach($entityUser->getEntityRoles() as $RoleARetirer){
+		$entityUser->removeEntityRole($RoleARetirer);
+	}
+	if($this->isGranted('POST_EDIT',$entityUser)){
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($entityUser);
-            /**
-             * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
-             */
-            $entityUser->bCryptPassword($entityUser->getPassword());
-            if(in_array('ROLE_ADMIN', $entityUser->getRoles()))
-                $entityUser->setInstitution(NULL);
-            $entityManager->flush();
+		//creation d'un nouveau formulaire de type User
+		$form = $this->createForm(EntityUserType::class, $entityUser);
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    /**
+		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+			*/
+			$entityUser->bCryptPassword($entityUser->getPassword());
 
-            return $this->redirectToRoute('admin_user_index');
-        }
+			//ancienne liste qui stocker les roles (on utiliser array_push dans le foreach)
+			//$liste_role = [];
 
-        return $this->render('entity_user/edit.html.twig', [
-            'entity_user' => $entityUser,
-            'form' => $form->createView(),
-        ]);
+			//parcours des entityRoles du formulaire pour leur attribuer le user actuellement editer 
+			foreach($form->getdata()->getEntityRoles() as $Role){
+			 $Role->addUser($entityUser);
+			}
+
+ 
+			/*
+			permetter anciennement de tester si l'utilisateur avait un role admin est donc n'a aucune institution rattacher
+
+
+				if(in_array('ROLE_ADMIN', $liste_role))
+					$entityUser->setInstitution(NULL);
+			*/
+
+			//mise a jour de la base de données
+		    $entityManager->persist($entityUser);
+			$entityManager->flush();
+
+		    return $this->redirectToRoute('admin_user_index');
+		}
+
+		return $this->render('entity_user/edit.html.twig', [
+			'entity_user' => $entityUser,
+		    'form' => $form->createView(),
+		]);
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
+	return $this->redirectToRoute('admin_user_index');
     }
 
     /**
-     * @Route("/{id}", name="admin_user_delete", methods={"DELETE"})
+     * @Route("users/{id}", name="admin_user_delete", methods={"DELETE"})
      */
     public function delete(Request $request, EntityUser $entityUser): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$entityUser->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($entityUser);
-            $entityManager->flush();
-        }
+	if($this->isGranted('POST_EDIT',$entityUser)){
+
+		if ($this->isCsrfTokenValid('delete'.$entityUser->getId(), $request->request->get('_token'))) {
+		    $entityManager = $this->getDoctrine()->getManager();
+		    $entityManager->remove($entityUser);
+		    $entityManager->flush();
+		}
+	}
+	else{
+		return $this->render('error403forbidden.html.twig');
+	}
 
         return $this->redirectToRoute('admin_user_index');
     }

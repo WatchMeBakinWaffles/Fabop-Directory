@@ -1,0 +1,11 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Ajouter un roles{% endblock %}
+
+{% block content %}
+    <h1>Ajouter un nouveau role</h1>
+
+    {{ include('entity_roles/_form.html.twig') }}
+
+    <a href="{{ path('admin_roles_index') }}">Retour liste de roles</a>
+{% endblock %}

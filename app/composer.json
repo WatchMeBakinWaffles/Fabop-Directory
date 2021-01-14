@@ -19,6 +19,7 @@
         "mongodb/mongodb": "^1.7",
         "nelmio/cors-bundle": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpunit/phpunit": "^9.4",
         "sensio/framework-extra-bundle": "^5.1",
         "swiftmailer/swiftmailer": "6.2.3",
         "symfony/asset": "4.4.*",
