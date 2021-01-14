@@ -17,9 +17,11 @@
             </tr>
             <tr>
                 <th>Roles</th>
+                <td>
                 {% for roles in entity_user.entityRoles %}
-                <td>{{ roles.nom }}</td>
+                {{ roles.nom }},
                 {% endfor %}
+                <td>
             </tr>
             <tr>
                 <th>Password</th>
