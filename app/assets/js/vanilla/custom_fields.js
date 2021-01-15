@@ -5,7 +5,7 @@ if(path=="/manager/modeles/new") {
 
 
     let titre = document.createElement('h6');
-    titre.innerHTML = "Personnalisé les champs existant";
+    titre.innerHTML = "Personnaliser les champs existant";
 
     while(indice_tableau < 8){
         let label_div = document.createElement("div");
@@ -64,8 +64,8 @@ if(path=="/manager/modeles/new") {
         input_label.className = "form-control";
         input_label.name = "custom_data["+indice_tableau+"][label]";
         input_label.readOnly = true;
-        input_label.placeholder = "Champs complémentaires";
         input_label.value = "Complémentaires "+indice_tableau;
+        input_label.placeholder = "Nom du champ...";
         
         let input_value = document.createElement("input");
 

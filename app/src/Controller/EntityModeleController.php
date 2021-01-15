@@ -124,7 +124,6 @@ class EntityModeleController extends AbstractController
      */
     public function delete(Request $request, EntityModele $entity_modele): Response
     {
-
         $filesystem = new Filesystem();
 
         if ($this->isCsrfTokenValid('delete'.$entity_modele->getId(), $request->request->get('_token'))) {
@@ -132,7 +131,10 @@ class EntityModeleController extends AbstractController
             $mongoman = new MongoManager();
             $mongoman->deleteSingleById("Entity_Custom_sheet",$entity_modele->getSheetId());
             // supprime le fichier
-            $filesystem->remove($entity_modele->getFilename());
+            if(!isset($filesystem)){
+                $filesystem->remove($entity_modele->getFilename());
+            }
+
 
             $em->remove($entity_modele);
             $em->flush();
@@ -146,8 +148,10 @@ class EntityModeleController extends AbstractController
      */
     public function edit(Request $request, EntityModele $entity_modele): Response
     {
+
         $form = $this->createForm(EntityModeleType::class, $entity_modele);
         $form->handleRequest($request);
+
         $mongoman = new MongoManager();
         $em = $this->getDoctrine()->getManager();
 
@@ -162,6 +166,9 @@ class EntityModeleController extends AbstractController
                     }
                 }
             }
+
+            $entity_modele->setFilename($form->get('name')->getData().'.xlsx');
+
             $em->flush();
 
             return $this->redirectToRoute('entity_modeles_index', ['id' => $entity_modele->getId()]);
