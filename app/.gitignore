@@ -75,3 +75,4 @@ package-lock.json
 /phpunit.xml.dist.bak
 !/phpunit.xml.dist
 /public/users/
+!/.phpunit.result.cache
