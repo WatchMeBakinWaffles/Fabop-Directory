@@ -50,15 +50,13 @@ services:
     - mysqldb
 
   mongodb:
-    build:
-      context: build/mongodb
-      dockerfile: DockerFile
+    image: mongo:4.4.4-bionic
     restart: always
     ports:
         - "27017:27017"
     volumes:
-        - ./mongo-init.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+        - ./build/mongodb/mongo-init.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     environment:
         MONGO_INITDB_ROOT_USERNAME: app_access
         MONGO_INITDB_ROOT_PASSWORD: MongoDB12345
-        MONGO_INITDB_DATABASE: admin
+
