@@ -14,45 +14,393 @@ class RoleFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $mongoman = new MongoManager();
-	$sheetPermissionAdmin=$mongoman->insertSingle("permissions_user",[
-		'shows'=>'RW',
-		'tags'=>'RW',
-		'peoples'=>'RW',
-		'users'=>'RW',
-		'models'=>'RW',
-		'institutions'=>'RW',
-		'roles'=>'RW',
-		'import'=>True,
-		'export'=>True,
-		'connection'=>True,
-		'restaurations'=>'RW'
-	]);
-	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",[
-		'shows'=>'RW',
-		'tags'=>'RW',
-		'peoples'=>'RW',
-		'users'=>'',
-		'models'=>'',
-		'institutions'=>'RW',
-		'roles'=>'',
-		'import'=>True,
-		'export'=>True,
-		'connection'=>True,
-		'restaurations'=>''
-	]);
-	$sheetPermissionUtilisateur=$mongoman->insertSingle("permissions_user",[
-		'shows'=>'R',
-		'tags'=>'R',
-		'peoples'=>'R',
-		'users'=>'',
-		'models'=>'',
-		'institutions'=>'',
-		'roles'=>'',
-		'import'=>False,
-		'export'=>True,
-		'connection'=>True,
-		'restaurations'=>''
-	]);
+    $json = '{
+        "permissions": [
+            {
+                "entityType": "show",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "tags",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "peoples",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "users",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "models",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "institutions",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "roles",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "restaurations",
+                "rights": [
+                        {
+                            "filters": [
+                                {
+                                    "field": "*",
+                                    "value": "*"
+                                }
+                            ],
+                            "read": 1,
+                            "write": 1
+                        }
+                ]
+            }
+        ],
+        "import":true,
+        "export": true,
+        "connection": true
+    }';
+    $array = json_decode($json);
+	$sheetPermissionAdmin=$mongoman->insertSingle("permissions_user",$array);
+	$json = '{
+        "permissions": [
+            {
+                "entityType": "show",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "tags",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "peoples",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "users",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "models",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "institutions",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "roles",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "restaurations",
+                "rights": [
+                        {
+                            "filters": [
+                                {
+                                    "field": "*",
+                                    "value": "*"
+                                }
+                            ],
+                            "read": -1,
+                            "write": -1
+                        }
+                ]
+            }
+        ],
+        "import":true,
+        "export": true,
+        "connection": true
+    }';
+    $array = json_decode($json);
+	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",$array);
+	$json = '{
+        "permissions": [
+            {
+                "entityType": "show",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "tags",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "peoples",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "users",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "models",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "institutions",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": 1,
+                        "write": 1
+                    }
+                ]
+            },
+            {
+                "entityType": "roles",
+                "rights": [
+                    {
+                        "filters": [
+                            {
+                                "field": "*",
+                                "value": "*"
+                            }
+                        ],
+                        "read": -1,
+                        "write": -1
+                    }
+                ]
+            },
+            {
+                "entityType": "restaurations",
+                "rights": [
+                        {
+                            "filters": [
+                                {
+                                    "field": "*",
+                                    "value": "*"
+                                }
+                            ],
+                            "read": -1,
+                            "write": -1
+                        }
+                ]
+            }
+        ],
+        "import":false,
+        "export": true,
+        "connection": true
+    }';
+	$array = json_decode($json);
+	$sheetPermissionUtilisateur=$mongoman->insertSingle("permissions_user",$array);
 
 	$PermissionsAdmin = new Permissions();
         $PermissionsAdmin->setSheetId($sheetPermissionAdmin);
