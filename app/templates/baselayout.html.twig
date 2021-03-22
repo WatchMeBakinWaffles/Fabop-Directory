@@ -61,6 +61,9 @@
                             {% if is_granted('MODELS','') %}
                             <li class="{{ app.request.get('_route') matches '{entity_modeles(.+)}' ? 'active' }}"><a href="{{ path('entity_modeles_index') }}">Gestion des modèles</a></li>
                             {% endif %}
+                            {% if is_granted('MODELS','') %}
+                                <li class="{{ app.request.get('_route') matches '{permission}' ? 'active' }}"><a href="{{ path('permission') }}">Gestion des permissions</a></li>
+                            {% endif %}
                             {% if is_granted('RESTAURATIONS','') %}
                             <li><a href="#">Configuration</a></li>
                             {% endif %}

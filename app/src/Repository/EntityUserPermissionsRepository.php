@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method UserPermissions[]    findAll()
  * @method UserPermissions[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserPermissionsRepository extends ServiceEntityRepository
+class EntityUserPermissionsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
