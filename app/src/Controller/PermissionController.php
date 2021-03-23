@@ -41,7 +41,6 @@ class PermissionController extends AbstractController
             'Institution'=> EntityInstitutions::class,
             'Modèle'=> EntityModele::class,
             'Personne' => EntityPeople::class,
-            'Performance' => EntityPerformances::class,
             'Rôle' => EntityRoles::class,
             'Spectacle' => EntityShows::class,
             'Tag' => EntityTags::class,
@@ -135,6 +134,16 @@ class PermissionController extends AbstractController
     {
         $data = $request->get('data');
         $jsonData = new JsonResponse($data);
+
+        $traduction = array(
+            EntityShows::class => "show",
+            EntityTags::class => "tags",
+            EntityPeople::class => "peoples",
+            EntityUser::class => "users",
+            EntityModele::class => "models",
+            EntityInstitutions::class => "institutions",
+            EntityRoles::class => "roles"
+        );
 
         var_dump($jsonData);
 
