@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityPeople;
+use App\Entity\EntityShows;
 use App\Entity\EntityUser;
 use App\Repository\EntityRolesRepository;
 use App\Repository\PermissionsRepository;
@@ -28,35 +30,37 @@ class PermissionController extends AbstractController
      */
     public function index(Request $request): Response
     {
+
         $choiceEntity = array(
-            'Chat' => 'cat',
-            'Chien' => 'dog',
-            'Tortue'=> 'turtle',
-            'Poisson' => 'fish'
+            'Personne' => EntityPeople::class,
+            'Spectacle' => EntityShows::class,
+            'Utilisateur'=> EntityUser::class
         );
         $useFilter = array(
             'Oui' => 'oui',
             'Non' => 'non',
         );
 
+        $em = $this->getDoctrine()->getManager();
+
         $form = $this->createFormBuilder()
             ->add('nom_de_la_permission', TextType::class, array('required' => true))
             ->add('entite',ChoiceType::class, ['choices' => $choiceEntity])
             ->add('ajouter_un_filtre',ChoiceType::class, array(
-                //'dataclass' => 'useFilter',
-                'choices' => $useFilter,
-                'expanded' => false,
+            'choices' => $useFilter,
+            'expanded' => false,
             ))
             ->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'oui') {
-                return $this->redirectToRoute('permission_filter', $data);
+                return $this->redirectToRoute('permission_filter', array('data' => $data));
             }
             else if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'non') {
-                return $this->render('permission/permission_created.html.twig', $data);
+                return $this->redirectToRoute('permission_create', array('data' => $data));
             }
         }
         return $this->render('permission/index.html.twig', [
@@ -71,6 +75,8 @@ class PermissionController extends AbstractController
      */
     public function permission_filter(Request $request): Response
     {
+        $data = $request->get('data');
+
         $choiceRights = array(
             'Oui' => 'oui',
             'Non' => 'non',
@@ -81,12 +87,15 @@ class PermissionController extends AbstractController
             'Role' => 'role',
         );
 
+        $em = $this->getDoctrine()->getManager();
+
         $form = $this->createFormBuilder()
-            ->add('champ_a_filtrer',ChoiceType::class, [
-            'choices' => $choiceField,
-            'expanded'=>false,
-            ])
-            ->add('valeur_du_filtre', null, array('required' => true))
+            ->add('champ_a_filtrer', ChoiceType::class, array(
+                'choices' => $em->getClassMetadata($data['entite']) ->getColumnNames(),
+                'choice_label' => function ($value){
+                    return $value;
+                },))
+            ->add('valeur_du_filtre', TextType::class, array('required' => true))
             ->add('droits_lecture',ChoiceType::class, [
             'choices' => $choiceRights,
             'expanded'=>false,
@@ -95,13 +104,38 @@ class PermissionController extends AbstractController
             'choices' => $choiceRights,
             'expanded'=>false,
             ])
-
         ->getForm();
+
         $form->handleRequest($request);
 
-        return $this->render('permission/permission_filter.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data2 = $form->getData();
+            return $this->redirectToRoute('permission_create', array('data' => $data, 'data2' => $data2));
+        }
+
+        return $this->render('permission/permission_filter.html.twig', ['form' => $form->createView(), 'data' => $data]);
+
             }
 
+
+    /**
+     * @Route("/permission_create", name="permission_create")
+     * @param Request $request
+     * @return Response
+     */
+    public function permission_create(Request $request): Response
+    {
+        $data = $request->get('data');
+        $data2 = $request->get('data2');
+
+        var_dump($data);
+        var_dump($data['entite']);
+        var_dump($data2);
+
+        return $this->render('permission/permission_create.html.twig', ['data' => $data]);
+
+    }
+
+
 }
+
