@@ -1,0 +1,13 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Permissions{% endblock %}
+
+{% block content %}
+    <h2><i class="fas fa-balance-scale-right"></i> Gestion des permissions</h2>
+
+    <p>Ajouter un filtre à la permission "{{ data.nom_de_la_permission }}".</p>
+
+    {{ include('entity_roles/_form.html.twig') }}
+
+
+{% endblock %}

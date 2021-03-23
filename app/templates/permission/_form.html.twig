@@ -1,0 +1,12 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+
+<button id='validForm' class="btn btn-primary m-1"><i class="fas fa-check"></i>{{ button_label|default('Valider') }}</button>
+{% if edit|default(false) %}
+    <a class="btn btn-light m-1" href="{{ path('dashboard') }}"><i class="fas fa-undo"></i> Annuler</a>
+{% else %}
+    <a class="btn btn-light m-1" href="{{ path('admin_roles_index') }}"><i class="fas fa-undo"></i> Annuler</a>
+{% endif %}
+{{ form_end(form) }}

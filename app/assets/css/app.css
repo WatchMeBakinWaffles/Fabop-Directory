@@ -31,3 +31,7 @@
 hr{
     border: 1px solid #951b81;
 }
+
+.hide {
+    display: none;
+}
