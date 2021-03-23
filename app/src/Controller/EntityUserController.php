@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\EntityRoles;
 use App\Form\EntityRolesType;
+use App\Form\EntityPeopleType;
 use App\Repository\EntityRolesRepository;
 use App\Repository\PermissionsRepository;
 use App\Entity\EntityUser;
+use App\Entity\EntityPeople;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 
 /**
@@ -47,7 +52,7 @@ class EntityUserController extends AbstractController
     {
 		//creation d'un nouvelle utilisateur 
         $entityUser = new EntityUser();
-
+		
 	if($this->isGranted('POST_EDIT',$entityUser)){
 		//création d'un formulaire de type User
 		$form = $this->createForm(EntityUserType::class, $entityUser);
@@ -92,8 +97,71 @@ class EntityUserController extends AbstractController
 	else{
 		return $this->render('error403forbidden.html.twig');
 	}
-	return $this->redirectToRoute('admin_user_index');
+		return $this->redirectToRoute('admin_user_index');
     }
+
+	/**
+     * @Route("users/peopleAndUser", name="admin_user_people_new", methods={"GET","POST"})
+     */
+	public function newUserPeople(Request $request,EntityRolesRepository $entityRolesRepository): Response{
+		
+		//creation d'un nouvelle utilisateur 
+        $entityUser = new EntityUser();
+		//creation d'une nouvelle personnre
+		$entityPeople = new EntityPeople();
+
+		if($this->isGranted('POST_EDIT',$entityUser)){
+
+			// Ajout des champs supplémentaire dans le formulraire pour la saisie de la "Personne"
+			$form = $this->createForm(EntityUserType::class, $entityUser)
+				->add('birthDate', BirthdayType::class, ['mapped' => false])
+				->add('postal_code', TextType::class, ['mapped' => false])
+				->add('city', TextType::class, ['mapped' => false])
+				->add('newsLetter', CheckboxType::class, ['mapped' => false, 'required' => false]);
+			$form->handleRequest($request);
+
+
+			if ($form->isSubmitted() && $form->isValid()) {
+				$entityManager = $this->getDoctrine()->getManager();
+				/**
+				* Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
+				*/
+				$entityUser->bCryptPassword($entityUser->getPassword());
+
+
+				//parcours des entityRoles du formulaire pour leur attribuer le user actuellement créer 
+				foreach($form->getdata()->getEntityRoles() as $Role){
+					$Role->addUser($entityUser);
+				}
+
+				// mapping des info user dans people
+				$mongoman = new MongoManager();
+				$entityPeople->setFirstname($entityUser->getFirstName());
+				$entityPeople->setName($entityUser->getLastName());
+				$entityPeople->setAdresseMailing($entityUser->getEmail());
+				$entityPeople->setInstitution($entityUser->getInstitution());
+				$entityPeople->setBirthdate($form['birthDate']->getData());
+				$entityPeople->setPostalCode($form['postal_code']->getData());
+				$entityPeople->setCity($form['city']->getData());
+				$entityPeople->setNewsletter($form['newsLetter']->getData());
+				$entityPeople->setAddDate(new \DateTime("now"));
+				$entityPeople->setSheetId($sheetId=$mongoman->insertSingle("Entity_person_sheet",[]));
+
+				//mise a jour de la base de données
+				$entityManager->persist($entityUser);
+				$entityManager->persist($entityPeople);
+				$entityManager->flush();
+				return $this->redirectToRoute('admin_user_index');
+
+			}
+
+			return $this->render('entity_user/new.html.twig', [ 'entity_user' => $entityUser, 'entity_roles' => $entityRolesRepository->findAll(), 'form' => $form->createView()]);
+
+		} else {
+			return $this->render('error403forbidden.html.twig');
+		}
+		return $this->redirectToRoute('admin_user_index');
+	}
 
     /**
      * @Route("users/{id}", name="admin_user_show", methods={"GET"})

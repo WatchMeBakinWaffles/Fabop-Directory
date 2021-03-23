@@ -9,9 +9,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityPeopleRepository")
+ * @UniqueEntity(fields = {"email"}, message = "Cette adresse mail est déjà utilisé")
  * @ApiResource(
  *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      collectionOperations={
