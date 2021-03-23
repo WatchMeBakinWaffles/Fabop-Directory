@@ -37,15 +37,23 @@ class EntityShowsVoter extends Voter
 		    case 'POST_EDIT':
 		        // logic to determine if the user can EDIT
 		        // return true or false
-		        if ($data_permissions["shows"] == "W" || $data_permissions["shows"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+                    if($permission["entityType"] == "shows") {
+                        if($permission["rights"]["write"])
+                            return true;
+                    }
+                }
+                break;
 		    case 'POST_VIEW':
 		        // logic to determine if the user can VIEW
 		        // return true or false
-		        if ($data_permissions["shows"] == "R" || $data_permissions["shows"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+                    if($permission["entityType"] == "shows") {
+                        if($permission["rights"]["read"])
+                            return true;
+                    }
+                }
+                break;
 		}
 	}
         return false;

@@ -35,13 +35,21 @@ class EntityInstitutionsVoter extends Voter
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
 		    case 'POST_EDIT':
-		        if ($data_permissions["institutions"] == "W" || $data_permissions["institutions"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+		            if($permission["entityType"] == "institutions") {
+		                if($permission["rights"]["write"])
+		                    return true;
+		            }
+		        }
+		        break;
 		    case 'POST_VIEW':
-		        if ($data_permissions["institutions"] == "R" || $data_permissions["institutions"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+                    if($permission["entityType"] == "institutions") {
+                        if($permission["rights"]["read"])
+                            return true;
+                    }
+                }
+                break;
 		}
 	}
         return false;
