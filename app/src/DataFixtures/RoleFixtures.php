@@ -139,7 +139,8 @@ class RoleFixtures extends Fixture
         ],
         "import":true,
         "export": true,
-        "connection": true
+        "connection": true,
+        "admin": true
     }';
     $array = json_decode($json);
 	$sheetPermissionAdmin=$mongoman->insertSingle("permissions_user",$array);
@@ -268,7 +269,8 @@ class RoleFixtures extends Fixture
         ],
         "import":true,
         "export": true,
-        "connection": true
+        "connection": true,
+        "admin": false
     }';
     $array = json_decode($json);
 	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",$array);
@@ -397,7 +399,8 @@ class RoleFixtures extends Fixture
         ],
         "import":false,
         "export": true,
-        "connection": true
+        "connection": true,
+        "admin": false
     }';
 	$array = json_decode($json);
 	$sheetPermissionUtilisateur=$mongoman->insertSingle("permissions_user",$array);

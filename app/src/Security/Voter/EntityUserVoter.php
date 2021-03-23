@@ -35,13 +35,21 @@ class EntityUserVoter extends Voter
 		// ... (check conditions and return true to grant permission) ...
 		switch ($attribute) {
 		    case 'POST_EDIT':
-		        if ($data_permissions["restaurations"] == "W" || $data_permissions["restaurations"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+                    if($permission["entityType"] == "restaurations") {
+                        if($permission["rights"]["write"])
+                            return true;
+                    }
+                }
+                break;
 		    case 'POST_VIEW':
-		        if ($data_permissions["restaurations"] == "R" || $data_permissions["restaurations"] == "RW"){
-		         	return true;
-			}
+		        foreach($data_permissions["permissions"] as $permission) {
+                    if($permission["entityType"] == "restaurations") {
+                        if($permission["rights"]["read"])
+                            return true;
+                    }
+                }
+                break;
 		}
 	}
 
