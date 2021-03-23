@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\EntityInstitutions;
+use App\Entity\EntityModele;
 use App\Entity\EntityPeople;
+use App\Entity\EntityPerformances;
+use App\Entity\EntityRoles;
 use App\Entity\EntityShows;
+use App\Entity\EntityTags;
 use App\Entity\EntityUser;
 use App\Repository\EntityRolesRepository;
 use App\Repository\PermissionsRepository;
@@ -33,10 +38,16 @@ class PermissionController extends AbstractController
     {
 
         $choiceEntity = array(
+            'Institution'=> EntityInstitutions::class,
+            'Modèle'=> EntityModele::class,
             'Personne' => EntityPeople::class,
+            'Performance' => EntityPerformances::class,
+            'Rôle' => EntityRoles::class,
             'Spectacle' => EntityShows::class,
-            'Utilisateur'=> EntityUser::class
+            'Tag' => EntityTags::class,
+            'Utilisateur'=> EntityUser::class,
         );
+
         $useFilter = array(
             'Oui' => 'oui',
             'Non' => 'non',
@@ -82,10 +93,6 @@ class PermissionController extends AbstractController
             'Oui' => 'oui',
             'Non' => 'non',
             'Inchangés' => 'inchanges',
-        );
-        $choiceField = array(
-            'Email' => 'email',
-            'Role' => 'role',
         );
 
         $em = $this->getDoctrine()->getManager();
