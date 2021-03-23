@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,8 +110,8 @@ class PermissionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data2 = $form->getData();
-            return $this->redirectToRoute('permission_create', array('data' => $data, 'data2' => $data2));
+            $data = array_merge($data, $form->getData());
+            return $this->redirectToRoute('permission_create', array('data' => $data));
         }
 
         return $this->render('permission/permission_filter.html.twig', ['form' => $form->createView(), 'data' => $data]);
@@ -126,11 +127,9 @@ class PermissionController extends AbstractController
     public function permission_create(Request $request): Response
     {
         $data = $request->get('data');
-        $data2 = $request->get('data2');
+        $jsonData = new JsonResponse($data);
 
-        var_dump($data);
-        var_dump($data['entite']);
-        var_dump($data2);
+        var_dump($jsonData);
 
         return $this->render('permission/permission_create.html.twig', ['data' => $data]);
 
