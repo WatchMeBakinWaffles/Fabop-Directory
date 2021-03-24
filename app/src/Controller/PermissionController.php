@@ -145,7 +145,7 @@ class PermissionController extends AbstractController
             EntityInstitutions::class => "institutions",
             EntityRoles::class => "roles"
         );
-
+//push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
         $json["permissions"]["entityType"] = $classTraduction[$data["entite"]];
