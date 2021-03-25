@@ -3,8 +3,12 @@
 namespace App\Form;
 
 use App\Entity\EntityUser;
+use App\Entity\EntityUserPermissions;
+use App\Exception\DocumentNotFoundException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -24,48 +28,48 @@ class EntityUserType extends AbstractType
     {
         $this->security = $security;
         $this->entityRolesRepository = $entityRolesRepository;
-
-       // $test= $this->entityRolesRepository.find($this->choix);
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /*exemple de builder pour recuperer tous les nom de category
-        $builder->add('category', EntityType::class, [
-        'class' => Category::class,
-        'choice_label' => function ($category) {
-        return $category->getDisplayName();
-    }
-]);
-        */
-
-        /*
-        ancien choix
-
-        $choices = array(
-            'administrateur' => 'ROLE_ADMIN',
-            'contributeur' => 'ROLE_CONTRIBUTEUR',
-            'utilisateur' => 'ROLE_USER',
-        );
-        */
+        $mongoman = new MongoManager();
 
         $em = $this->entityRolesRepository;
         $builder
             ->add('email', null,array('required' => true))
-
             ->add('entityRoles', EntityType::class, array(
-                'class' =>EntityRoles::class, 
+                'class' =>EntityRoles::class,
                 'multiple'=>true,
                 'choice_value' => 'nom',
                 'choice_label' => function ($em) {
                     return $em->getNom();
                 }
-            ))
-           // ->add('roles', ChoiceType::class, array('choices' => $choice,'multiple' => true,))
-            ->add('password', PasswordType::class)
+            ));
+           try {
+               $data_permissions = $mongoman->getAllPermission("permissions_user");
+               $builder->add('permissions', ChoiceType::class, array(
+                   'multiple'=>true,
+                   "mapped" => false,
+                   'choices' => $data_permissions,
+                   'choice_label' => function ($em) {
+                       return $em['label'];
+                   }
+               ));
+           } catch (DocumentNotFoundException $e) {
+               return $e;
+           }
+           $builder->add('password', PasswordType::class, array( 'required' => false))
             ->add('firstName')
             ->add('lastName')
             ->add('ApiToken')
-        ;
+           ->addEventListener(FormEvents::PRE_SUBMIT,function(FormEvent $event) {
+               $requestData = $event->getData();
+               $user = $event->getForm()->getData();
+               if ($user && !$requestData['password']){
+                   $requestData['password'] = $user->getPassword();
+               }
+               $event->setData($requestData);
+           });
+
         if($this->security->isGranted('ROLE_ADMIN')) {
             $builder->add('institution', null,array('label' => 'Institution','attr' => array('class' => 'cm-input')));
         }
@@ -76,6 +80,7 @@ class EntityUserType extends AbstractType
     {
         $resolver->setDefaults([
             'entityUser' => EntityUser::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

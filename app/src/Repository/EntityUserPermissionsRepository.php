@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\UserPermissions;
+use App\Entity\EntityUserPermissions;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method UserPermissions|null find($id, $lockMode = null, $lockVersion = null)
- * @method UserPermissions|null findOneBy(array $criteria, array $orderBy = null)
- * @method UserPermissions[]    findAll()
- * @method UserPermissions[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method EntityUserPermissions|null find($id, $lockMode = null, $lockVersion = null)
+ * @method EntityUserPermissions|null findOneBy(array $criteria, array $orderBy = null)
+ * @method EntityUserPermissions[]    findAll()
+ * @method EntityUserPermissions[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class EntityUserPermissionsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserPermissions::class);
+        parent::__construct($registry, EntityUserPermissions::class);
     }
 
     // /**

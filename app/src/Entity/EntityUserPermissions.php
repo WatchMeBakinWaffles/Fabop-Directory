@@ -6,7 +6,7 @@ use App\Repository\UserPermissionsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=UserPermissionsRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\EntityUserPermissionsRepository::class)
  */
 class EntityUserPermissions
 {
@@ -18,7 +18,7 @@ class EntityUserPermissions
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=EntityUser::class, inversedBy="UserPermissions", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=EntityUser::class, inversedBy="entityPermissions", cascade={"persist", "remove"})
      */
     private $user;
 
@@ -32,12 +32,12 @@ class EntityUserPermissions
         return $this->id;
     }
 
-    public function getUserId(): ?EntityRoles
+    public function getUser(): ?EntityUser
     {
         return $this->user;
     }
 
-    public function setUserId(?EntityRoles $user): self
+    public function setUser(?EntityUser $user): self
     {
         $this->user = $user;
 

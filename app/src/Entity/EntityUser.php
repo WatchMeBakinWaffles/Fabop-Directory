@@ -65,7 +65,12 @@ class EntityUser implements UserInterface
      * @ORM\ManyToMany(targetEntity=EntityRoles::class, mappedBy="users")
      */
     private $entityRoles;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity=EntityUserPermissions::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $entityPermissions;
+
     public function __toString()
     {
         return $this->getEmail();
@@ -75,6 +80,7 @@ class EntityUser implements UserInterface
     {
         $this->modeles = new ArrayCollection();
         $this->entityRoles = new ArrayCollection();
+        $this->entityPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +125,29 @@ class EntityUser implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getEntityUserPermissions(): ?EntityUserPermissions
+    {
+        return $this->entityPermissions;
+    }
+
+
+    public function setEntityUserPermissions(EntityUserPermissions $entityPermissions): self
+    {
+        $entityPermissions->setUser($this);
+        $exist = false;
+        foreach($this->entityPermissions->toArray() as $value)
+        {
+           if(in_array($entityPermissions->getSheetId(), (array)$value)) {
+               $exist=true;
+           }
+        }
+        if (!$exist) {
+            $this->entityPermissions[] = $entityPermissions;
+        }
 
         return $this;
     }
@@ -194,8 +223,6 @@ class EntityUser implements UserInterface
     public function bCryptPassword(string $password){
         $crypted = password_hash($password, PASSWORD_BCRYPT);
         $this->setPassword($crypted);
-
-
     }
 
     public function getInstitution(): ?EntityInstitutions
@@ -233,6 +260,7 @@ class EntityUser implements UserInterface
     {
         return $this->entityRoles;
     }
+
 
     public function addEntityRole(EntityRoles $entityRole): self
     {
