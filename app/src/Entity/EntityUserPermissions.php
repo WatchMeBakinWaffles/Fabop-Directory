@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=UserPermissionsRepository::class)
  */
-class UserPermissions
+class EntityUserPermissions
 {
     /**
      * @ORM\Id
@@ -34,12 +34,12 @@ class UserPermissions
 
     public function getUserId(): ?EntityRoles
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?EntityRoles $user_id): self
+    public function setUserId(?EntityRoles $user): self
     {
-        $this->user = $user_id;
+        $this->user = $user;
 
         return $this;
     }
