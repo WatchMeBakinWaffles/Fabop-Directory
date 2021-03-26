@@ -46,7 +46,7 @@ class EntityUser implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
      */
     private $ApiToken;
 
@@ -67,7 +67,7 @@ class EntityUser implements UserInterface
     private $entityRoles;
 
     /**
-     * @ORM\OneToMany(targetEntity=EntityUserPermissions::class, mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=EntityUserPermissions::class, mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $entityPermissions;
 
@@ -129,7 +129,7 @@ class EntityUser implements UserInterface
         return $this;
     }
 
-    public function getEntityUserPermissions(): ?EntityUserPermissions
+    public function getEntityUserPermissions(): Collection
     {
         return $this->entityPermissions;
     }
@@ -281,10 +281,15 @@ class EntityUser implements UserInterface
     
     public function removeEntityRole(EntityRoles $entityRole): self
     {
-        if ($this->entityRoles->removeElement($entityRole)) {
-            $entityRole->removeUser($this);
-        }
+        $this->entityRoles->removeElement($entityRole);
+        $entityRole->removeUser($this);
+        return $this;
+    }
 
+    public function removeEntityPerm(EntityUserPermissions $entityPerm): self
+    {
+        $this->entityPermissions->removeElement($entityPerm);
+        $entityPerm->setUser(null);
         return $this;
     }
 

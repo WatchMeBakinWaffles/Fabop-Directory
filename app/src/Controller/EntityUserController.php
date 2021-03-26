@@ -71,6 +71,12 @@ class EntityUserController extends AbstractController
 				$Role->addUser($entityUser);
 			}
 
+            foreach ($form->get("permissions")->getData() as $perm) {
+                $entityUserPerm = new EntityUserPermissions();
+                $entityUserPerm->setSheetId($perm['_id']);
+                $entityUser->setEntityUserPermissions($entityUserPerm);
+            }
+
 			//mise a jour de la base de données
 		    $entityManager->persist($entityUser);
 			$entityManager->flush();
@@ -111,24 +117,26 @@ class EntityUserController extends AbstractController
      */
     public function edit(Request $request, EntityUser $entityUser): Response
     {		
-		//parcours tous les roles de l'utilisateurs pour les supprimez	
-		foreach($entityUser->getEntityRoles() as $RoleARetirer){
-		$entityUser->removeEntityRole($RoleARetirer);
-	}
 	if($this->isGranted('POST_EDIT',$entityUser)){
 		//creation d'un nouveau formulaire de type User
         $mongoman = new MongoManager();
-		$form = $this->createForm(EntityUserType::class, $entityUser)
+		$form = $this->createForm(EntityUserType::class, $entityUser, ["extra_fields_message" => 'edit'])
 		->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
 		    $entityManager = $this->getDoctrine()->getManager();
+            //parcours tous les roles de l'utilisateurs pour les supprimez
+
+            foreach($entityUser->getEntityUserPermissions() as $perm){
+                $entityUser->removeEntityPerm($perm);
+            }
 		    /**
 		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
 			*/
 		    if (password_get_info($entityUser->getPassword())['algoName'] === 'unknown') {
                 $entityUser->bCryptPassword($entityUser->getPassword());
             }
+
 			//parcours des entityRoles du formulaire pour leur attribuer le user actuellement editer
 			foreach($form->getdata()->getEntityRoles() as $Role){
 			 $Role->addUser($entityUser);

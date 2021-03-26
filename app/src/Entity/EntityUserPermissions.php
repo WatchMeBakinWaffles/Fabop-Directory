@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserPermissionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,12 +29,22 @@ class EntityUserPermissions
      */
     private $sheet_id;
 
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser(): ?EntityUser
+
+    /**
+     * @return Collection|EntityUser[]
+     */
+
+    public function getUser(): Collection
     {
         return $this->user;
     }
@@ -55,4 +67,5 @@ class EntityUserPermissions
 
         return $this;
     }
+
 }
