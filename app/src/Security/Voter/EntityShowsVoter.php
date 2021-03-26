@@ -39,7 +39,7 @@ class EntityShowsVoter extends Voter
 		        // return true or false
 		        foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "shows") {
-                        if($permission["rights"]["write"])
+                        if($permission["rights"][0]["write"])
                             return true;
                     }
                 }
@@ -49,7 +49,7 @@ class EntityShowsVoter extends Voter
 		        // return true or false
 		        foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "shows") {
-                        if($permission["rights"]["read"])
+                        if($permission["rights"][0]["read"])
                             return true;
                     }
                 }

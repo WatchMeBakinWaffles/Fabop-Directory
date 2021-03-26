@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EntityRoles;
+use App\Entity\EntityUserPermissions;
 use App\Form\EntityRolesType;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityRolesRepository;
@@ -12,6 +13,9 @@ use App\Entity\EntityPeople;
 use App\Form\EntityUserType;
 use App\Repository\EntityUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,16 +75,12 @@ class EntityUserController extends AbstractController
 			foreach($form->getdata()->getEntityRoles() as $Role){
 				$Role->addUser($entityUser);
 			}
-			//ancienne liste qui stocker les roles (on utiliser array_push dans le foreach)
-			//$liste_role = [];
 
-			/*
-			permetter anciennement de tester si l'utilisateur avait un role admin est donc n'a aucune institution rattacher
-
-
-				if(in_array('ROLE_ADMIN', $liste_role))
-					$entityUser->setInstitution(NULL);
-			*/
+            foreach ($form->get("permissions")->getData() as $perm) {
+                $entityUserPerm = new EntityUserPermissions();
+                $entityUserPerm->setSheetId($perm['_id']);
+                $entityUser->setEntityUserPermissions($entityUserPerm);
+            }
 
 			//mise a jour de la base de données
 		    $entityManager->persist($entityUser);
@@ -185,39 +185,35 @@ class EntityUserController extends AbstractController
      */
     public function edit(Request $request, EntityUser $entityUser): Response
     {		
-		//parcours tous les roles de l'utilisateurs pour les supprimez	
-		foreach($entityUser->getEntityRoles() as $RoleARetirer){
-		$entityUser->removeEntityRole($RoleARetirer);
-	}
 	if($this->isGranted('POST_EDIT',$entityUser)){
-
 		//creation d'un nouveau formulaire de type User
-		$form = $this->createForm(EntityUserType::class, $entityUser);
-		$form->handleRequest($request);
+        $mongoman = new MongoManager();
+		$form = $this->createForm(EntityUserType::class, $entityUser, ["extra_fields_message" => 'edit'])
+		->handleRequest($request);
+
 		if ($form->isSubmitted() && $form->isValid()) {
 		    $entityManager = $this->getDoctrine()->getManager();
+            //parcours tous les roles de l'utilisateurs pour les supprimez
+
+            foreach($entityUser->getEntityUserPermissions() as $perm){
+                $entityUser->removeEntityPerm($perm);
+            }
 		    /**
 		    * Hashage du mot de passe avec le protocole BCRYPT juste avant l'enregistrement en bd.
 			*/
-			$entityUser->bCryptPassword($entityUser->getPassword());
+		    if (password_get_info($entityUser->getPassword())['algoName'] === 'unknown') {
+                $entityUser->bCryptPassword($entityUser->getPassword());
+            }
 
-			//ancienne liste qui stocker les roles (on utiliser array_push dans le foreach)
-			//$liste_role = [];
-
-			//parcours des entityRoles du formulaire pour leur attribuer le user actuellement editer 
+			//parcours des entityRoles du formulaire pour leur attribuer le user actuellement editer
 			foreach($form->getdata()->getEntityRoles() as $Role){
 			 $Role->addUser($entityUser);
 			}
-
- 
-			/*
-			permetter anciennement de tester si l'utilisateur avait un role admin est donc n'a aucune institution rattacher
-
-
-				if(in_array('ROLE_ADMIN', $liste_role))
-					$entityUser->setInstitution(NULL);
-			*/
-
+            foreach ($form->get("permissions")->getData() as $perm) {
+                $entityUserPerm = new EntityUserPermissions();
+                $entityUserPerm->setSheetId($perm['_id']);
+                $entityUser->setEntityUserPermissions($entityUserPerm);
+            }
 			//mise a jour de la base de données
 		    $entityManager->persist($entityUser);
 			$entityManager->flush();
@@ -233,7 +229,7 @@ class EntityUserController extends AbstractController
 	else{
 		return $this->render('error403forbidden.html.twig');
 	}
-	return $this->redirectToRoute('admin_user_index');
+     return $this->redirectToRoute('admin_user_index');
     }
 
     /**

@@ -173,7 +173,6 @@ class EntityRolesController extends AbstractController
         return $this->render('entity_roles/show.html.twig', [
             'entity_roles' => $entityRoles,
 		    'permissions' => $data_permissions,
-            
         ]);
     }
 

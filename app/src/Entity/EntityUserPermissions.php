@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserPermissionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=UserPermissionsRepository::class)
+ * @ORM\Entity(repositoryClass=App\Repository\EntityUserPermissionsRepository::class)
  */
-class UserPermissions
+class EntityUserPermissions
 {
     /**
      * @ORM\Id
@@ -18,7 +20,7 @@ class UserPermissions
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=EntityUser::class, inversedBy="UserPermissions", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=EntityUser::class, inversedBy="entityPermissions", cascade={"persist", "remove"})
      */
     private $user;
 
@@ -27,19 +29,29 @@ class UserPermissions
      */
     private $sheet_id;
 
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?EntityRoles
+
+    /**
+     * @return Collection|EntityUser[]
+     */
+
+    public function getUser(): Collection
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?EntityRoles $user_id): self
+    public function setUser(?EntityUser $user): self
     {
-        $this->user = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -55,4 +67,5 @@ class UserPermissions
 
         return $this;
     }
+
 }

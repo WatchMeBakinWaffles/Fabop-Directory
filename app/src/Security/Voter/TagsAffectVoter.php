@@ -39,17 +39,15 @@ class TagsAffectVoter extends Voter
 		        // return true or false
                 foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "tags") {
-                        if($permission["rights"]["write"])
+                        if($permission["rights"][0]["write"])
                             return true;
                     }
                 }
                 break;
 		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
                 foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "tags") {
-                        if($permission["rights"]["read"])
+                        if($permission["rights"][0]["read"])
                             return true;
                     }
 			    }
