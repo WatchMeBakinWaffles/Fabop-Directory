@@ -45,8 +45,6 @@ class TagsAffectVoter extends Voter
                 }
                 break;
 		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
                 foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "tags") {
                         if($permission["rights"][0]["read"])
