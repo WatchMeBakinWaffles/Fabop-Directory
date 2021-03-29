@@ -37,7 +37,7 @@ class EntityUserVoter extends Voter
 		    case 'POST_EDIT':
 		        foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "restaurations") {
-                        if($permission["rights"]["write"])
+                        if($permission["rights"][0]["write"])
                             return true;
                     }
                 }
@@ -45,7 +45,7 @@ class EntityUserVoter extends Voter
 		    case 'POST_VIEW':
 		        foreach($data_permissions["permissions"] as $permission) {
                     if($permission["entityType"] == "restaurations") {
-                        if($permission["rights"]["read"])
+                        if($permission["rights"][0]["read"])
                             return true;
                     }
                 }

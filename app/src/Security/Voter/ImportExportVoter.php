@@ -15,7 +15,7 @@ class ImportExportVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['import', 'export', 'connection', 'sub_menu', 'peoples', 'institutions', 'show', 'tags', 'ADMIN','users', 'models','restaurations']);
+        return in_array($attribute, ['import', 'export', 'connection', 'sub_menu', 'peoples', 'institutions', 'show', 'tags', 'admin','users', 'models','restaurations']);
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -35,14 +35,11 @@ class ImportExportVoter extends Voter
                 case 'import':
                 case 'export':
                 case 'connection':
-                    return true;
-                case 'ADMIN':
-                    //if($data_permissions[$attribute])
-                        return true;
+                case 'admin':
+                    return $data_permissions[$attribute];
                     break;
                 case 'user':
-                    if(!$data_permissions[$attribute])
-                        return true;
+                    return !$data_permissions[$attribute];
                     break;
                 case 'sub_menu':
                     //if (!$data_permissions["peoples"] == "" || !$data_permissions["institutions"] == "" || !$data_permissions["shows"] == "" || !$data_permissions["tags"] == "")
