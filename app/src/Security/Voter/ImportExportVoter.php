@@ -36,20 +36,18 @@ class ImportExportVoter extends Voter
                 case 'export':
                 case 'connection':
                 case 'admin':
-                    if($data_permissions[$attribute])
-                        return true;
+                    return $data_permissions[$attribute];
                     break;
                 case 'user':
-                    if(!$data_permissions[$attribute])
-                        return true;
+                    return !$data_permissions[$attribute];
                     break;
                 case 'sub_menu':
                     //if (!$data_permissions["peoples"] == "" || !$data_permissions["institutions"] == "" || !$data_permissions["shows"] == "" || !$data_permissions["tags"] == "")
                     return true;
                     break;
                 default :
-                    if(!$data_permissions[$attribute] == "")
-                        return true;
+                    //if(!$data_permissions[$attribute] == "")
+                    return true;
                     break;
             }
         }
