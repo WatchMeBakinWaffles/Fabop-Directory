@@ -8,6 +8,7 @@ use App\Utils\MongoManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Security\Voter\PermissionCalculator;
 
 class EntityPeopleVoter extends Voter
 {
@@ -27,35 +28,26 @@ class EntityPeopleVoter extends Voter
             return false;
         }
 
-	$roles = $user->getEntityRoles();
-	foreach ($roles as $role){
-		$permissions = $role->getPermissions();
-	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
-		// ... (check conditions and return true to grant permission) ...
-		switch ($attribute) {
-		    case 'POST_EDIT':
-		        // logic to determine if the user can EDIT
-		        // return true or false
-		        foreach($data_permissions["permissions"] as $permission) {
-                    if($permission["entityType"] == "peoples") {
-                        if($permission["rights"][0]["write"])
-                            return true;
-                    }
-                }
-                break;
-		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
-                foreach($data_permissions["permissions"] as $permission) {
-		            if($permission["entityType"] == "peoples") {
-		                if($permission["rights"][0]["read"])
-		                    return true;
-		            }
-		        }
-		        break;
-		}
-	}
-        return false;
+        $roles = $user->getEntityRoles();
+        foreach ($roles as $role){
+            $permissions = $role->getPermissions();
+                $mongoman = new MongoManager();
+            $data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+            // ... (check conditions and return true to grant permission) ...
+            switch ($attribute) {
+                case 'POST_EDIT':
+                    // logic to determine if the user can EDIT
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions, "peoples","write");
+                    break;
+                case 'POST_VIEW':
+                    // logic to determine if the user can VIEW
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions,"peoples","read");
+                    break;
+                default:
+                    return false;
+            }
+	    }
     }
 }

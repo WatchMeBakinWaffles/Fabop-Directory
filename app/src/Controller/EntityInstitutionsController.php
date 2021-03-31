@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Entity\EntityInstitutions;
 use App\Form\EntityInstitutionsType;
 use App\Repository\EntityInstitutionsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Security\Voter\PermissionCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/manager/institutions")
@@ -24,8 +25,11 @@ class EntityInstitutionsController extends AbstractController
      */
     public function index(EntityInstitutionsRepository $entityInstitutionsRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
-        return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $entityInstitutionsRepository->findAll()]);
+        $list = PermissionCalculator::checkList($user,"institutions",$entityInstitutionsRepository->findAll());
+        return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $list]);
     }
 
     /**
@@ -34,39 +38,39 @@ class EntityInstitutionsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityInstitution = new EntityInstitutions();
-	if($this->isGranted('POST_EDIT',$entityInstitution)){
-		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
-		$form->handleRequest($request);
-		$mongoman = new MongoManager();
+        if($this->isGranted('POST_EDIT',$entityInstitution)){
+            $form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
+            $form->handleRequest($request);
+            $mongoman = new MongoManager();
 
-		if ($form->isSubmitted() && $form->isValid()) {
-		    $em = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
 
-		    // Mise en bdd Mongo de l fiche doc --> return IdMongo
-		    if (null != $request->request->get('institution_data')){
-		        $sheetId=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
-		    }else{
-		        $sheetId=$mongoman->insertSingle("Entity_institution_sheet",[]);
-		    }
+                // Mise en bdd Mongo de l fiche doc --> return IdMongo
+                if (null != $request->request->get('institution_data')){
+                    $sheetId=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
+                }else{
+                    $sheetId=$mongoman->insertSingle("Entity_institution_sheet",[]);
+                }
 
-		    // Mise en bdd MySQL de l'ID de fiche de données
-		    $entityInstitution->setSheetId($sheetId);
+                // Mise en bdd MySQL de l'ID de fiche de données
+                $entityInstitution->setSheetId($sheetId);
 
-		    $em->persist($entityInstitution);
-		    $em->flush();
+                $em->persist($entityInstitution);
+                $em->flush();
 
-		    return $this->redirectToRoute('entity_institutions_index');
-		}
+                return $this->redirectToRoute('entity_institutions_index');
+            }
 
-		return $this->render('entity_institutions/new.html.twig', [
-		    'entity_institution' => $entityInstitution,
-		    'form' => $form->createView(),
-		]);
-	}
-	else{
-		return $this->render('error403forbidden.html.twig');
-	}
-	return $this->redirectToRoute('entity_institutions_index');
+            return $this->render('entity_institutions/new.html.twig', [
+                'entity_institution' => $entityInstitution,
+                'form' => $form->createView(),
+            ]);
+        }
+        else{
+            return $this->render('error403forbidden.html.twig');
+        }
+	    return $this->redirectToRoute('entity_institutions_index');
     }
 
     /**

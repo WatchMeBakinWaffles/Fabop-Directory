@@ -184,29 +184,19 @@ class PermissionController extends AbstractController
         //push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
-        $json["permissions"]["entityType"] = $classTraduction[$data["entite"]];
+        $json["permissions"][0]["entityType"] = $classTraduction[$data["entite"]];
         if ( $data["ajouter_un_filtre"] == 'oui') {
             for ($i=0; $i<$data["nombre_de_filtres"]; $i++) {
-                $json["permissions"]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer_".($i+1)];
-                $json["permissions"]["rights"][$i]["filters"][0]["value"] = $data["valeur_du_filtre_".($i+1)];
-                $json["permissions"]["rights"][$i]["read"] = $data["droits_lecture_filtre_".($i+1)];
-                $json["permissions"]["rights"][$i]["write"] = $data["droits_ecriture_filtre_".($i+1)];
+                $json["permissions"][0]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer_".($i+1)];
+                $json["permissions"][0]["rights"][$i]["filters"][0]["value"] = $data["valeur_du_filtre_".($i+1)];
+                $json["permissions"][0]["rights"][$i]["read"] = $data["droits_lecture_filtre_".($i+1)];
+                $json["permissions"][0]["rights"][$i]["write"] = $data["droits_ecriture_filtre_".($i+1)];
             }
         } else {
-            $json["permissions"]["rights"][0]["filters"][0]["field"] = "*";
-            $json["permissions"]["rights"][0]["filters"][0]["value"] = "*";
-            $json["permissions"]["rights"][0]["read"] = 1;
-            $json["permissions"]["rights"][0]["write"] = 1;
-        }
-
-        //juste pour l'affichage
-        if(array_key_exists("nombre_de_filtres", $data)){
-            for ($i=0; $i<$data["nombre_de_filtres"]; $i++) {
-                var_dump($json["permissions"]["rights"][$i]);
-            }
-        }
-        else {
-            var_dump($json["permissions"]["rights"][0]);
+            $json["permissions"][0]["rights"][0]["filters"][0]["field"] = "*";
+            $json["permissions"][0]["rights"][0]["filters"][0]["value"] = "*";
+            $json["permissions"][0]["rights"][0]["read"] = 1;
+            $json["permissions"][0]["rights"][0]["write"] = 1;
         }
 
         $mongoman = new MongoManager();
