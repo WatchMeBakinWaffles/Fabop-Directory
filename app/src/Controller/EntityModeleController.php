@@ -92,7 +92,7 @@ class EntityModeleController extends AbstractController
 
             $em_modele->persist($entity_modele);
             $em_modele->flush();
-            return $this->redirectToRoute('entity_modeles_index');
+           // return $this->redirectToRoute('entity_modeles_index');
         }
 
         return $this->render('entity_modeles/new.html.twig', [
