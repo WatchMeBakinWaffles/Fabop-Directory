@@ -1,8 +1,11 @@
-if(path==="/admin/permission") {
+if(path==="/admin/permission/create") {
     indice_tableau = 0
-   if ( $( ".add_custom_data" ).length ) {
+
+    if ( $( ".add_custom_data" ).length ) {
         $(".toHide").css('display', 'none');
     }
+    setTimeout(function() {$(".flash-message").delay(5000).hide();}, 5000);
+
     $(".add_custom_data").click(function () {
         if(indice_tableau === 0) {
             indice_tableau ++

@@ -5,29 +5,19 @@ namespace App\Form;
 use App\Entity\EntityInstitutions;
 use App\Entity\EntityModele;
 use App\Entity\EntityPeople;
+use App\Entity\EntityRoles;
 use App\Entity\EntityShows;
 use App\Entity\EntityTags;
 use App\Entity\EntityUser;
-use App\Entity\EntityUserPermissions;
-use App\Exception\DocumentNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Security\Core\Security;
-
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use App\Entity\EntityRoles;
-use App\Utils\MongoManager;
-use App\Repository\EntityRolesRepository;
 
 
 class PermissionForm extends AbstractType
@@ -78,16 +68,16 @@ class PermissionForm extends AbstractType
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) {
                 $form = $event->getForm();
-                $user = $event->getData();
+                $data = $event->getData();
                 $choiceRights = array(
                     'Oui' => 'oui',
                     'Non' => 'non',
                     'Inchangés' => 'inchanges',
                 );
                 $em = $this->entityManager;
-                if (isset($user['ajouter_un_filtre']) && $user['ajouter_un_filtre'] === 'oui') {
+                if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'oui') {
                     $form->add('champ_a_filtrer0',ChoiceType::class, [
-                        'choices' => $em->getClassMetadata($user['entite'])->getColumnNames(),
+                        'choices' => $em->getClassMetadata($data['entite'])->getColumnNames(),
                         'choice_label' => function ($value) {
                             return $value;
                         },

@@ -5,40 +5,40 @@ namespace App\Controller;
 use App\Entity\EntityInstitutions;
 use App\Entity\EntityModele;
 use App\Entity\EntityPeople;
-use App\Entity\EntityPerformances;
 use App\Entity\EntityRoles;
 use App\Entity\EntityShows;
 use App\Entity\EntityTags;
 use App\Entity\EntityUser;
+use App\Entity\EntityUserPermissions;
 use App\Form\EntityUserType;
 use App\Form\PermissionForm;
-use App\Repository\EntityRolesRepository;
-use App\Repository\PermissionsRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\PermissionFormEdit;
+use App\Utils\MongoManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Utils\MongoManager;
-
 class PermissionController extends AbstractController
 {
+
     /**
      * @Route("admin/permission", name="permission")
+     */
+    public function index(): Response
+    {
+        $mongoman = new MongoManager();
+        return $this->render('permission/index.html.twig', [
+            'all_perms' => $mongoman->getAllPermission("permissions_user"),
+        ]);
+    }
+
+    /**
+     * @Route("admin/permission/create", name="permission_new")
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response
+    public function create(Request $request): Response
     {
         $form = $this->createForm(PermissionForm::class)
             ->handleRequest($request);
@@ -59,9 +59,30 @@ class PermissionController extends AbstractController
                 ));
             }
         }
-        return $this->render('permission/index.html.twig', [
+        return $this->render('permission/create_perm.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("permission/{id}/edit", name="admin_permission_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, $id): Response
+    {
+            //creation d'un nouveau formulaire de type User
+            $mongoman = new MongoManager();
+            $perm = $mongoman->getDocById("permissions_user",$id);
+            $form = $this->createForm(PermissionFormEdit::class, $perm)
+                ->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            }
+
+            return $this->render('permission/edit.html.twig', [
+                'form' => $form->createView(),
+            ]);
+        return $this->redirectToRoute('admin_user_index');
     }
 
 
@@ -110,8 +131,10 @@ class PermissionController extends AbstractController
 
         $mongoman = new MongoManager();
         $mongoman->insertSingle("permissions_user",$json);
-
-        return $this->render('permission/permission_create.html.twig', ['data' => $data]);
+        // Retrieve flashbag from the controller
+        $this->addFlash('success', 'La permission a bien été créé');
+        $mongoman = new MongoManager();
+        return $this->redirectToRoute('permission');
 
     }
 

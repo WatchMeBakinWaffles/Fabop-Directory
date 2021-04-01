@@ -2,27 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\EntityRoles;
-use App\Entity\EntityUserPermissions;
-use App\Form\EntityRolesType;
-use App\Form\EntityPeopleType;
-use App\Repository\EntityRolesRepository;
-use App\Repository\PermissionsRepository;
-use App\Entity\EntityUser;
 use App\Entity\EntityPeople;
+use App\Entity\EntityUser;
+use App\Entity\EntityUserPermissions;
 use App\Form\EntityUserType;
+use App\Repository\EntityRolesRepository;
 use App\Repository\EntityUserRepository;
+use App\Utils\MongoManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Utils\MongoManager;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 
 /**
