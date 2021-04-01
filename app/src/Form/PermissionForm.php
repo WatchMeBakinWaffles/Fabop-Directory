@@ -59,11 +59,19 @@ class PermissionForm extends AbstractType
         );
         $builder
             ->add('nom_de_la_permission', TextType::class, array('required' => true))
-            ->add('entite', ChoiceType::class, ['choices' => $choiceEntity])
+            ->add('entite', ChoiceType::class, [
+                'choices' => $choiceEntity,
+                'row_attr' => [
+                    'class' => 'toHide'
+                ]])
             ->add('ajouter_un_filtre', ChoiceType::class, array(
                 'choices' => $useFilter,
                 'expanded' => true,
-                'required' => true
+                'required' => true,
+                'label' => 'Ajouter un filtre précis',
+                'row_attr' => [
+                    'class' => 'toHide'
+                ]
             ))
         ;
         $builder->addEventListener(
@@ -95,8 +103,9 @@ class PermissionForm extends AbstractType
                             'expanded' => false,
                             'label' => "Droit d'écriture"
                         ])
-                        ->add('+', ButtonType::class, [
-                            'attr' => ['class' => 'btn btn-primary m-1 add_custom_data']
+                        ->add('plus', ButtonType::class, [
+                            'attr' => ['class' => 'btn btn-primary m-1 add_custom_data'],
+                            'label' => 'Ajouter un un autre filtre'
                         ])
                    ;
                 }}

@@ -7,5 +7,6 @@
 {% else %}
     <a class="btn btn-light m-1" href="{{ path('admin_roles_index') }}"><i class="fas fa-undo"></i> Annuler</a>
 {% endif %}
+
 <button id='validForm' class="btn btn-primary m-1"><i class="fas fa-check"></i>{{ button_label|default(' Valider') }}</button>
 {{ form_end(form) }}

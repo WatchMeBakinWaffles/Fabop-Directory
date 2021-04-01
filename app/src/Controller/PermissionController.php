@@ -40,7 +40,6 @@ class PermissionController extends AbstractController
      */
     public function index(Request $request): Response
     {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
         $form = $this->createForm(PermissionForm::class)
             ->handleRequest($request);
        if ($form->isSubmitted() && $form->isValid()) {
