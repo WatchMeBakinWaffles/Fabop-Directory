@@ -10,6 +10,8 @@ use App\Entity\EntityRoles;
 use App\Entity\EntityShows;
 use App\Entity\EntityTags;
 use App\Entity\EntityUser;
+use App\Form\EntityUserType;
+use App\Form\PermissionForm;
 use App\Repository\EntityRolesRepository;
 use App\Repository\PermissionsRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -32,138 +34,39 @@ use App\Utils\MongoManager;
 class PermissionController extends AbstractController
 {
     /**
-     * @Route("/permission", name="permission")
+     * @Route("admin/permission", name="permission")
      * @param Request $request
      * @return Response
      */
     public function index(Request $request): Response
     {
-
-        $choiceEntity = array(
-            'Institution'=> EntityInstitutions::class,
-            'Modèle'=> EntityModele::class,
-            'Personne' => EntityPeople::class,
-            'Rôle' => EntityRoles::class,
-            'Spectacle' => EntityShows::class,
-            'Tag' => EntityTags::class,
-            'Utilisateur'=> EntityUser::class,
-        );
-
-        $useFilter = array(
-            'Non' => 'non',
-            'Oui' => 'oui',
-        );
-
-        $em = $this->getDoctrine()->getManager();
-
-        $form = $this->createFormBuilder()
-            ->add('nom_de_la_permission', TextType::class, array(
-                'required' => true
-            ))
-            ->add('entite',ChoiceType::class, array(
-                'choices' => $choiceEntity,
-                'required' => true
-            ))
-            ->add('ajouter_un_filtre',ChoiceType::class, array(
-                'choices' => $useFilter,
-                'expanded' => true,
-                'required' => true
-            ))
-            ->getForm();
-
-        $form->handleRequest($request);
-
+        $form = $this->createForm(PermissionForm::class)
+            ->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'oui') {
-                return $this->redirectToRoute('permission_filter', array(
-                    'data' => $data
-                ));
+            $count = 0;
+            if($request->request->get("custom_data") !== null){
+                foreach($request->request->get("custom_data") as $elem){
+                    $count++;
+                    foreach($elem as $key => $val){
+                        $data[$key . $count] = $val;
+                    }}
             }
-            else if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'non') {
+            $data['nombre_de_filtres'] = $count;
+            if (isset($data['ajouter_un_filtre']) && $data['ajouter_un_filtre'] === 'non' || isset($data['valeur_du_filtre0']) && $data['valeur_du_filtre0'] !== null) {
                 return $this->redirectToRoute('permission_create', array(
                     'data' => $data
                 ));
             }
         }
         return $this->render('permission/index.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
-    /**
-     * @Route("/permission_filter", name="permission_filter")
-     * @param Request $request
-     * @return Response
-     */
-    public function permission_filter(Request $request): Response
-    {
-        $data = $request->get('data');
-
-        $choiceRights = array(
-            'Oui' => 1,
-            'Non' => -1,
-            'Inchangés' => 0,
-        );
-
-        $useMoreFilter = array(
-            'Non' => 'non',
-            'Oui' => 'oui',
-        );
-
-        $em = $this->getDoctrine()->getManager();
-        if (array_key_exists('nombre_de_filtres', $data)){
-            $numFiltre = $data['nombre_de_filtres'] + 1;
-        }
-        else {
-            $numFiltre = 1;
-        }
-
-        $form = $this->createFormBuilder()
-            ->add('champ_a_filtrer_'.$numFiltre, ChoiceType::class, array(
-                'choices' => $em->getClassMetadata($data['entite']) ->getColumnNames(),
-                'choice_label' => function ($value){
-                    return $value;
-                },
-                'required' => true
-                ))
-            ->add('valeur_du_filtre_'.$numFiltre, TextType::class, array(
-                'required' => true
-            ))
-            ->add('droits_lecture_filtre_'.$numFiltre,ChoiceType::class, array(
-                'choices' => $choiceRights,
-                'expanded'=>false,
-                'required' => true
-            ))
-            ->add('droits_ecriture_filtre_'.$numFiltre,ChoiceType::class, array(
-                'choices' => $choiceRights,
-                'expanded'=>false,
-                'required' => true
-            ))
-            ->add('ajouter_un_filtre_supplementaire',ChoiceType::class, array(
-                'choices' => $useMoreFilter,
-                'expanded' => true,
-                'required' => true
-            ))
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data['nombre_de_filtres'] = $numFiltre;
-            $data = array_merge($data, $form->getData());
-            if ($data['ajouter_un_filtre_supplementaire'] === 'non') {
-                return $this->redirectToRoute('permission_create', array('data' => $data));
-            } else {
-                return $this->redirectToRoute('permission_filter', array('data' => $data));
-            }
-        }
-        return $this->render('permission/permission_filter.html.twig', ['form' => $form->createView(), 'data' => $data]);
-    }
-
 
     /**
-     * @Route("/permission_create", name="permission_create")
+     * @Route("admin/permission_create", name="permission_create")
      * @param Request $request
      * @return Response
      */
@@ -180,17 +83,22 @@ class PermissionController extends AbstractController
             EntityInstitutions::class => "institutions",
             EntityRoles::class => "roles"
         );
+        $choiceTraduction = array(
+            'oui'=> 1,
+            'non' => -1,
+            'inchanges' => 0
+        );
 
         //push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
-        $json["permissions"][0]["entityType"] = $classTraduction[$data["entite"]];
+        $json["permissions"]["entityType"] = $classTraduction[$data["entite"]];
         if ( $data["ajouter_un_filtre"] == 'oui') {
-            for ($i=0; $i<$data["nombre_de_filtres"]; $i++) {
-                $json["permissions"][0]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer_".($i+1)];
-                $json["permissions"][0]["rights"][$i]["filters"][0]["value"] = $data["valeur_du_filtre_".($i+1)];
-                $json["permissions"][0]["rights"][$i]["read"] = $data["droits_lecture_filtre_".($i+1)];
-                $json["permissions"][0]["rights"][$i]["write"] = $data["droits_ecriture_filtre_".($i+1)];
+            for ($i=0; $i<=$data["nombre_de_filtres"]; $i++) {
+                $json["permissions"][0]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer" . ($i)];
+                $json["permissions"][0]["rights"][$i]["filters"][0]["value"] = $data["valeur_du_filtre" . ($i)];
+                $json["permissions"][0]["rights"][$i]["read"] = $choiceTraduction[$data["droits_lecture" . ($i)]];
+                $json["permissions"][0]["rights"][$i]["write"] = $choiceTraduction[$data["droits_ecriture" . ($i)]];
             }
         } else {
             $json["permissions"][0]["rights"][0]["filters"][0]["field"] = "*";
@@ -198,6 +106,7 @@ class PermissionController extends AbstractController
             $json["permissions"][0]["rights"][0]["read"] = 1;
             $json["permissions"][0]["rights"][0]["write"] = 1;
         }
+
 
         $mongoman = new MongoManager();
         $mongoman->insertSingle("permissions_user",$json);
@@ -208,4 +117,3 @@ class PermissionController extends AbstractController
 
 
 }
-

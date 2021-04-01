@@ -400,7 +400,6 @@ class RoleFixtures extends Fixture
                 ]
             }
         ],
-         "label": "Ma Permission",
         "import":false,
         "export": true,
         "connection": true,
