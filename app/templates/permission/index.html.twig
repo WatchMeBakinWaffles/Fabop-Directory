@@ -19,13 +19,14 @@
         </thead>
         <tbody>
         {% for all_perm in all_perms | sort %}
+            {% if (all_perm.label != 'User') and (all_perm.label != 'Admin') and (all_perm.label != 'Contributeur') %}
             <tr>
                 <td>{{ all_perm.label }}</td>
                 <td>
-                    <a href=""><i class="fas fa-eye"></i></a>
                     <a href="{{ path('admin_permission_edit', {'id': all_perm._id}) }}"><i class="far fa-edit"></i></a>
                 </td>
             </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="5">Aucune entrée</td>
