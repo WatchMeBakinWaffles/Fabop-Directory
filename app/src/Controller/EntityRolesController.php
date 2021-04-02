@@ -14,6 +14,7 @@ use App\Repository\EntityUserRepository;
 use App\Repository\PermissionsRepository;
 use App\Repository\EntityRolesRepository;
 
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -52,112 +53,96 @@ class EntityRolesController extends AbstractController
      * @Route("roles/new", name="admin_roles_new", methods={"GET","POST"})
      */
     public function new(Request $request,EntityUserRepository $entityUserRepository): Response
-    {  
+    {
+        $choiceRights = array(
+            'Oui' => 'oui',
+            'Non' => 'non',
+            'Inchangés' => 'inchanges',
+        );
 
-        //droits à attribuer
-        $choicesPerm = array(
-        'rien' => ' ',
-        'R' => 'R',
-        'W'=> 'W',
-        'RW' => 'RW'
-    );
-
-    //droits sous forme booleen
-    $choicesBool = array(
-        'True'=> True,
-        'False'=>False
-    );
-        //test des droits 
+        $choiceTraduction = array(
+            1 => 'oui',
+            -1 => 'non',
+            0 => 'inchanges'
+        );
+        $choiceTraductionReverse = array_flip($choiceTraduction);
         $entityRoles = new EntityRoles();
-        if(!$this->isGranted('POST_EDIT',$entityRoles)){
+        $entityList = array('show', 'tags', 'peoples', 'users', 'models', 'institutions', 'roles', 'restaurations');
 
-        //formulaire de permissions constituée de droits 
-        $defaultData = ['message' => 'Type your message here'];
-        $form = $this->createFormBuilder($defaultData)
-        ->add('nom', null,array('required' => true))
-        ->add('User_listing', EntityType::class, array('class' =>EntityUser::class, 'choice_label'=>'email','multiple'=>true, 'expanded'=>true))
-        ->add('shows',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('tags',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('shows',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('peoples',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('users',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('models',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('institutions',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('roles',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->add('import',ChoiceType::class, [
-            'choices' => $choicesBool])
-        ->add('export',ChoiceType::class, [
-            'choices' => $choicesBool])
-        ->add('connection',ChoiceType::class, [
-            'choices' => $choicesBool])
-        ->add('restaurations',ChoiceType::class, [
-            'choices' => $choicesPerm])
-        ->getForm();
-    
-        $form->handleRequest($request);
-
-        $mongoman = new MongoManager();
-
-        //l'ajout
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $data = $form->getData();
-            $RoleInForm = new EntityRoles();
-            $RoleInForm->setNom($data['nom']);
-            $sheetPermission=$mongoman->insertSingle("permissions_user",[
-                'shows'=> $data["shows"],
-                'tags'=>$data["tags"],
-                'peoples'=>$data["peoples"],
-                'users'=>$data["users"],
-                'models'=>$data["models"],
-                'institutions'=>$data["institutions"],
-                'roles'=>$data["roles"],
-                'import'=>$data["import"],
-                'export'=>$data["export"],
-                'connection'=>$data["connection"],
-                'restaurations'=>$data["restaurations"]
-            ]);
-            $PermissionsInForm = new Permissions();
-            $PermissionsInForm->setSheetId($sheetPermission);
-            $RoleInForm->setPermissions($PermissionsInForm);
-            $RoleInForm->setEditable(False);
-
-            $entityManager->persist($PermissionsInForm);
-            $entityManager->flush();
-            foreach($data['User_listing'] as $userEmail){
-                if($userEmail != null){
-                $userem = strval($userEmail);
-                $user = $entityUserRepository->findOneByemail($userem);
-                    $user->addEntityRole($RoleInForm);
-                    //$entityManager->persist($user);
-                    $entityManager->flush();
-                }
+        //droits sous forme booleen
+        $choicesBool = array(
+            'True'=> True,
+            'False'=>False
+        );
+        if(!$this->isGranted('POST_EDIT',$entityRoles)) {
+            $defaultData = ['message' => 'Type your message here'];
+            $form = $this->createFormBuilder($defaultData)->add('nom', null, array('required' => true))->getForm();
+            $count = 0;
+            foreach ($entityList as $perm) {
+                $form
+                    ->add($perm, null, [
+                            'data' => $perm,
+                            'disabled' => true,
+                            'label' => ' '
+                        ]
+                    )
+                    ->add('droits_lecture' . $perm, ChoiceType::class, [
+                        'choices' => $choiceRights,
+                        'expanded' => false,
+                        'label' => 'Droit de lecture'
+                    ])
+                    ->add('droits_ecriture' . $perm, ChoiceType::class, [
+                        'choices' => $choiceRights,
+                        'expanded' => false,
+                        'label' => "Droit d'écriture"
+                    ]);
             }
-            if (null != $request->request->get('roles_data')){
-		        $sheetId=$mongoman->insertSingle("permission_users",$request->request->get('roles_data'));
-		    }else{
-		        $sheetId=$mongoman->insertSingle("permission_users",[]);
-		    }
 
-		    // Mise en bdd MySQL de l'ID de fiche de données
+            $mongoman = new MongoManager();
 
-            return $this->redirectToRoute('admin_roles_index');
+            //l'ajout
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $data = $form->getData();
+                $RoleInForm = new EntityRoles();
+                $RoleInForm->setNom($data['nom']);
+                $json = [];
+                $json["label"] = $data["nom"];
+                $c = 0;
+                foreach ($entityList as $entity) {
+                    $c++;
+                    $json["permissions"][$c]["entityType"] = $entity;
+                    $json["permissions"][$c]["rights"][0]["filters"][0]["field"] = '*';
+                    $json["permissions"][$c]["rights"][0]["filters"][0]["value"] = '*';
+                    $json["permissions"][$c]["rights"][0]["read"] = $choiceTraductionReverse[$data['droits_lecture' . $entity]];
+                    $json["permissions"][$c]["rights"][0]["write"] = $choiceTraductionReverse[$data["droits_ecriture" . $entity]];
+                }
+
+                $sheetPermission = $mongoman->insertSingle("permissions_user", $json);
+                $PermissionsInForm = new Permissions();
+                $PermissionsInForm->setSheetId($sheetPermission);
+                $RoleInForm->setPermissions($PermissionsInForm);
+                $RoleInForm->setEditable(False);
+
+                $entityManager->persist($PermissionsInForm);
+                $entityManager->flush();
+                if (null != $request->request->get('roles_data')) {
+                    $sheetId = $mongoman->insertSingle("permission_users", $request->request->get('roles_data'));
+                } else {
+                    $sheetId = $mongoman->insertSingle("permission_users", []);
+                }
+
+                // Mise en bdd MySQL de l'ID de fiche de données
+
+                return $this->redirectToRoute('admin_roles_index');
+            }
+
+            return $this->render('entity_roles/new.html.twig', [
+                'entity_roles' => $entityRoles,
+                'form' => $form->createView(),
+            ]);
         }
-
-        return $this->render('entity_roles/new.html.twig', [
-            'entity_roles' => $entityRoles,
-            'form' => $form->createView(),
-        ]);
-    }
     return $this->redirectToRoute('admin_roles_index');
     }
 
@@ -181,49 +166,55 @@ class EntityRolesController extends AbstractController
      */
     public function edit(Request $request, EntityRoles $entityRoles): Response
     {
-                //droits à attribuer
-                $choicesPerm = array(
-                    'rien' => ' ',
-                    'R' => 'R',
-                    'W'=> 'W',
-                    'RW' => 'RW'
-                );
+        $mongoman = new MongoManager();
+        $data_permissions = $mongoman->getDocById("permissions_user",$entityRoles->getPermissions()->getSheetId());
+
+        $choiceRights = array(
+            'Oui' => 'oui',
+            'Non' => 'non',
+            'Inchangés' => 'inchanges',
+        );
+
+        $choiceTraduction = array(
+            1 => 'oui',
+            -1 => 'non',
+            0 => 'inchanges'
+        );
+        $choiceTraductionReverse = array_flip($choiceTraduction);
+
+        $entityList = array('show', 'tags', 'peoples', 'users', 'models', 'institutions', 'roles', 'restaurations');
             
                 //droits sous forme booleen
                 $choicesBool = array(
                     'True'=> True,
                     'False'=>False
                 );
-        //if(!$this->isGranted('POST_EDIT',$entityRoles)){
+        if(!$this->isGranted('POST_EDIT',$entityRoles)){
             $defaultData = ['message' => 'Type your message here'];
-            $form = $this->createFormBuilder($defaultData)
-            ->add('nom', null,array('required' => true))
-            ->add('shows',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('tags',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('shows',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('peoples',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('users',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('models',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('institutions',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('roles',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->add('import',ChoiceType::class, [
-                'choices' => $choicesBool])
-            ->add('export',ChoiceType::class, [
-                'choices' => $choicesBool])
-            ->add('connection',ChoiceType::class, [
-                'choices' => $choicesBool])
-            ->add('restaurations',ChoiceType::class, [
-                'choices' => $choicesPerm])
-            ->getForm();
-        
+            $form = $this->createFormBuilder($defaultData)->add('nom', null,array('required' => true, 'data' => $data_permissions['label']))->getForm();
+            $count = 0;
+            foreach ($data_permissions['permissions'] as $perm) {
+                $form
+                    ->add($perm['entityType'], null, [
+                    'data' => $perm['entityType'],
+                    'disabled' => true,
+                    'label' => ' '
+                    ]
+                   )
+                    ->add('droits_lecture'.$perm['entityType'], ChoiceType::class, [
+                        'choices' => $choiceRights,
+                        'expanded' => false,
+                        'label' => 'Droit de lecture',
+                        'data' => $choiceTraduction[$perm['rights'][0]['read']]
+                    ])
+                    ->add('droits_ecriture'.$perm['entityType'], ChoiceType::class, [
+                        'choices' => $choiceRights,
+                        'expanded' => false,
+                        'label' => "Droit d'écriture",
+                        'data' => $choiceTraduction[$perm['rights'][0]['write']]
+                    ]);
+            }
+
             $form->handleRequest($request);
     		$mongoman = new MongoManager();
 
@@ -231,40 +222,35 @@ class EntityRolesController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $data = $form->getData();
                 $permissions = $entityRoles->getPermissions();
-
-
-                $entityRoles->setNom($data['nom']);
                 $entityManager->persist($entityRoles);
-                //$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+                $mongoman->deleteSingleById("permissions_user",$permissions->getSheetId());
                 $entityManager->flush();
+                //push
+                $json = [];
+                $json["label"] = $data["nom"];
+                $c = 0;
+                foreach ($entityList as $entity) {
+                    $c++;
+                    $json["permissions"][$c]["entityType"] = $entity;
+                    $json["permissions"][$c]["rights"][0]["filters"][0]["field"] = '*';
+                    $json["permissions"][$c]["rights"][0]["filters"][0]["value"] = '*';
+                    $json["permissions"][$c]["rights"][0]["read"] = $choiceTraductionReverse[$data['droits_lecture' . $entity]];
+                    $json["permissions"][$c]["rights"][0]["write"] = $choiceTraductionReverse[$data["droits_ecriture" . $entity]];
+                }
 
-                $sheetPermission=$mongoman->insertSingle("permissions_user",[
-                    'shows'=> $data["shows"],
-                    'tags'=>$data["tags"],
-                    'peoples'=>$data["peoples"],
-                    'users'=>$data["users"],
-                    'models'=>$data["models"],
-                    'institutions'=>$data["institutions"],
-                    'roles'=>$data["roles"],
-                    'import'=>$data["import"],
-                    'export'=>$data["export"],
-                    'connection'=>$data["connection"],
-                    'restaurations'=>$data["restaurations"]
-                ]);
+                $sheetPermission=$mongoman->insertSingle("permissions_user", $json);
                 $permissions->setSheetId($sheetPermission);
                 $entityRoles->setPermissions($permissions);
                 $entityManager->persist($permissions);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('admin_roles_index', ['id' => $entityRoles->getId()]);
+               return $this->redirectToRoute('admin_roles_index', ['id' => $entityRoles->getId()]);
             }
-
-          //  return $this->redirectToRoute('admin_roles_index');
         return $this->render('entity_roles/edit.html.twig', [
             'entity_roles' => $entityRoles,
             'form' => $form->createView(),
         ]);
-   // }
+   }
     return $this->redirectToRoute('admin_roles_index');
 }
 

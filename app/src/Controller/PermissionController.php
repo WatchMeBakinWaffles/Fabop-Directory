@@ -136,7 +136,7 @@ class PermissionController extends AbstractController
         //push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
-        $json["permissions"]["entityType"] = $classTraduction[$data["entite"]];
+        $json["permissions"][0]["entityType"] = $classTraduction[$data["entite"]];
         if ( $data["ajouter_un_filtre"] == 'oui') {
             for ($i=0; $i<=$data["nombre_de_filtres"]; $i++) {
                 $json["permissions"][0]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer" . ($i)];
