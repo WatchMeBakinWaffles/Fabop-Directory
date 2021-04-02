@@ -12,13 +12,16 @@ use Box\Spout\Writer\Common\Creator\Style\BorderBuilder;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class XLSXWriter
 {
 
     public function writeAll(EntityPeopleRepository $entityPeopleRepository, $institution_id = null)
     {
-        // Création Writer XLSX
+        // Création Writer XLS
         $writer = WriterEntityFactory::createXLSXWriter();
         $writer->openToFile("export.xlsx");
 
