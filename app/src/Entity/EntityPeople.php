@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityPeopleRepository")
- * @UniqueEntity(fields = {"email"}, message = "Cette adresse mail est déjà utilisé")
+ * @UniqueEntity(fields = {"adresseMailing"}, message = "Cette adresse mail est déjà utilisé")
  * @ApiResource(
  *      attributes={"access_control"="is_granted('ROLE_USER')"},
  *      collectionOperations={
