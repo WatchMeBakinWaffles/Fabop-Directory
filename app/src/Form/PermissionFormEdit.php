@@ -58,14 +58,14 @@ class PermissionFormEdit extends AbstractType
         $builder
             ->add('nom_de_la_permission', TextType::class, array('required' => true, "data" => $data['label'] ))
             ->add('entite', TextType::class, [
-                'data' => $data['permissions']['entityType'],
+                'data' => $data['permissions'][0]['entityType'],
                 'disabled' => true]);
             $em = $this->entityManager;
             $i = 0;
             foreach ($data['permissions'][0]['rights'] as $right) {
                 $i++;
                 $builder->add('champ_a_filtrer'.$i, ChoiceType::class, [
-                    'choices' => $em->getClassMetadata( $classTraduction[$data['permissions']['entityType']])->getColumnNames(),
+                    'choices' => $em->getClassMetadata( $classTraduction[$data['permissions'][0]['entityType']])->getColumnNames(),
                     'choice_label' => function ($value) {
                         return $value;
                     },

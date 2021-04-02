@@ -69,32 +69,31 @@ class PermissionController extends AbstractController
      */
     public function edit(Request $request, $id): Response
     {
-            //creation d'un nouveau formulaire de type User
-            $mongoman = new MongoManager();
-            $perm = $mongoman->getDocById("permissions_user",$id);
-            $form = $this->createForm(PermissionFormEdit::class, $perm)
-                ->handleRequest($request);
+        //creation d'un nouveau formulaire de type User
+        $mongoman = new MongoManager();
+        $perm = $mongoman->getDocById("permissions_user",$id);
+        $form = $this->createForm(PermissionFormEdit::class, $perm)
+            ->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $count = 1;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
 
-                if($request->request->get("custom_data") !== null){
-                    foreach($request->request->get("custom_data") as $elem){
-                        $count++;
-                        foreach($elem as $key => $val){
-                            $data[$key . $count] = $val;
-                        }}
+            if ($request->request->get("custom_data") !== null) {
+                foreach ($request->request->get("custom_data") as $elem) {
+                    $data["count_perm"]++;
+                    foreach ($elem as $key => $val) {
+                        $data[$key . $data["count_perm"]] = $val;
+                    }
                 }
-                $data['nombre_de_filtres'] = $count + $data["count_perm"] - 1;
-             return $this->redirectToRoute('permission_update', array(
-                        'data' => $data
-                    ));
             }
-            return $this->render('permission/edit.html.twig', [
-                'form' => $form->createView(),
-                'perm' => $perm,
-            ]);
+            return $this->redirectToRoute('permission_update', array(
+                         'data' => $data
+            ));
+        }
+        return $this->render('permission/edit.html.twig', [
+            'form' => $form->createView(),
+            'perm' => $perm,
+        ]);
     }
 
     /**
@@ -132,7 +131,6 @@ class PermissionController extends AbstractController
             'non' => -1,
             'inchanges' => 0
         );
-
         //push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
@@ -175,7 +173,6 @@ class PermissionController extends AbstractController
         foreach ($data['_id'] as $d) {
            $id = $d;
         }
-       $mongoman->deleteSingleById("permissions_user",$id);
         $choiceTraduction = array(
             'oui'=> 1,
             'non' => -1,
@@ -185,9 +182,9 @@ class PermissionController extends AbstractController
         //push
         $json = [];
         $json["label"] = $data["nom_de_la_permission"];
-        $json["permissions"]["entityType"] = $data["permissions"]["entityType"];
-        if ( $data["nombre_de_filtres"] > 0) {
-            for ($i=0; $i<$data["nombre_de_filtres"]; $i++) {
+        $json["permissions"][0]["entityType"] = $data["permissions"][0]["entityType"];
+        if ( $data["count_perm"] > 0) {
+            for ($i=0; $i<$data["count_perm"]; $i++) {
                 $json["permissions"][0]["rights"][$i]["filters"][0]["field"] = $data["champ_a_filtrer" . ($i+1)];
                 $json["permissions"][0]["rights"][$i]["filters"][0]["value"] = $data["valeur_du_filtre" . ($i+1)];
                 $json["permissions"][0]["rights"][$i]["read"] = $choiceTraduction[$data["droits_lecture" . ($i+1)]];
@@ -202,7 +199,7 @@ class PermissionController extends AbstractController
 
 
         $mongoman = new MongoManager();
-        $mongoman->insertSingle("permissions_user",$json);
+        $mongoman->updateSingleValueByJson("permissions_user",$id,$json);
         // Retrieve flashbag from the controller
         $this->addFlash('success', 'La permission a bien été modifié');
         $mongoman = new MongoManager();

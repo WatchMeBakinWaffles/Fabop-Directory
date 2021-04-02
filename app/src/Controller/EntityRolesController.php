@@ -128,9 +128,9 @@ class EntityRolesController extends AbstractController
                 $entityManager->persist($PermissionsInForm);
                 $entityManager->flush();
                 if (null != $request->request->get('roles_data')) {
-                    $sheetId = $mongoman->insertSingle("permission_users", $request->request->get('roles_data'));
+                    $sheetId = $mongoman->insertSingle("permissions_user", $request->request->get('roles_data'));
                 } else {
-                    $sheetId = $mongoman->insertSingle("permission_users", []);
+                    $sheetId = $mongoman->insertSingle("permissions_user", []);
                 }
 
                 // Mise en bdd MySQL de l'ID de fiche de données
@@ -223,7 +223,6 @@ class EntityRolesController extends AbstractController
                 $data = $form->getData();
                 $permissions = $entityRoles->getPermissions();
                 $entityManager->persist($entityRoles);
-                $mongoman->deleteSingleById("permissions_user",$permissions->getSheetId());
                 $entityManager->flush();
                 //push
                 $json = [];
@@ -237,9 +236,8 @@ class EntityRolesController extends AbstractController
                     $json["permissions"][$c]["rights"][0]["read"] = $choiceTraductionReverse[$data['droits_lecture' . $entity]];
                     $json["permissions"][$c]["rights"][0]["write"] = $choiceTraductionReverse[$data["droits_ecriture" . $entity]];
                 }
-
-                $sheetPermission=$mongoman->insertSingle("permissions_user", $json);
-                $permissions->setSheetId($sheetPermission);
+                $mongoman->updateSingleValueByJson("permissions_user",$permissions->getSheetId(), $json);
+                $permissions->setSheetId($permissions->getSheetId());
                 $entityRoles->setPermissions($permissions);
                 $entityManager->persist($permissions);
                 $entityManager->flush();
