@@ -115,7 +115,9 @@ class XLSXWriter
         $writer->addRow($firstRow);
         **/
         $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
         $sheet = $spreadsheet->getActiveSheet();
+        //$sheet->protectCells('A1:Z1', 'root');
         $sheet->fromArray($firstLineCells,
             NULL, // array values with this value will not be set
             'A1');
