@@ -86,9 +86,11 @@ class XLSXWriter
 
     public function write(Array $liste_id, EntityPeopleRepository $epr)
     {
+        /**
         // Création Writer XLSX
         $writer = WriterEntityFactory::createXLSXWriter();
         $writer->openToFile("export_selectif.xlsx");
+         **/
 
         //Création des champs dynamique
         $mongoman = new MongoManager();
@@ -103,11 +105,20 @@ class XLSXWriter
             }
         }
 
+
+
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstLineCells = array_merge($firstLineCells,$dynArray);
+        /**
         $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
         $writer->addRow($firstRow);
+        **/
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->fromArray($firstLineCells,
+            NULL, // array values with this value will not be set
+            'A1');
 
         foreach ($liste_id as $id) {
             $person = $epr->find($id);
@@ -132,11 +143,17 @@ class XLSXWriter
                         $rowcells[$i] = $value;
                 }
             }
+            /**
             $row = WriterEntityFactory::createRowFromArray($rowcells);
             $writer->addRow($row);
+            **/
+            $sheet->fromArray($rowcells,
+                NULL, // array values with this value will not be set
+                'A2');
         }
-
-        $writer->close();
+        //$writer->close();
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export_selectif.xlsx');
     }
 
     public function writeInstitution(Array $liste_id, EntityInstitutionsRepository $eir)

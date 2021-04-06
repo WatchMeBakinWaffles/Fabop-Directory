@@ -31,7 +31,7 @@ class EntityPeopleController extends AbstractController
             return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findAll()]);
         else{
 
-            $institution_id = $this->getUser()->getInstitution();
+            $institution_id = $this->getUser()->exportClick();
 
             if(isset($institution_id))
                 return $this->render('entity_people/index.html.twig', ['entity_people' => $entityPeopleRepository->findBy(['institution' => $institution_id])]);
