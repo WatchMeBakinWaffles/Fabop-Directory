@@ -56,7 +56,13 @@ class EntityUserType extends AbstractType
             }
             //on affiche les permisssions disponibles
             try {
-                $data_permissions = $mongoman->getAllPermission("permissions_user");
+                $all_perm = $mongoman->getAllPermission("permissions_user");
+                $data_permissions = array_filter($all_perm, function($v, $k){
+                    if(!isset($v['role'])) {
+                        return $v;
+                    }
+
+                }, ARRAY_FILTER_USE_BOTH);
                 $res = array();
                foreach ($event->getData()->getEntityUserPermissions() as $p) {
                    $t = $p->getSheetId();

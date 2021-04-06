@@ -98,10 +98,9 @@ class EntityInstitutionsController extends AbstractController
 		$mongoman = new MongoManager();
 
 		if ($form->isSubmitted() && $form->isValid()) {
-
 		    if (null != $request->request->get('institution_data')){
 		        $dataId=$entityInstitution->getSheetId();
-		        foreach( $request->request->get('institution_data') as $key->$value){
+		        foreach( $request->request->get('institution_data') as $key=>$value){
 		            if ($value!=''){
 		                $mongoman->updateSingleValueById("Entity_institution_sheet",$dataId,$key,$value);
 		            }else{
