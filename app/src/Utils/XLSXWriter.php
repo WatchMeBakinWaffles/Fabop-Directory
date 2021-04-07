@@ -117,7 +117,10 @@ class XLSXWriter
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->getProtection()->setSheet(true);
-        $sheet->protectCells('A1:Z1', 'root');
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
         $sheet->fromArray($firstLineCells);
 
         $count = 2;
