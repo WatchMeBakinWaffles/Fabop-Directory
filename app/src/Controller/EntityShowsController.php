@@ -25,8 +25,8 @@ class EntityShowsController extends AbstractController
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         //filtres à appliquer ici
-        $list = PermissionCalculator::checkList($user,"institutions",$entityShowsRepository->findAll());
-        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
+        $list = PermissionCalculator::checkList($user,"show",$entityShowsRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"show",$list);
         return $this->render('entity_shows/index.html.twig', ['entity_shows' => $list, 'edits' => $edit]);
     }
 

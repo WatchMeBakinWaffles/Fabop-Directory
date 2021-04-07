@@ -21,12 +21,7 @@ class EntityPerformancesController extends AbstractController
      */
     public function index(EntityPerformancesRepository $entityPerformancesRepository): Response
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        //filtres à appliquer ici
-        $list = PermissionCalculator::checkList($user,"institutions",$entityPerformancesRepository->findAll());
-        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
-        return $this->render('entity_performances/index.html.twig', ['entity_performances' => $list, 'edits' => $edit]);
+        return $this->render('entity_performances/index.html.twig', ['entity_performances' => $entityPerformancesRepository->findAll()]);
     }
 
     // TODO :: Quand Svelte Tableau mis en place, utiliser les webs components et l'API donc supprimer cette route.
