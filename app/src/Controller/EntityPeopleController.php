@@ -52,6 +52,7 @@ class EntityPeopleController extends AbstractController
 		    return $this->redirectToRoute('entity_institutions_new');
 		}
 		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
+		$form = $this->createForm(EntityPeopleType::class, $entityPerson);
 		$form->handleRequest($request);
 		$mongoman = new MongoManager();
 
