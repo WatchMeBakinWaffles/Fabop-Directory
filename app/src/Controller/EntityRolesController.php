@@ -40,8 +40,8 @@ class EntityRolesController extends AbstractController
        $list = PermissionCalculator::checkList($user,"roles",$entityRolesRepository->findAll());
        $edit = PermissionCalculator::checkEdit($user,"roles",$list);
        return $this->render('entity_roles/index.html.twig', [
-        'entity_roles' => $list,
-        'edits' => $edit
+           'entity_roles' => $list,
+           'edits' => $edit
        ]);
    }
     /**
@@ -49,10 +49,15 @@ class EntityRolesController extends AbstractController
      */
     public function index_to_users_list(EntityRolesRepository $entityRolesRepository,EntityUserRepository $entityUserRepository): Response
     {
-        return $this->render('entity_user/index.html.twig', [
-            'entity_users' => $entityUserRepository->findAll(),
-            'entity_roles' => $entityRolesRepository->findAll(),
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
+        //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"users",$entityUserRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"users",$list);
+        return $this->render('entity_user/index.html.twig', [
+            'entity_users' => $list,
+            'entity_roles' => $entityRolesRepository->findAll(),
+            'edits' => $edit
         ]);
     }
 

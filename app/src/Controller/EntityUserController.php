@@ -44,9 +44,14 @@ class EntityUserController extends AbstractController
      */
     public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
     {
-		$mongoman = new MongoManager();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"roles",$entityRolesRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"roles",$list);
         return $this->render('entity_roles/index.html.twig', [
-			'entity_roles' => $entityRolesRepository->findAll(),
+			'entity_roles' => $list,
+            'edits' => $edit
         ]);
     }
     /**
