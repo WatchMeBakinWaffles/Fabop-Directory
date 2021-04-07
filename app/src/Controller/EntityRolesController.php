@@ -78,12 +78,17 @@ class EntityRolesController extends AbstractController
 
         //droits sous forme booleen
         $choicesBool = array(
-            'True'=> True,
-            'False'=>False
+            'Oui'=> True,
+            'Non'=>False
         );
         if(!$this->isGranted('POST_EDIT',$entityRoles)) {
             $defaultData = ['message' => 'Type your message here'];
-            $form = $this->createFormBuilder($defaultData)->add('nom', null, array('required' => true))->getForm();
+            $form = $this->createFormBuilder($defaultData)
+                ->add('nom', null, array('required' => true))
+                ->add('import', ChoiceType::class, [ 'choices' =>$choicesBool])
+                ->add('export', ChoiceType::class, [ 'choices' =>$choicesBool])
+                ->add('connection', ChoiceType::class, [ 'choices' =>$choicesBool])
+                ->getForm();
             $count = 0;
             foreach ($entityList as $perm) {
                 $form
@@ -116,6 +121,9 @@ class EntityRolesController extends AbstractController
                 $RoleInForm->setNom($data['nom']);
                 $json = [];
                 $json["label"] = $data["nom"];
+                $json["import"] = $data["import"];
+                $json["export"] = $data["export"];
+                $json["connection"] = $data["connection"];
                 $c = 0;
                 foreach ($entityList as $entity) {
                     $c++;
@@ -191,14 +199,19 @@ class EntityRolesController extends AbstractController
 
         $entityList = array('show', 'tags', 'peoples', 'users', 'models', 'institutions', 'roles', 'restaurations');
             
-                //droits sous forme booleen
-                $choicesBool = array(
-                    'True'=> True,
-                    'False'=>False
-                );
+        //droits sous forme booleen
+        $choicesBool = array(
+            'Oui'=> True,
+            'Non'=>False
+        );
         if(!$this->isGranted('POST_EDIT',$entityRoles)){
             $defaultData = ['message' => 'Type your message here'];
-            $form = $this->createFormBuilder($defaultData)->add('nom', null,array('required' => true, 'data' => $data_permissions['label']))->getForm();
+            $form = $this->createFormBuilder($defaultData)
+                ->add('nom', null,array('required' => true, 'data' => $data_permissions['label']))
+                ->add('import', ChoiceType::class, [ 'choices' =>$choicesBool, 'data' => $data_permissions['import']])
+                ->add('export', ChoiceType::class, [ 'choices' =>$choicesBool, 'data' => $data_permissions['export']])
+                ->add('connection', ChoiceType::class, [ 'choices' =>$choicesBool, 'data' => $data_permissions['connection']])
+                ->getForm();
             $count = 0;
             foreach ($data_permissions['permissions'] as $perm) {
                 $form
@@ -234,6 +247,10 @@ class EntityRolesController extends AbstractController
                 //push
                 $json = [];
                 $json["label"] = $data["nom"];
+                $json["role"] = true;
+                $json["import"] = $data["import"];
+                $json["export"] = $data["export"];
+                $json["connection"] = $data["connection"];
                 $c = 0;
                 foreach ($entityList as $entity) {
                     $c++;
@@ -246,6 +263,7 @@ class EntityRolesController extends AbstractController
                 $mongoman->updateSingleValueByJson("permissions_user",$permissions->getSheetId(), $json);
                 $permissions->setSheetId($permissions->getSheetId());
                 $entityRoles->setPermissions($permissions);
+                $entityRoles->setNom($data["nom"]);
                 $entityManager->persist($permissions);
                 $entityManager->flush();
 

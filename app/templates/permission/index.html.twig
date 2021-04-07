@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         {% for all_perm in all_perms | sort %}
-            {% if (all_perm.label != 'User') and (all_perm.label != 'Admin') and (all_perm.label != 'Contributeur') %}
+            {% if all_perm.role is not defined  %}
             <tr>
                 <td>{{ all_perm.label }}</td>
                 <td>
