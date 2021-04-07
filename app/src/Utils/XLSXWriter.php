@@ -115,13 +115,12 @@ class XLSXWriter
         $writer->addRow($firstRow);
         **/
         $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+        $spreadsheet->getActiveSheet();
         $sheet = $spreadsheet->getActiveSheet();
         //$sheet->protectCells('A1:Z1', 'root');
-        $sheet->fromArray($firstLineCells,
-            NULL, // array values with this value will not be set
-            'A1');
+        $sheet->fromArray($firstLineCells);
 
+        $count = 2;
         foreach ($liste_id as $id) {
             $person = $epr->find($id);
             $rowcells = [$person->getName(),
@@ -141,17 +140,19 @@ class XLSXWriter
                     if (!isset($rowcells[$i])){
                         $rowcells[$i] = ''; // Mise à vide dans le cas où il n'y a pas de valeur
                     }
-                    if ($firstLineCells[$i]==$key)
+                    if ($firstLineCells[$i]==$key){
                         $rowcells[$i] = $value;
+                    }
                 }
             }
+
+            $sheet->fromArray($rowcells, NULL, 'A'.$count);
+            $count++;
+
             /**
             $row = WriterEntityFactory::createRowFromArray($rowcells);
             $writer->addRow($row);
             **/
-            $sheet->fromArray($rowcells,
-                NULL, // array values with this value will not be set
-                'A2');
         }
         //$writer->close();
         $writer = new Xlsx($spreadsheet);
