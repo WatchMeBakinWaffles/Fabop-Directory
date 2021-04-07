@@ -115,9 +115,9 @@ class XLSXWriter
         $writer->addRow($firstRow);
         **/
         $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet();
         $sheet = $spreadsheet->getActiveSheet();
-        //$sheet->protectCells('A1:Z1', 'root');
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'root');
         $sheet->fromArray($firstLineCells);
 
         $count = 2;
@@ -155,6 +155,7 @@ class XLSXWriter
             **/
         }
         //$writer->close();
+        //$spreadsheet->freezePane('B2');
         $writer = new Xlsx($spreadsheet);
         $writer->save('export_selectif.xlsx');
     }
