@@ -33,7 +33,7 @@ class EntityUserController extends AbstractController
 
         //filtres à appliquer ici
         $list = PermissionCalculator::checkList($user,"users",$entityUserRepository->findAll());
-        $edit = PermissionCalculator::checkEdit($user,"uers",$list);
+        $edit = PermissionCalculator::checkEdit($user,"users",$list);
         return $this->render('entity_user/index.html.twig', [
             'entity_users' => $list,
             'edits' => $edit
