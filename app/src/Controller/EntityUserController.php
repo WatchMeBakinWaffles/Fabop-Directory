@@ -8,6 +8,7 @@ use App\Entity\EntityUserPermissions;
 use App\Form\EntityUserType;
 use App\Repository\EntityRolesRepository;
 use App\Repository\EntityUserRepository;
+use App\Security\Voter\PermissionCalculator;
 use App\Utils\MongoManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -28,8 +29,14 @@ class EntityUserController extends AbstractController
      */
     public function index(EntityUserRepository $entityUserRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"institutions",$entityUserRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
         return $this->render('entity_user/index.html.twig', [
-            'entity_users' => $entityUserRepository->findAll(),
+            'entity_users' => $list,
+            'edits' => $edit
         ]);
     }
     /**

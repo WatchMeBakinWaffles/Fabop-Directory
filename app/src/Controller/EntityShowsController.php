@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityShows;
 use App\Form\EntityShowsType;
 use App\Repository\EntityShowsRepository;
+use App\Security\Voter\PermissionCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,8 +22,12 @@ class EntityShowsController extends AbstractController
      */
     public function index(EntityShowsRepository $entityShowsRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
-        return $this->render('entity_shows/index.html.twig', ['entity_shows' => $entityShowsRepository->findAll()]);
+        $list = PermissionCalculator::checkList($user,"institutions",$entityShowsRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
+        return $this->render('entity_shows/index.html.twig', ['entity_shows' => $list, 'edits' => $edit]);
     }
 
     /**

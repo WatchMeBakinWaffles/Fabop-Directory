@@ -3,6 +3,11 @@
 {% block title %}Annuaire{% endblock %}
 
 {% block content %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger flash-message">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h2><i class="fas fa-university"></i> Liste des institutions</h2>
     <div class="row m-3">
         {% if is_granted('ROLE_ADMIN') %}
@@ -28,14 +33,15 @@
                 <td>{{ entity_institution.role }}</td>
                 <td>
                     <a href="{{ path('entity_institutions_show', {'id': entity_institution.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('entity_institutions_edit', {'id': entity_institution.id}) }}"><i class="far fa-edit"></i></a>
+                    {% if entity_institution in edits %}
+                        <a href="{{ path('entity_institutions_edit', {'id': entity_institution.id}) }}"><i class="far fa-edit"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
                 <td colspan="5">Aucune entrée</td>
             </tr>
-        {% endfor %}
         </tbody>
     </table>
 </div>

@@ -9,6 +9,7 @@ use App\Exception\DocumentNotFoundException;
 use App\Form\EntityModeleType;
 use App\Form\EntityPeopleType;
 use App\Repository\EntityModeleRepository;
+use App\Security\Voter\PermissionCalculator;
 use App\Utils\MongoManager;
 use App\Utils\XLSXWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +32,14 @@ class EntityModeleController extends AbstractController
      */
     public function index(EntityModeleRepository $entityModeleRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"institutions",$entityModeleRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
         return $this->render('entity_modeles/index.html.twig', [
-            'entity_modeles' => $entityModeleRepository->findAll()
+            'entity_modeles' => $list,
+            'edits' => $edit
         ]);
     }
 

@@ -29,7 +29,9 @@
                 <td>{{ entity_role.nom }}</td>
  
                 <td>
-                    <a href="{{ path('admin_roles_edit', {'id': entity_role.id}) }}"><i class="far fa-edit"></i></a>
+                    {% if entity_role in edits %}
+                        <a href="{{ path('admin_roles_edit', {'id': entity_role.id}) }}"><i class="far fa-edit"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

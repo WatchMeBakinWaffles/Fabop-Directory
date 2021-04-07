@@ -76,7 +76,9 @@
                     <td>{{ entity_person.addDate ? entity_person.addDate|date('Y-m-d') : '' }}</td>
                     <td>
                         <a href="{{ path('entity_people_show', {'id': entity_person.id}) }}"><i class="fas fa-eye"></i></a>
-                        <a href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
+                        {% if entity_person in edits %}
+                            <a href="{{ path('entity_people_edit', {'id': entity_person.id}) }}"><i class="far fa-edit"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}

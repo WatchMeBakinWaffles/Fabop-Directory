@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityUser;
 use App\Entity\EntityRoles;
 use App\Entity\Permissions;
+use App\Security\Voter\PermissionCalculator;
 use App\Utils\MongoManager;
  
 use App\Form\EntityUserType;
@@ -33,8 +34,14 @@ class EntityRolesController extends AbstractController
     */
    public function index(EntityRolesRepository $entityRolesRepository,PermissionsRepository $permissionsRepository): Response
    {
+       $user = $this->get('security.token_storage')->getToken()->getUser();
+
+       //filtres à appliquer ici
+       $list = PermissionCalculator::checkList($user,"institutions",$entityRolesRepository->findAll());
+       $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
        return $this->render('entity_roles/index.html.twig', [
-        'entity_roles' => $entityRolesRepository->findAll(),
+        'entity_roles' => $list,
+        'edits' => $edit
        ]);
    }
     /**
