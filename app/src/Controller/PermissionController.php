@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PermissionController extends AbstractController
 {
 
+
     /**
      * @Route("admin/permission", name="permission")
      */
@@ -101,6 +102,13 @@ class PermissionController extends AbstractController
      */
     public function delete($id): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $rows = $entityManager->getRepository(EntityUserPermissions::class)->findBy(["sheet_id" => $id]);
+        foreach ($rows as $row) {
+            $row->setUser(null);
+            $entityManager->remove($row);
+        }
+        $entityManager->flush();
         $mongoman = new MongoManager();
         $mongoman->deleteSingleById("permissions_user",$id);
         $this->addFlash('success', 'La permission a bien été supprimé');
