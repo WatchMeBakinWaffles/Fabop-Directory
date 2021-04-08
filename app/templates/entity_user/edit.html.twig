@@ -4,7 +4,6 @@
 
 {% block content %}
     <h1><i class="fas fa-edit"></i> Édition de {{ entity_user.firstname }} {{ entity_user.lastname }}</h1>
-
     {{ include('entity_user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
     {{ include('entity_user/_delete_form.html.twig') }}

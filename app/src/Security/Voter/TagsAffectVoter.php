@@ -28,26 +28,25 @@ class TagsAffectVoter extends Voter
         }
 
         $roles = $user->getEntityRoles();
-	foreach ($roles as $role){
-		$permissions = $role->getPermissions();
-	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
-		// ... (check conditions and return true to grant permission) ...
-		switch ($attribute) {
-		    case 'POST_EDIT':
-		        // logic to determine if the user can EDIT
-		        // return true or false
-		        if ($data_permissions["tags"] == "W" || $data_permissions["tags"] == "RW"){
-		         	return true;
-			}
-		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
-		        if ($data_permissions["tags"] == "R" || $data_permissions["tags"] == "RW"){
-		         	return true;
-			}
-		}
-	}
-        return false;
+        foreach ($roles as $role){
+            $permissions = $role->getPermissions();
+            $mongoman = new MongoManager();
+            $data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+            // ... (check conditions and return true to grant permission) ...
+            switch ($attribute) {
+                case 'POST_EDIT':
+                    // logic to determine if the user can EDIT
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions, "tags","write");
+                    break;
+                case 'POST_VIEW':
+                    // logic to determine if the user can VIEW
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions,"tags","read");
+                    break;
+                default:
+                    return false;
+            }
+        }
     }
 }

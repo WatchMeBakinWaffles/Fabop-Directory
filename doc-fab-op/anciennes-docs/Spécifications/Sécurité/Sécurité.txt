@@ -1,8 +1,0 @@
-Sécurisation de l'infrastructure :
-Afin de sécuriser l’infrastructure, nous avons décidé de choisir entre 2 bibliothèques, nous n’allions pas utiliser crypt() pour chiffrer des données personnelles car cette fonction hash juste le texte, nous avons besoin de le déchiffrer derrière et non de le comparer. Pour choisir entre les deux bibliothèques, nous les avons comparer. Nous avons fais notre choix entre Halite et Libsodium. Cette dernière étant la plus sécurisé des librairies de cryptographie actuellement et Halite étant une extension de Libsodium, elle embarque plus de choses.
-Par exemple Halite permet de chiffrer des fichiers entiers, des cookies et d’autres encore. 
-De plus, Halite est plus intuitive, possède une interface plus simple et est plus rapide que Libsodium. Face à tous ces avantages, notre choix c’est porté sur Halite qui semble plus facile d’utilisation sans pour autant être moins sécurisé que Libsodium.
-
-Les données que nous aurons à chiffrer sont des plus sensibles car ce sont des données personnelles, elles seront chiffrer en entrée et déchiffrer en sortie de la base de données. Les utilisateurs qui voudront s’authentifier passeront par le SecurityBundle de Symfony, ils auront ensuite accès aux données personnelles déchiffrées dès l’authentification réussie.  
-
-Pour identifier ces données, nous allons devoir les marquer en créant deux table comme-ci dessous. On y trouvera tous les champs de la base de données organisés selon un système permettant d’identifier leur table et leur politique de chiffrement 

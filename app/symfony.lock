@@ -121,6 +121,9 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.3"
+    },
     "hoa/compiler": {
         "version": "3.17.08.08"
     },
@@ -240,6 +243,9 @@
     },
     "phpspec/prophecy": {
         "version": "1.12.1"
+    },
+    "phpstan/phpdoc-parser": {
+        "version": "0.4.12"
     },
     "phpunit/php-code-coverage": {
         "version": "9.2.3"
@@ -386,6 +392,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.1.7"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.1.7"

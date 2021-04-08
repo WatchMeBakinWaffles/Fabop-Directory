@@ -1,0 +1,12 @@
+{% extends 'baselayout.html.twig' %}
+
+{% block title %}Édition de {{ perm.label}} {% endblock %}
+
+{% block content %}
+    {{ include('permission/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    {% for id in perm._id %}
+        <a class="btn btn-light m-1" href="{{ path('permission_delete', {'id': id})  }}"><i class="fas fa-trash"></i>Supprimer</a>
+    {% endfor %}
+
+{% endblock %}

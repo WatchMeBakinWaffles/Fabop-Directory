@@ -6,9 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Utils\MongoManager;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityUserRepository")
+ * @UniqueEntity(fields = {"email"}, message = "Cette adresse mail est déjà utilisé")
  */
 class EntityUser implements UserInterface
 {
@@ -46,7 +49,7 @@ class EntityUser implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
      */
     private $ApiToken;
 
@@ -65,7 +68,12 @@ class EntityUser implements UserInterface
      * @ORM\ManyToMany(targetEntity=EntityRoles::class, mappedBy="users")
      */
     private $entityRoles;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity=EntityUserPermissions::class, mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $entityPermissions;
+
     public function __toString()
     {
         return $this->getEmail();
@@ -75,6 +83,7 @@ class EntityUser implements UserInterface
     {
         $this->modeles = new ArrayCollection();
         $this->entityRoles = new ArrayCollection();
+        $this->entityPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +128,29 @@ class EntityUser implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getEntityUserPermissions(): Collection
+    {
+        return $this->entityPermissions;
+    }
+
+
+    public function setEntityUserPermissions(EntityUserPermissions $entityPermissions): self
+    {
+        $entityPermissions->setUser($this);
+        $exist = false;
+        foreach($this->entityPermissions->toArray() as $value)
+        {
+           if(in_array($entityPermissions->getSheetId(), (array)$value)) {
+               $exist=true;
+           }
+        }
+        if (!$exist) {
+            $this->entityPermissions[] = $entityPermissions;
+        }
 
         return $this;
     }
@@ -194,8 +226,6 @@ class EntityUser implements UserInterface
     public function bCryptPassword(string $password){
         $crypted = password_hash($password, PASSWORD_BCRYPT);
         $this->setPassword($crypted);
-
-
     }
 
     public function getInstitution(): ?EntityInstitutions
@@ -234,6 +264,7 @@ class EntityUser implements UserInterface
         return $this->entityRoles;
     }
 
+
     public function addEntityRole(EntityRoles $entityRole): self
     {
         if (!$this->entityRoles->contains($entityRole)) {
@@ -253,11 +284,34 @@ class EntityUser implements UserInterface
     
     public function removeEntityRole(EntityRoles $entityRole): self
     {
-        if ($this->entityRoles->removeElement($entityRole)) {
-            $entityRole->removeUser($this);
-        }
-
+        $this->entityRoles->removeElement($entityRole);
+        $entityRole->removeUser($this);
         return $this;
+    }
+
+    public function removeEntityPerm(EntityUserPermissions $entityPerm): self
+    {
+        $this->entityPermissions->removeElement($entityPerm);
+        $entityPerm->setUser(null);
+        return $this;
+    }
+
+    public function getAllPermissions()
+    {
+        $roles = $this->getEntityRoles();
+        $result = [];
+        $mongoman = new MongoManager();
+        foreach ($roles as $role) {
+            $permissions = $role->getPermissions();
+            array_push($result,$mongoman->getDocById("permissions_user", $permissions->getSheetId()));
+        }
+        $permissions = $this->getEntityUserPermissions();
+        $mongoman = new MongoManager();
+        foreach ($permissions as $permission) {
+            $data = $mongoman->getDocById("permissions_user", $permission->getSheetId());
+            array_push($result,$data);
+        }
+        return $result;
     }
 
 }

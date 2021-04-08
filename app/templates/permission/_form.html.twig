@@ -1,0 +1,8 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form) }}
+        {{ form_widget(form) }}
+<a class="btn btn-light m-1" href="{{ path('permission') }}"><i class="fas fa-undo"></i> Annuler</a>
+
+<button id='validForm' class="btn btn-primary m-1"><i class="fas fa-check"></i>{{ button_label|default(' Valider') }}</button>
+{{ form_end(form) }}

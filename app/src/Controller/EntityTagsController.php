@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityTags;
 use App\Form\EntityTagsType;
 use App\Repository\EntityTagsRepository;
+use App\Security\Voter\PermissionCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +21,12 @@ class EntityTagsController extends AbstractController
      */
     public function index(EntityTagsRepository $entityTagsRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
-        return $this->render('entity_tags/index.html.twig', ['entity_tags' => $entityTagsRepository->findAll()]);
+        $list = PermissionCalculator::checkRight($user,"tags",$entityTagsRepository->findAll(),"read");
+        $edit = PermissionCalculator::checkRight($user,"tags",$list,"write");
+        return $this->render('entity_tags/index.html.twig', ['entity_tags' => $list, 'edits' => $edit]);
     }
 
     // TODO :: Quand Svelte Tableau mis en place, utiliser les webs components et l'API donc supprimer cette route

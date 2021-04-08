@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\EntityShows;
 use App\Form\EntityShowsType;
 use App\Repository\EntityShowsRepository;
+use App\Security\Voter\PermissionCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,8 +22,12 @@ class EntityShowsController extends AbstractController
      */
     public function index(EntityShowsRepository $entityShowsRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
-        return $this->render('entity_shows/index.html.twig', ['entity_shows' => $entityShowsRepository->findAll()]);
+        $list = PermissionCalculator::checkRight($user,"show",$entityShowsRepository->findAll(),"read");
+        $edit = PermissionCalculator::checkRight($user,"show",$list,"write");
+        return $this->render('entity_shows/index.html.twig', ['entity_shows' => $list, 'edits' => $edit]);
     }
 
     /**
@@ -93,7 +98,7 @@ class EntityShowsController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 		    if (null != $request->request->get('show_data')){
 		        $dataId=$entityShow->getSheetId();
-		        foreach( $request->request->get('show_data') as $key->$value){
+		        foreach( $request->request->get('show_data') as $key=>$value){
 		            if ($value!=''){
 		                $mongoman->updateSingleValueById("Entity_show_sheet",$dataId,$key,$value);
 		            }else{

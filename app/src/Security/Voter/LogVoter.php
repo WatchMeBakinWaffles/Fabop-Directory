@@ -27,27 +27,26 @@ class LogVoter extends Voter
             return false;
         }
 
-	$roles = $user->getEntityRoles();
-	foreach ($roles as $role){
-		$permissions = $role->getPermissions();
-	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
-		// ... (check conditions and return true to grant permission) ...
-		switch ($attribute) {
-		    case 'POST_EDIT':
-		        // logic to determine if the user can EDIT
-		        // return true or false
-		        if ($data_permissions["restaurations"] == "W" || $data_permissions["restaurations"] == "RW"){
-		         	return true;
-			}
-		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
-		        if ($data_permissions["restaurations"] == "W" || $data_permissions["restaurations"] == "RW"){
-		         	return true;
-			}
-		}
-	}
-        return false;
+        $roles = $user->getEntityRoles();
+        foreach ($roles as $role){
+            $permissions = $role->getPermissions();
+            $mongoman = new MongoManager();
+            $data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+            // ... (check conditions and return true to grant permission) ...
+            switch ($attribute) {
+                case 'POST_EDIT':
+                    // logic to determine if the user can EDIT
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions, "restaurations","write");
+                    break;
+                case 'POST_VIEW':
+                    // logic to determine if the user can VIEW
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions,"restaurations","read");
+                    break;
+                default:
+                    return false;
+            }
+        }
     }
 }

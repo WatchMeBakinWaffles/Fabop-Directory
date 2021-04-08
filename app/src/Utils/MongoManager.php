@@ -12,15 +12,6 @@ class MongoManager
     private $db;
     private $doc;
 
-    /*
-    Entity_institution_sheet
-    Entity_model_sheet
-    Entity_person_sheet
-    Entity_show_sheet
-    Permissions_sheet
-    */
-
-
     function __construct()
     {
         $this->client= new MongoDB\Client(getenv('MONGODB_URL'));
@@ -37,6 +28,21 @@ class MongoManager
             //Mongo Object to JSON Object
             $this->doc= json_decode(MongoDB\BSON\toJSON(MongoDB\BSON\fromPHP($this->doc)),true);
             return $this->doc;
+        }
+    }
+
+    function getAllPermission($collection) {
+        $this->doc=NULL;
+        $collection= $this->db->selectCollection($collection);
+        $this->doc= $collection->find(['label' => new MongoDB\BSON\Regex('.*')]);
+        $res = array();
+        foreach ($this->doc as $perm) {
+          array_push($res, $perm);
+        }
+        if($this->doc==NULL){
+            throw new DocumentNotFoundException;
+        }else{
+            return $res;
         }
     }
 
@@ -60,7 +66,7 @@ class MongoManager
         }
     }
 
-    function insertSingle($collection,$data){ //['name'=>'Truc','age'=>'12']
+    function insertSingle($collection,$data){
         $collection= $this->db->selectCollection($collection);
         return (string)$collection->insertOne($data)->getInsertedID(); // ex : 5c1bd8936e7dcf0149085eb2
     }
@@ -68,24 +74,16 @@ class MongoManager
     function deleteSingleById($collection,$id){
         $collection= $this->db->selectCollection($collection);
         return $result_count=$collection->deleteOne(['_id'=>new MongoDB\BSON\ObjectId($id)])->getDeletedCount();
-        // Pas compris l'utilité , ça bloque juste l'update  mais je garde au cas ou//
-        /** if ($result_count>0){
-        return $result_count;
-        } else {
-        throw new DocumentNotFoundException;
-        }*/
     }
 
     function updateSingleValueById($collection,$id,$key,$data){
         $collection= $this->db->selectCollection($collection);
         return $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$key=>$data]])->getModifiedCount();
-        // Pas compris l'utilité , ça bloque juste l'update  mais je garde au cas ou//
-        /** if ($result_count>0){
-            return $result_count;
-        } else {
-            throw new DocumentNotFoundException;
-        }*/
+    }
 
+    function updateSingleValueByJson($collection,$id,$json){
+        $collection= $this->db->selectCollection($collection);
+        return $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>$json])->getModifiedCount();
     }
 
     function unsetSingleValueById($collection,$id,$key){

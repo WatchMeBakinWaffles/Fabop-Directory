@@ -26,28 +26,27 @@ class EntityShowsVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-	
-	$roles = $user->getEntityRoles();
-	foreach ($roles as $role){
-		$permissions = $role->getPermissions();
-	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
-		// ... (check conditions and return true to grant permission) ...
-		switch ($attribute) {
-		    case 'POST_EDIT':
-		        // logic to determine if the user can EDIT
-		        // return true or false
-		        if ($data_permissions["shows"] == "W" || $data_permissions["shows"] == "RW"){
-		         	return true;
-			}
-		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
-		        if ($data_permissions["shows"] == "R" || $data_permissions["shows"] == "RW"){
-		         	return true;
-			}
-		}
-	}
-        return false;
+
+        $roles = $user->getEntityRoles();
+        foreach ($roles as $role){
+            $permissions = $role->getPermissions();
+            $mongoman = new MongoManager();
+            $data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+            // ... (check conditions and return true to grant permission) ...
+            switch ($attribute) {
+                case 'POST_EDIT':
+                    // logic to determine if the user can EDIT
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions, "show","write");
+                    break;
+                case 'POST_VIEW':
+                    // logic to determine if the user can VIEW
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions,"show","read");
+                    break;
+                default:
+                    return false;
+            }
+        }
     }
 }
