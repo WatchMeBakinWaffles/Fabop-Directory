@@ -299,44 +299,61 @@ class XLSXWriter
 
     public function writeModelPersonne()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_personne.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+        
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('modele_personne.xlsx');
     }
 
     public function writeModelInstitution()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_institution.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Rôle"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('modele_institution.xlsx');
     }
 
     public function writeModelSpectacle()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_spectacle.xlsx");
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Année"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('model_spectacle.xlsx');
     }
 
     public function writeCustomModele($name,$id_sheet,$data)
