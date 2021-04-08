@@ -6,6 +6,7 @@ use App\Entity\EntityUser;
 use App\Entity\EntityUserPermissions;
 use App\Exception\DocumentNotFoundException;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -33,7 +34,7 @@ class EntityUserType extends AbstractType
     {
         $em = $this->entityRolesRepository;
         $builder
-            ->add('email', null,array('required' => true))
+            ->add('email', EmailType::class,array('required' => true))
             ->add('entityRoles', EntityType::class, array(
                 'class' =>EntityRoles::class,
                 'multiple'=>true,
@@ -55,7 +56,13 @@ class EntityUserType extends AbstractType
             }
             //on affiche les permisssions disponibles
             try {
-                $data_permissions = $mongoman->getAllPermission("permissions_user");
+                $all_perm = $mongoman->getAllPermission("permissions_user");
+                $data_permissions = array_filter($all_perm, function($v, $k){
+                    if(!isset($v['role'])) {
+                        return $v;
+                    }
+
+                }, ARRAY_FILTER_USE_BOTH);
                 $res = array();
                foreach ($event->getData()->getEntityUserPermissions() as $p) {
                    $t = $p->getSheetId();

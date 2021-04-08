@@ -33,7 +33,9 @@
                 {% endfor %}
                 <td>
                     <a href="{{ path('entity_modeles_show', {'id': modele.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a href="{{ path('entity_modeles_edit', {'id': modele.id}) }}"><i class="far fa-edit"></i></a>
+                    {% if modele in edits %}
+                        <a href="{{ path('entity_modeles_edit', {'id': modele.id}) }}"><i class="far fa-edit"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

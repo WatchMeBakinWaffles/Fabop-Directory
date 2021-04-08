@@ -10,3 +10,4 @@ if (path.slice(-3)=="new")
 document.getElementById('validForm').addEventListener('submit',function () {
     document.getElementById('validForm').disabled=true;
 });
+
