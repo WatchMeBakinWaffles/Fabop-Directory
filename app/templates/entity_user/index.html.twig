@@ -36,7 +36,7 @@
                 <td>{{ entity_user.email }}</td>
                 <td>
                 {% for roles in entity_user.entityRoles %}
-                {{ roles.nom }},
+                {{ roles.nom }}
                 {% endfor %}
                 </td>
                 <td>{{ entity_user.institution ? entity_user.institution.getName() }}</td>
