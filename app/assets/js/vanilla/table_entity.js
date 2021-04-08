@@ -48,6 +48,7 @@ if (path != '/dashboard') {
                     buttonPlus.hide()
 
                     /*Fin création*/
+                    /*Quand clique sur le boutton filtre affichage du premier filtre*/
                     buttonFilter.on('click', function (event) {
                         $(this).toggleClass('toggled');
                         if ($(this).hasClass('toggled')) {
@@ -68,7 +69,7 @@ if (path != '/dashboard') {
                             }
                         }
                     })
-
+                    /*Ajout d'un nouveau filtre*/
                     buttonPlus.click(function () {
                         nbFiltre++
                         let crossButton= $('<a class="cross-close'+nbFiltre+'" id="'+nbFiltre+'"><i class="fas fa-times"></i></a>')
@@ -106,7 +107,7 @@ if (path != '/dashboard') {
                             card1.remove()
                         })
                     })
-
+                    /*Recherche en fonction des différents filtres*/
                     buttonS.click(function () {
                         tableJquery.search('').columns().search('').draw();
                         for (let i = 0; i <= nbFiltre; i++) {
