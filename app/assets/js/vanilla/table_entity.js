@@ -2,6 +2,7 @@ if (path != '/dashboard') {
     if ($("table").length) {
         $(document).ready(function () {
             const tableElementCount = $('table thead tr').get()[0].childElementCount;
+            let nbFiltre = 0;
             let choiceFilter = [
                 {key: "equals", value: "Est égal à:"},
                 {key: "startBy", value: "Commence par:"},
@@ -11,14 +12,14 @@ if (path != '/dashboard') {
             $('.table').DataTable({
                 initComplete: function () {
                     /*Création de la zone de filtre*/
-                    let card =  $('<div class="card col-5"> <a class="cross-close"><i class="fas fa-times"/i></a><div class="card-body"></div></div>')
-                    let selectColumn = $('<select class="form-control form-control-sm" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
-                    let selectOption = $('<select class="form-control form-control-sm mt-1" id="mySelectOptions"></select>')
-                    let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0" id="inputSearch"/>')
+                    let tableJquery =  $('.table').DataTable()
+                    let card =  $('<div class="card col-5"><div class="card-body card-'+nbFiltre+'"></div></div>')
+                    let selectColumn = $('<select class="form-control form-control-sm filter-column-'+nbFiltre+'" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
+                    let selectOption = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'"  id="mySelectOptions"></select>')
+                    let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search-'+nbFiltre+'" id="inputSearch"/>')
                     let buttonS = $('<a class="btn btn-primary mr-1" id="search"><i class="fa fa-search" aria-hidden="true"/> Rechercher</a>')
                     let buttonPlus = $('<a class="btn btn-primary mr-1" id="plus"><i class="fa fa-plus" aria-hidden="true"/></a>')
                     let buttonFilter = $('<a class="btn btn-primary btn-sm" id="search"><i class="fas fa-filter"/> Filtrer</a>')
-                    let columnSelected = $('#mySelect').val()
                     let divFilter =  $('#DataTables_Table_0_filter')
                     $('#DataTables_Table_0_filter label').hide()
                     divFilter.append(card)
@@ -36,7 +37,7 @@ if (path != '/dashboard') {
                             value: obj.key,
                             text: obj.value
                         });
-                        return $('#mySelectOptions').append($option);
+                        return $('.filter-option-0').append($option);
                     });
                     selectOption.hide()
                     inputSearch.hide()
@@ -62,63 +63,89 @@ if (path != '/dashboard') {
                             buttonPlus.hide()
                         }
                     })
-            /*        buttonPlus.click(function () {
-                        let card =  $('<div class="card col-5"> <a class="cross-close card"><i class="fas fa-times"/i></a><div class="card-body"></div></div>')
-                        let selectColumn = $('<select class="form-control form-control-sm filter-col-'+nbFiltre+'" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
-                        let selectOption = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'" id="mySelectOptions"></select>')
-                        let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search   -'+nbFiltre+'" id="inputSearch"/>')
-                        $('.card-body').append(selectColumn)
-                        $('.card-body').append(selectOption)
-                        $('.card-body').append(inputSearch)
+
+                    buttonPlus.click(function () {
                         nbFiltre++
-                    })*/
+                        let card1 =  $('<div class="card col-5"><div class="card-body card-'+nbFiltre+'"></div></div>')
+                        let selectColumn1 = $('<select class="form-control form-control-sm filter-column-'+nbFiltre+'" id="mySelect"></select>')
+                        let selectOption1 = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'"  id="mySelectOptions"></select>')
+                        let inputSearch1 = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search-'+nbFiltre+'" id="inputSearch"/>')
+                        divFilter.append(card1)
+                        let actualCard = $('.card-'+nbFiltre+'')
+                        actualCard.append(selectColumn1)
+                        actualCard.append(selectOption1)
+                        actualCard.append(inputSearch1)
+                        selectOption1.hide()
+                        inputSearch1.hide()
+                        $(".filter-column-0 option").each(function()
+                        {
+                            $('.filter-column-'+nbFiltre+'')
+                                .append($(this).clone());
+                        });
+                        $('.filter-column-'+nbFiltre+'').on('change', function () {
+
+                            $('.filter-option-'+nbFiltre+'').show()
+                            $('.filter-search-'+nbFiltre+'').show()
+                        });
+                        choiceFilter.map(obj => {
+                            let $option = $("<option/>", {
+                                value: obj.key,
+                                text: obj.value
+                            });
+                            return $('.filter-option-'+nbFiltre+'').append($option);
+                        });
+
+                    })
                     $('.cross-close').click(function () {
                         card.remove()
                     })
+
                     buttonS.click(function () {
-                        let val = $.fn.dataTable.util.escapeRegex(
-                            $('#inputSearch').val()
-                        );
-                        let searchOptions = $('#mySelectOptions :selected').val()
-                        let tabled =  $('.table').DataTable()
-                        tabled.search('').columns().search('').draw();
-                        switch (searchOptions) {
-                            case 'equals':
-                                tabled.column(columnSelected).search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
-                                break;
-                            case 'startBy':
-                                tabled.column(columnSelected).search(val ? '^' + val + '.*$' : '', true, false)
-                                    .draw();
-                                break;
-                            case 'endBy':
-                                tabled.column(columnSelected).search(val ? '^.*' + val + '$' : '', true, false)
-                                    .draw();
-                                break;
-                            case 'differentFrom':
-                                tabled.column(columnSelected).search(val ? '^((?!' + val + ').)*$' : '', true, false)
-                                    .draw();
-                                break;
-                            case 'contains':
-                                tabled.column(columnSelected).search(val ? '^.*' + val + '.*$' : '', true, false)
-                                    .draw();
-                                break;
+                        tableJquery.search('').columns().search('').draw();
+                        for (let i = 0; i <= nbFiltre; i++) {
+                            let val = $.fn.dataTable.util.escapeRegex(
+                                $('.filter-search-'+i+'').val()
+                            );
+                            let searchOptions = $('.filter-option-'+i+' :selected').val()
+                            let colSel = $('.filter-column-'+i+' :selected').val()
+                            switch (searchOptions) {
+                                case 'equals':
+                                    tableJquery.column(colSel).search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                    break;
+                                case 'startBy':
+                                    tableJquery.column(colSel).search(val ? '^' + val + '.*$' : '', true, false)
+                                        .draw();
+                                    break;
+                                case 'endBy':
+                                    tableJquery.column(colSel).search(val ? '^.*' + val + '$' : '', true, false)
+                                        .draw();
+                                    break;
+                                case 'differentFrom':
+                                    tableJquery.column(colSel).search(val ? '^((?!' + val + ').)*$' : '', true, false)
+                                        .draw();
+                                    break;
+                                case 'contains':
+                                    tableJquery.column(colSel).search(val ? '^.*' + val + '.*$' : '', true, false)
+                                        .draw();
+                                    break;
+                            }
                         }
                     });
+
+                    $('.filter-column-0').on('change', function () {
+
+                        $('.filter-option-0').show()
+                        $('.filter-search-0').show()
+                    });
+
                     this.api().columns().every(function (index) {
                         let column = this;
                         if (column.header().innerText)
-                            $('#mySelect')
+                            $('.filter-column-0')
                                 .append($("<option></option>")
                                     .attr("value", index)
                                     .text(column.header().innerText));
-                        $('#mySelect').on('change', function () {
-                            columnSelected = $('#mySelect :selected').val()
-                            selectOption.show()
-                            inputSearch.show()
-                            buttonS.show()
-                        });
-
                         if (index != 0 && index != tableElementCount - 1) {
                             var select = $('<select class="form-control form-control-sm"><option value=""></option></select>')
                                 .appendTo($(column.footer()).empty())
