@@ -15,7 +15,7 @@ class RoleFixtures extends Fixture
     {
         $mongoman = new MongoManager();
     $json = '{
-        "label": "Admin"
+        "label": "Admin",
         "permissions": [
             {
                 "entityType": "show",
@@ -141,12 +141,13 @@ class RoleFixtures extends Fixture
         "import":true,
         "export": true,
         "connection": true,
+        "role": true,
         "admin": true
     }';
     $array = json_decode($json);
 	$sheetPermissionAdmin=$mongoman->insertSingle("permissions_user",$array);
 	$json = '{
-	    "label": "Contributeur"
+	    "label": "Contributeur",
         "permissions": [
             {
                 "entityType": "show",
@@ -272,12 +273,13 @@ class RoleFixtures extends Fixture
         "import":true,
         "export": true,
         "connection": true,
+         "role": true,
         "admin": false
     }';
     $array = json_decode($json);
 	$sheetPermissionContributeur=$mongoman->insertSingle("permissions_user",$array);
 	$json = '{
-	    "label": "User"
+	    "label": "User",
         "permissions": [
             {
                 "entityType": "show",
@@ -400,10 +402,10 @@ class RoleFixtures extends Fixture
                 ]
             }
         ],
-         "label": "Ma Permission",
         "import":false,
         "export": true,
         "connection": true,
+         "role": true,
         "admin": false
     }';
 	$array = json_decode($json);
