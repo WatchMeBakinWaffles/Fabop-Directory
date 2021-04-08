@@ -10,15 +10,27 @@ if (path != '/dashboard') {
                 {key: "contains", value: "Contient:"}]
             $('.table').DataTable({
                 initComplete: function () {
-                    var selectTest = $('<select class="form-control form-control-sm" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
-                    var newSel = $('<select class="form-control form-control-sm" id="mySelectOptions"></select>')
-                    var inputSearch = $('<input type="test" class="form-control form-control-sm" id="inputSearch"/>')
-                    var buttonS = $('<a  class="btn btn-primary mr-1" id="search"><i class="fa fa-search" aria-hidden="true"/> Rechercher</a>')
+                    /*Création de la zone de filtre*/
+                    let card =  $('<div class="card col-5"> <a class="cross-close"><i class="fas fa-times"/i></a><div class="card-body"></div></div>')
+                    let selectColumn = $('<select class="form-control form-control-sm" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
+                    let selectOption = $('<select class="form-control form-control-sm mt-1" id="mySelectOptions"></select>')
+                    let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0" id="inputSearch"/>')
+                    let buttonS = $('<a class="btn btn-primary mr-1" id="search"><i class="fa fa-search" aria-hidden="true"/> Rechercher</a>')
+                    let buttonPlus = $('<a class="btn btn-primary mr-1" id="plus"><i class="fa fa-plus" aria-hidden="true"/></a>')
+                    let buttonFilter = $('<a class="btn btn-primary btn-sm" id="search"><i class="fas fa-filter"/> Filtrer</a>')
                     let columnSelected = $('#mySelect').val()
-                    $('#DataTables_Table_0_length').append(selectTest)
-                    $('#DataTables_Table_0_length').append(newSel)
-                    $('#DataTables_Table_0_length').append(inputSearch)
-                    $('#DataTables_Table_0_length').append(buttonS)
+                    let divFilter =  $('#DataTables_Table_0_filter')
+                    $('#DataTables_Table_0_filter label').hide()
+                    divFilter.append(card)
+                    divFilter.addClass("p-2")
+                    buttonFilter.css({"position": "absolute","top": "0px", "right":"1em"})
+                    $('.cross-close').css({"position": "relative","top": "0px", "right":"-12px", "color":"black", "cursor":"pointer"})
+                    $('.card-body').append(selectColumn)
+                    $('.card-body').append(selectOption)
+                    $('.card-body').append(inputSearch)
+                    divFilter.append(buttonFilter)
+                    divFilter.append(buttonS)
+                    divFilter.append(buttonPlus)
                     choiceFilter.map(obj => {
                         let $option = $("<option/>", {
                             value: obj.key,
@@ -26,10 +38,44 @@ if (path != '/dashboard') {
                         });
                         return $('#mySelectOptions').append($option);
                     });
-                    newSel.hide()
+                    selectOption.hide()
                     inputSearch.hide()
                     buttonS.hide()
-                    $('#search').click(function () {
+                    selectColumn.hide()
+                    card.hide()
+                    buttonPlus.hide()
+
+                    /*Fin création*/
+                    buttonFilter.on('click', function (event) {
+                        $(this).toggleClass('toggled');
+                        if ($(this).hasClass('toggled')) {
+                            divFilter.css("background-color", "#c3c3c347")
+                            selectColumn.show();
+                            card.show();
+                            buttonS.show();
+                            buttonPlus.show()
+                        } else {
+                            divFilter.css("background-color", "#fff")
+                            selectColumn.hide();
+                            card.hide();
+                            buttonS.hide();
+                            buttonPlus.hide()
+                        }
+                    })
+            /*        buttonPlus.click(function () {
+                        let card =  $('<div class="card col-5"> <a class="cross-close card"><i class="fas fa-times"/i></a><div class="card-body"></div></div>')
+                        let selectColumn = $('<select class="form-control form-control-sm filter-col-'+nbFiltre+'" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
+                        let selectOption = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'" id="mySelectOptions"></select>')
+                        let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search   -'+nbFiltre+'" id="inputSearch"/>')
+                        $('.card-body').append(selectColumn)
+                        $('.card-body').append(selectOption)
+                        $('.card-body').append(inputSearch)
+                        nbFiltre++
+                    })*/
+                    $('.cross-close').click(function () {
+                        card.remove()
+                    })
+                    buttonS.click(function () {
                         let val = $.fn.dataTable.util.escapeRegex(
                             $('#inputSearch').val()
                         );
@@ -68,7 +114,7 @@ if (path != '/dashboard') {
                                     .text(column.header().innerText));
                         $('#mySelect').on('change', function () {
                             columnSelected = $('#mySelect :selected').val()
-                            newSel.show()
+                            selectOption.show()
                             inputSearch.show()
                             buttonS.show()
                         });
