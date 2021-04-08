@@ -13,7 +13,7 @@ if (path != '/dashboard') {
                 initComplete: function () {
                     /*Création de la zone de filtre*/
                     let tableJquery =  $('.table').DataTable()
-                    let card =  $('<div class="card col-5"><div class="card-body card-'+nbFiltre+'"></div></div>')
+                    let card =  $('<div class="card col-9 mb-4 card-'+nbFiltre+'"><div class="card-body card-body-'+nbFiltre+'"></div></div>')
                     let selectColumn = $('<select class="form-control form-control-sm filter-column-'+nbFiltre+'" id="mySelect"><option value="" disabled selected>Choix de la colonne à filtrer</option></select>')
                     let selectOption = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'"  id="mySelectOptions"></select>')
                     let inputSearch = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search-'+nbFiltre+'" id="inputSearch"/>')
@@ -23,12 +23,13 @@ if (path != '/dashboard') {
                     let divFilter =  $('#DataTables_Table_0_filter')
                     $('#DataTables_Table_0_filter label').hide()
                     divFilter.append(card)
-                    divFilter.addClass("p-2")
-                    buttonFilter.css({"position": "absolute","top": "0px", "right":"1em"})
-                    $('.cross-close').css({"position": "relative","top": "0px", "right":"-12px", "color":"black", "cursor":"pointer"})
-                    $('.card-body').append(selectColumn)
-                    $('.card-body').append(selectOption)
-                    $('.card-body').append(inputSearch)
+                    divFilter.addClass("p-2 pb-4")
+                    buttonFilter.css({"position": "absolute","top": "2px", "right":"18px"})
+                    buttonPlus.css({"position": "absolute","bottom": "2px", "left":"23em"})
+                    buttonS.css({"position": "absolute","bottom": "2px", "right":"18px"})
+                    $('.card-body-'+nbFiltre+'').append(selectColumn)
+                    $('.card-body-'+nbFiltre+'').append(selectOption)
+                    $('.card-body-'+nbFiltre+'').append(inputSearch)
                     divFilter.append(buttonFilter)
                     divFilter.append(buttonS)
                     divFilter.append(buttonPlus)
@@ -51,27 +52,34 @@ if (path != '/dashboard') {
                         $(this).toggleClass('toggled');
                         if ($(this).hasClass('toggled')) {
                             divFilter.css("background-color", "#c3c3c347")
-                            selectColumn.show();
-                            card.show();
-                            buttonS.show();
-                            buttonPlus.show()
+                            for (let i = 0; i <= nbFiltre; i++) {
+                                $('.filter-column-'+i+'').show();
+                                $('.card-'+i+'').show();
+                                buttonS.show();
+                                buttonPlus.show()
+                            }
                         } else {
                             divFilter.css("background-color", "#fff")
-                            selectColumn.hide();
-                            card.hide();
-                            buttonS.hide();
-                            buttonPlus.hide()
+                            for (let i = 0; i <= nbFiltre; i++) {
+                                $('.filter-column-'+i+'').hide();
+                                $('.card-'+i+'').hide();
+                                buttonS.hide();
+                                buttonPlus.hide()
+                            }
                         }
                     })
 
                     buttonPlus.click(function () {
                         nbFiltre++
-                        let card1 =  $('<div class="card col-5"><div class="card-body card-'+nbFiltre+'"></div></div>')
+                        let crossButton= $('<a class="cross-close'+nbFiltre+'" id="'+nbFiltre+'"><i class="fas fa-times"></i></a>')
+                        let card1 =  $('<div class="card col-9 mb-4 card-'+nbFiltre+'"><div class="card-body card-body-'+nbFiltre+'" ></div></div>')
                         let selectColumn1 = $('<select class="form-control form-control-sm filter-column-'+nbFiltre+'" id="mySelect"></select>')
                         let selectOption1 = $('<select class="form-control form-control-sm mt-1 filter-option-'+nbFiltre+'"  id="mySelectOptions"></select>')
                         let inputSearch1 = $('<input class="form-control form-control-sm mt-1 w-100 ml-0 filter-search-'+nbFiltre+'" id="inputSearch"/>')
+
                         divFilter.append(card1)
-                        let actualCard = $('.card-'+nbFiltre+'')
+                        card1.append(crossButton)
+                        let actualCard = $('.card-body-'+nbFiltre+'')
                         actualCard.append(selectColumn1)
                         actualCard.append(selectOption1)
                         actualCard.append(inputSearch1)
@@ -82,10 +90,9 @@ if (path != '/dashboard') {
                             $('.filter-column-'+nbFiltre+'')
                                 .append($(this).clone());
                         });
-                        $('.filter-column-'+nbFiltre+'').on('change', function () {
-
-                            $('.filter-option-'+nbFiltre+'').show()
-                            $('.filter-search-'+nbFiltre+'').show()
+                        selectColumn1.on('change', function () {
+                            selectOption1.show()
+                            inputSearch1.show()
                         });
                         choiceFilter.map(obj => {
                             let $option = $("<option/>", {
@@ -94,41 +101,43 @@ if (path != '/dashboard') {
                             });
                             return $('.filter-option-'+nbFiltre+'').append($option);
                         });
-
-                    })
-                    $('.cross-close').click(function () {
-                        card.remove()
+                        crossButton.css({"position": "absolute","top": "-0", "right":"7px", "color":"black", "cursor":"pointer", "width":"fit-content"})
+                        crossButton.click(function () {
+                            card1.remove()
+                        })
                     })
 
                     buttonS.click(function () {
                         tableJquery.search('').columns().search('').draw();
                         for (let i = 0; i <= nbFiltre; i++) {
-                            let val = $.fn.dataTable.util.escapeRegex(
-                                $('.filter-search-'+i+'').val()
-                            );
-                            let searchOptions = $('.filter-option-'+i+' :selected').val()
-                            let colSel = $('.filter-column-'+i+' :selected').val()
-                            switch (searchOptions) {
-                                case 'equals':
-                                    tableJquery.column(colSel).search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                                    break;
-                                case 'startBy':
-                                    tableJquery.column(colSel).search(val ? '^' + val + '.*$' : '', true, false)
-                                        .draw();
-                                    break;
-                                case 'endBy':
-                                    tableJquery.column(colSel).search(val ? '^.*' + val + '$' : '', true, false)
-                                        .draw();
-                                    break;
-                                case 'differentFrom':
-                                    tableJquery.column(colSel).search(val ? '^((?!' + val + ').)*$' : '', true, false)
-                                        .draw();
-                                    break;
-                                case 'contains':
-                                    tableJquery.column(colSel).search(val ? '^.*' + val + '.*$' : '', true, false)
-                                        .draw();
-                                    break;
+                            if ($('.filter-search-' + i + '').length && $('.filter-column-' + i + '').length &&  $('.filter-option-' + i +'')) {
+                                let val = $.fn.dataTable.util.escapeRegex(
+                                    $('.filter-search-' + i + '').val()
+                                );
+                                let searchOptions = $('.filter-option-' + i + ' :selected').val()
+                                let colSel = $('.filter-column-' + i + ' :selected').val()
+                                switch (searchOptions) {
+                                    case 'equals':
+                                        tableJquery.column(colSel).search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                        break;
+                                    case 'startBy':
+                                        tableJquery.column(colSel).search(val ? '^' + val + '.*$' : '', true, false)
+                                            .draw();
+                                        break;
+                                    case 'endBy':
+                                        tableJquery.column(colSel).search(val ? '^.*' + val + '$' : '', true, false)
+                                            .draw();
+                                        break;
+                                    case 'differentFrom':
+                                        tableJquery.column(colSel).search(val ? '^((?!' + val + ').)*$' : '', true, false)
+                                            .draw();
+                                        break;
+                                    case 'contains':
+                                        tableJquery.column(colSel).search(val ? '^.*' + val + '.*$' : '', true, false)
+                                            .draw();
+                                        break;
+                                }
                             }
                         }
                     });
