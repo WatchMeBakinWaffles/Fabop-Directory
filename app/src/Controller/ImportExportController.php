@@ -102,7 +102,7 @@ class ImportExportController extends AbstractController
 
         $writer->writeInstitution($_POST['ids'], $institution);
 
-        $file = "export_selectif.xlsx";
+        $file = "export_institution.xlsx";
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($file).'"');

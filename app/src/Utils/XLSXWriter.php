@@ -237,7 +237,7 @@ class XLSXWriter
         }
 
         $writer = new Xlsx($spreadsheet);
-        $writer->save('export_institition.xlsx');
+        $writer->save('export_institution.xlsx');
 
     }
 
