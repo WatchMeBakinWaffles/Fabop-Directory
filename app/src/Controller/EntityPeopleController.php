@@ -31,16 +31,16 @@ class EntityPeopleController extends AbstractController
 
         // le role user ou contibuteur ne peut voir que les entités rattaché à son institution
         if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            $list = PermissionCalculator::checkList($user, "peoples", $entityPeopleRepository->findAll());
-            $edit = PermissionCalculator::checkEdit($user, "peoples", $list);
+            $list = PermissionCalculator::checkRight($user, "peoples", $entityPeopleRepository->findAll(),"read");
+            $edit = PermissionCalculator::checkRight($user, "peoples", $list,"write");
             return $this->render('entity_people/index.html.twig', ['entity_people' => $list, "edits" => $edit]);
         } else{
 
             $institution_id = $this->getUser()->getInstitution();
 
             if(isset($institution_id)) {
-                $list = PermissionCalculator::checkList($user,"peoples",$entityPeopleRepository->findBy(['institution' => $institution_id]));
-                $edit = PermissionCalculator::checkEdit($user,"peoples",$list);
+                $list = PermissionCalculator::checkRight($user,"peoples",$entityPeopleRepository->findBy(['institution' => $institution_id]),"read");
+                $edit = PermissionCalculator::checkRight($user,"peoples",$list,"write");
                 return $this->render('entity_people/index.html.twig', ['entity_people' => $list, "edits" => $edit]);
             }else
                 return $this->render('entity_people/index.html.twig', ['entity_people' =>[]]);
