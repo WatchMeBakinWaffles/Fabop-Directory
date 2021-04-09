@@ -12,15 +12,33 @@ use Box\Spout\Writer\Common\Creator\Style\BorderBuilder;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class XLSXWriter
 {
 
     public function writeAll(EntityPeopleRepository $entityPeopleRepository, $institution_id = null)
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("export.xlsx");
+
+
+        // // Création Writer XLS
+        // $writer = WriterEntityFactory::createXLSXWriter();
+        // $writer->openToFile("export.xlsx");
+
+        /**
+         * phpSpreadSheet
+         * creation d'une nouvelle feuille
+         * activaiton de la protection des cellules
+         */
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Récupération participants
         $people = array();
@@ -47,10 +65,17 @@ class XLSXWriter
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstLineCells = array_merge($firstLineCells,$dynArray);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
+        // $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
+        // $writer->addRow($firstRow);
+
+        /**
+         * phpSpreadSheet
+         * insertion des nom des champs dans la premiere ligne de la feuille
+         */
+        $sheet->fromArray($firstLineCells);
 
         // Ajout de toutes les personnes dans l'excel
+        $count = 2; // initialisation d'un compteur pour l'insertion ligne par ligne des exports
         foreach ($people as $person) {
             $rowcells = [$person->getName(),
                          $person->getFirstname(),
@@ -73,19 +98,40 @@ class XLSXWriter
                         $rowcells[$i] = $value;
                 }
             }
-            $row = WriterEntityFactory::createRowFromArray($rowcells);
-            $writer->addRow($row);
+
+            /**
+             * phpSpreadSheet
+             * insertion des lignes export
+             * utilisation d'un compteur pour decaler la ligne d'insertion (sinon même ligne ecraser à chaque itération)
+             */
+            $sheet->fromArray($rowcells, NULL, 'A'.$count);
+            $count++;
+
+            // $row = WriterEntityFactory::createRowFromArray($rowcells);
+            // $writer->addRow($row);
         }
 
-        $writer->close();
+        // $writer->close();
+
+        /**
+         * phpSpreadSheet
+         * creation de la feuilel au format xlsx
+         */
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export_all.xlsx');
 
     }
 
     public function write(Array $liste_id, EntityPeopleRepository $epr)
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("export_selectif.xlsx");
+        
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         //Création des champs dynamique
         $mongoman = new MongoManager();
@@ -103,9 +149,9 @@ class XLSXWriter
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstLineCells = array_merge($firstLineCells,$dynArray);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
+        $sheet->fromArray($firstLineCells);
 
+        $count = 2;
         foreach ($liste_id as $id) {
             $person = $epr->find($id);
             $rowcells = [$person->getName(),
@@ -125,22 +171,30 @@ class XLSXWriter
                     if (!isset($rowcells[$i])){
                         $rowcells[$i] = ''; // Mise à vide dans le cas où il n'y a pas de valeur
                     }
-                    if ($firstLineCells[$i]==$key)
+                    if ($firstLineCells[$i]==$key){
                         $rowcells[$i] = $value;
+                    }
                 }
             }
-            $row = WriterEntityFactory::createRowFromArray($rowcells);
-            $writer->addRow($row);
+
+            $sheet->fromArray($rowcells, NULL, 'A'.$count);
+            $count++;
         }
 
-        $writer->close();
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export_selectif.xlsx');
     }
 
     public function writeInstitution(Array $liste_id, EntityInstitutionsRepository $eir)
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("export_selectif.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         //Création des champs dynamique
         $mongoman = new MongoManager();
@@ -158,9 +212,9 @@ class XLSXWriter
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["nom", "role"];
         $firstLineCells = array_merge($firstLineCells,$dynArray);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
+        $sheet->fromArray($firstLineCells);
 
+        $count = 2;
         foreach ($liste_id as $id) {
             $institution = $eir->find($id);
             $rowcells = [$institution->getName(),
@@ -178,19 +232,25 @@ class XLSXWriter
                         $rowcells[$i] = $value;
                 }
             }
-            $row = WriterEntityFactory::createRowFromArray($rowcells);
-            $writer->addRow($row);
+            $sheet->fromArray($rowcells, NULL, 'A'.$count);
+            $count++;
         }
 
-        $writer->close();
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export_institution.xlsx');
 
     }
 
     public function writeShow(Array $liste_id, EntityShowsRepository $esr)
     {
         // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("export_selectif.xlsx");
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         //Création des champs dynamique
         $mongoman = new MongoManager();
@@ -208,9 +268,9 @@ class XLSXWriter
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["nom", "année"];
         $firstLineCells = array_merge($firstLineCells,$dynArray);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
+        $sheet->fromArray($firstLineCells);
 
+        $count = 2;
         foreach ($liste_id as $id) {
             $institution = $esr->find($id);
             $rowcells = [$shows->getName(),
@@ -228,54 +288,72 @@ class XLSXWriter
                         $rowcells[$i] = $value;
                 }
             }
-            $row = WriterEntityFactory::createRowFromArray($rowcells);
-            $writer->addRow($row);
+            $sheet->fromArray($rowcells, NULL, 'A'.$count);
+            $count++;
         }
 
-        $writer->close();
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('export_shows.xlsx');
 
     }
 
     public function writeModelPersonne()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_personne.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Prénom", "Date de naissance", "Code postal", "Ville", "Abonné à la newsletter", "Adresse mail", "Institution"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+        
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('modele_personne.xlsx');
     }
 
     public function writeModelInstitution()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_institution.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Rôle"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('modele_institution.xlsx');
     }
 
     public function writeModelSpectacle()
     {
-        // Création Writer XLSX
-        $writer = WriterEntityFactory::createXLSXWriter();
-        $writer->openToFile("modele_spectacle.xlsx");
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getProtection()->setSheet(true);
+        $sheet->protectCells('A1:Z1', 'admin');
+        $sheet->getStyle('A2:Z500')
+            ->getProtection()
+            ->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
         // Création première ligne avec noms de colonnes
         $firstLineCells = ["Nom", "Année"];
         $firstLineCells = array_merge($firstLineCells);
-        $firstRow = WriterEntityFactory::createRowFromArray($firstLineCells);
-        $writer->addRow($firstRow);
-        $writer->close();
+        $sheet->fromArray($firstLineCells);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('model_spectacle.xlsx');
     }
 
     public function writeCustomModele($name,$id_sheet,$data)
