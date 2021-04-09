@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Utils\MongoManager;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EntityUserRepository")
@@ -293,6 +294,24 @@ class EntityUser implements UserInterface
         $this->entityPermissions->removeElement($entityPerm);
         $entityPerm->setUser(null);
         return $this;
+    }
+
+    public function getAllPermissions()
+    {
+        $roles = $this->getEntityRoles();
+        $result = [];
+        $mongoman = new MongoManager();
+        foreach ($roles as $role) {
+            $permissions = $role->getPermissions();
+            array_push($result,$mongoman->getDocById("permissions_user", $permissions->getSheetId()));
+        }
+        $permissions = $this->getEntityUserPermissions();
+        $mongoman = new MongoManager();
+        foreach ($permissions as $permission) {
+            $data = $mongoman->getDocById("permissions_user", $permission->getSheetId());
+            array_push($result,$data);
+        }
+        return $result;
     }
 
 }

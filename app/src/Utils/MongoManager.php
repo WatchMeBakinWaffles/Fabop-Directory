@@ -81,6 +81,11 @@ class MongoManager
         return $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>[$key=>$data]])->getModifiedCount();
     }
 
+    function updateSingleValueByJson($collection,$id,$json){
+        $collection= $this->db->selectCollection($collection);
+        return $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$set'=>$json])->getModifiedCount();
+    }
+
     function unsetSingleValueById($collection,$id,$key){
         $collection= $this->db->selectCollection($collection);
         $result_count=$collection->updateOne(['_id'=>new MongoDB\BSON\ObjectId($id)],['$unset'=>[$key=>""]])->getModifiedCount();

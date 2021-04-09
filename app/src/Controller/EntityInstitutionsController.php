@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\EntityInstitutions;
 use App\Form\EntityInstitutionsType;
 use App\Repository\EntityInstitutionsRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Security\Voter\PermissionCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\MongoManager;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/manager/institutions")
@@ -24,8 +26,12 @@ class EntityInstitutionsController extends AbstractController
      */
     public function index(EntityInstitutionsRepository $entityInstitutionsRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         //filtres à appliquer ici
-        return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $entityInstitutionsRepository->findAll()]);
+        $list = PermissionCalculator::checkList($user,"institutions",$entityInstitutionsRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
+        return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $list, 'edits' => $edit]);
     }
 
     /**
@@ -34,39 +40,39 @@ class EntityInstitutionsController extends AbstractController
     public function new(Request $request): Response
     {
         $entityInstitution = new EntityInstitutions();
-	if($this->isGranted('POST_EDIT',$entityInstitution)){
-		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
-		$form->handleRequest($request);
-		$mongoman = new MongoManager();
+        if($this->isGranted('POST_EDIT',$entityInstitution)){
+            $form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
+            $form->handleRequest($request);
+            $mongoman = new MongoManager();
 
-		if ($form->isSubmitted() && $form->isValid()) {
-		    $em = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
 
-		    // Mise en bdd Mongo de l fiche doc --> return IdMongo
-		    if (null != $request->request->get('institution_data')){
-		        $sheetId=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
-		    }else{
-		        $sheetId=$mongoman->insertSingle("Entity_institution_sheet",[]);
-		    }
+                // Mise en bdd Mongo de l fiche doc --> return IdMongo
+                if (null != $request->request->get('institution_data')){
+                    $sheetId=$mongoman->insertSingle("Entity_institution_sheet",$request->request->get('institution_data'));
+                }else{
+                    $sheetId=$mongoman->insertSingle("Entity_institution_sheet",[]);
+                }
 
-		    // Mise en bdd MySQL de l'ID de fiche de données
-		    $entityInstitution->setSheetId($sheetId);
+                // Mise en bdd MySQL de l'ID de fiche de données
+                $entityInstitution->setSheetId($sheetId);
 
-		    $em->persist($entityInstitution);
-		    $em->flush();
+                $em->persist($entityInstitution);
+                $em->flush();
 
-		    return $this->redirectToRoute('entity_institutions_index');
-		}
+                return $this->redirectToRoute('entity_institutions_index');
+            }
 
-		return $this->render('entity_institutions/new.html.twig', [
-		    'entity_institution' => $entityInstitution,
-		    'form' => $form->createView(),
-		]);
-	}
-	else{
-		return $this->render('error403forbidden.html.twig');
-	}
-	return $this->redirectToRoute('entity_institutions_index');
+            return $this->render('entity_institutions/new.html.twig', [
+                'entity_institution' => $entityInstitution,
+                'form' => $form->createView(),
+            ]);
+        }
+        else{
+            return $this->render('error403forbidden.html.twig');
+        }
+	    return $this->redirectToRoute('entity_institutions_index');
     }
 
     /**
@@ -88,38 +94,40 @@ class EntityInstitutionsController extends AbstractController
      */
     public function edit(Request $request, EntityInstitutions $entityInstitution): Response
     {
-	if($this->isGranted('POST_EDIT',$entityInstitution)){
-		$form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
-		$form->handleRequest($request);
-		$mongoman = new MongoManager();
+        if($this->isGranted('POST_EDIT',$entityInstitution)){
+            $form = $this->createForm(EntityInstitutionsType::class, $entityInstitution);
+            $form->handleRequest($request);
+            $mongoman = new MongoManager();
 
-		if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
-		    if (null != $request->request->get('institution_data')){
-		        $dataId=$entityInstitution->getSheetId();
-		        foreach( $request->request->get('institution_data') as $key->$value){
-		            if ($value!=''){
-		                $mongoman->updateSingleValueById("Entity_institution_sheet",$dataId,$key,$value);
-		            }else{
-		                $mongoman->unsetSingleValueById("Entity_institution_sheet",$dataId,$key);
-		            }
-		        }
-		    }
+                if (null != $request->request->get('institution_data')) {
+                    $dataId = $entityInstitution->getSheetId();
 
-		    $this->getDoctrine()->getManager()->flush();
 
-		    return $this->redirectToRoute('entity_institutions_index', ['id' => $entityInstitution->getId()]);
-		}
+                    foreach ($request->request->get('institution_data') as $key => $value) {
+                        if ($value != '') {
+                            $mongoman->updateSingleValueById("Entity_institution_sheet", $dataId, $key, $value);
+                        } else {
+                            $mongoman->unsetSingleValueById("Entity_institution_sheet", $dataId, $key);
+                        }
+                    }
+                }
 
-		return $this->render('entity_institutions/edit.html.twig', [
-		    'entity_institution' => $entityInstitution,
-		    'form' => $form->createView(),
-		    'entity_institution_data' => $mongoman->getDocById("Entity_institution_sheet",$entityInstitution->getSheetId()),
-		]);
-	}
-	else{
-		return $this->render('error403forbidden.html.twig');
-	}
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('entity_institutions_index', ['id' => $entityInstitution->getId()]);
+            }
+            return $this->render('entity_institutions/edit.html.twig', [
+                'entity_institution' => $entityInstitution,
+                'form' => $form->createView(),
+                'entity_institution_data' => $mongoman->getDocById("Entity_institution_sheet", $entityInstitution->getSheetId()),
+            ]);
+
+        }
+        else{
+            return $this->render('error403forbidden.html.twig');
+        }
         return $this->redirectToRoute('entity_institutions_index');
     }
 

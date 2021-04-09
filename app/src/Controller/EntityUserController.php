@@ -2,27 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\EntityRoles;
-use App\Entity\EntityUserPermissions;
-use App\Form\EntityRolesType;
-use App\Form\EntityPeopleType;
-use App\Repository\EntityRolesRepository;
-use App\Repository\PermissionsRepository;
-use App\Entity\EntityUser;
 use App\Entity\EntityPeople;
+use App\Entity\EntityUser;
+use App\Entity\EntityUserPermissions;
 use App\Form\EntityUserType;
+use App\Repository\EntityRolesRepository;
 use App\Repository\EntityUserRepository;
+use App\Security\Voter\PermissionCalculator;
+use App\Utils\MongoManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Utils\MongoManager;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 
 /**
@@ -35,8 +29,14 @@ class EntityUserController extends AbstractController
      */
     public function index(EntityUserRepository $entityUserRepository): Response
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"users",$entityUserRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"users",$list);
         return $this->render('entity_user/index.html.twig', [
-            'entity_users' => $entityUserRepository->findAll(),
+            'entity_users' => $list,
+            'edits' => $edit
         ]);
     }
     /**
@@ -44,9 +44,14 @@ class EntityUserController extends AbstractController
      */
     public function index_to_list_roles(EntityRolesRepository $entityRolesRepository): Response
     {
-		$mongoman = new MongoManager();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        //filtres à appliquer ici
+        $list = PermissionCalculator::checkList($user,"roles",$entityRolesRepository->findAll());
+        $edit = PermissionCalculator::checkEdit($user,"roles",$list);
         return $this->render('entity_roles/index.html.twig', [
-			'entity_roles' => $entityRolesRepository->findAll(),
+			'entity_roles' => $list,
+            'edits' => $edit
         ]);
     }
     /**

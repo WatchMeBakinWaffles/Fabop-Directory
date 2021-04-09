@@ -26,36 +26,27 @@ class EntityPerformancesVoter extends Voter
         if (!$user instanceof UserInterface) {
             return false;
         }
-	
-	$roles = $user->getEntityRoles();
-	foreach ($roles as $role){
-		$permissions = $role->getPermissions();
-	        $mongoman = new MongoManager();
-		$data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
-		// ... (check conditions and return true to grant permission) ...
-		switch ($attribute) {
-		    case 'POST_EDIT':
-		        // logic to determine if the user can EDIT
-		        // return true or false
-		        foreach($data_permissions["permissions"] as $permission) {
-                    if($permission["entityType"] == "restaurations") {
-                        if($permission["rights"][0]["write"])
-                            return true;
-                    }
-                }
-                break;
-		    case 'POST_VIEW':
-		        // logic to determine if the user can VIEW
-		        // return true or false
-		        foreach($data_permissions["permissions"] as $permission) {
-                    if($permission["entityType"] == "restaurations") {
-                        if($permission["rights"][0]["read"])
-                            return true;
-                    }
-                }
-                break;
-		}
-	}
-        return false;
+
+        $roles = $user->getEntityRoles();
+        foreach ($roles as $role){
+            $permissions = $role->getPermissions();
+            $mongoman = new MongoManager();
+            $data_permissions = $mongoman->getDocById("permissions_user",$permissions->getSheetId());
+            // ... (check conditions and return true to grant permission) ...
+            switch ($attribute) {
+                case 'POST_EDIT':
+                    // logic to determine if the user can EDIT
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions, "restaurations","write");
+                    break;
+                case 'POST_VIEW':
+                    // logic to determine if the user can VIEW
+                    // return true or false
+                    return PermissionCalculator::check($data_permissions,"restaurations","read");
+                    break;
+                default:
+                    return false;
+            }
+        }
     }
 }
