@@ -23,28 +23,6 @@ use App\Form\EntityUserProfileType;
  */
 class BaseController extends AbstractController
 {
-    /**
-     * @Route("/dashboard", name="dashboard", methods="GET")
-     */
-    public function index(
-        EntityInstitutionsRepository $entityInstitutionsRepository,
-        EntityPeopleRepository $entityPeopleRepository,
-        EntityPerformancesRepository $entityPerformancesRepository,
-        EntityShowsRepository $entityShowsRepository,
-        EntityTagsRepository $entityTagsRepository
-    ): Response
-    {
-        return $this->render('dashboard.html.twig',
-            [
-                'entity_institutions_count' => $entityInstitutionsRepository->count([]),
-                'entity_people_count' => $entityPeopleRepository->count([]),
-                'entity_performances_count' => $entityPerformancesRepository->count([]),
-                'entity_shows_count' => $entityShowsRepository->count([]),
-                'entity_tags_count' => $entityTagsRepository->count([])
-            ]
-        );
-    }
-
 
     /**
      * @Route("/profile/edit/{id}", name="profile_user_edit", methods={"GET","POST"})
@@ -63,7 +41,7 @@ class BaseController extends AbstractController
             $entityUser->bCryptPassword($entityUser->getPassword());
             $entityManager->flush();
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('entity_people_index');
         }
 
         return $this->render('entity_user/profile_edit.html.twig', [

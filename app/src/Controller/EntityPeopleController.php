@@ -35,15 +35,9 @@ class EntityPeopleController extends AbstractController
             $edit = PermissionCalculator::checkRight($user, "peoples", $list,"write");
             return $this->render('entity_people/index.html.twig', ['entity_people' => $list, "edits" => $edit]);
         } else{
-
-            $institution_id = $this->getUser()->exportClick();
-
-            if(isset($institution_id)) {
-                $list = PermissionCalculator::checkRight($user,"peoples",$entityPeopleRepository->findBy(['institution' => $institution_id]),"read");
-                $edit = PermissionCalculator::checkRight($user,"peoples",$list,"write");
-                return $this->render('entity_people/index.html.twig', ['entity_people' => $list, "edits" => $edit]);
-            }else
-                return $this->render('entity_people/index.html.twig', ['entity_people' =>[]]);
+            $list = PermissionCalculator::checkRight($user, "peoples", $entityPeopleRepository->findAll(),"read");
+            $edit = PermissionCalculator::checkRight($user, "peoples", $list,"write");
+            return $this->render('entity_people/index.html.twig', ['entity_people' => $list, "edits" => $edit]);
         }
 
     }
