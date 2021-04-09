@@ -85,7 +85,7 @@ class AccountAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        return new RedirectResponse($this->urlGenerator->generate('entity_people_index'));
     }
 
     protected function getLoginUrl()

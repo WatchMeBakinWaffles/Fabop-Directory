@@ -71,6 +71,7 @@ class EntityUserType extends AbstractType
                    }, ARRAY_FILTER_USE_BOTH);
                }
                 $form->add('permissions', ChoiceType::class, array(
+                    "required"=>false,
                     "multiple"=>true,
                     "mapped" => false,
                     "choices" => $data_permissions,
