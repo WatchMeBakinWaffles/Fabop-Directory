@@ -32,6 +32,7 @@ if (path === "/manager/people/"){
 }
 
 if (path === "/manager/institutions/"){
+    console.log("Export institution");
     document.getElementById("exportClick").addEventListener("click", function () {
         let checkboxs = document.getElementsByClassName("checkExport");
         let liste_id = [];
@@ -48,7 +49,7 @@ if (path === "/manager/institutions/"){
                     ids: liste_id
                 }
             }).done(function () {
-                window.location = "/export_selectif.xlsx";
+                window.location = "/export_institution.xlsx";
             }).fail(function () {
                 alert("Le serveur a rencontré des difficultés avec votre demande.");
             });
