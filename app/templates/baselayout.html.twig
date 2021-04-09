@@ -4,7 +4,7 @@
 <header class="header-fixed">
 
     <div class="header-limiter">
-        <img src="{{ asset('static/images/logo.png')}}" alt="CompagnyLogo" id="Logo">
+        <a href="{{ path('entity_people_index') }}"><img src="{{ asset('static/images/logo.png')}}" alt="CompagnyLogo" id="Logo"></a>
         {# <h1><a href="#">Fabrique<span>Opéra</span></a></h1> #}
 
         <nav>
@@ -25,11 +25,7 @@
 
             <div class="menu-list">
                     <ul id="menu-content" class="menu-content collapse out show">
-                        <li class="{{ app.request.get('_route') matches '{dashboard}' ? 'active' }}">
-                            <a href="{{ path('dashboard') }}">
-                            <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
-                            </a>
-                        </li>
+
 
                         {% if is_granted('sub_menu','') %}
                         <li  data-toggle="collapse" data-target="#directory" class="collapsed {{ app.request.get('_route') matches '{entity(.+)}' ? 'active' }}">
@@ -50,6 +46,11 @@
                             {% endif %}
                         </ul>
                         {% endif %}
+                        <li class="{{ app.request.get('_route') matches '{dashboard}' ? 'active' }}">
+                            <a href="{{ path('dashboard') }}">
+                                <i class="fas fa-tachometer-alt"></i> &nbsp; Tableau de bord
+                            </a>
+                        </li>
                         {% if is_granted('admin','') %}
                         <li data-toggle="collapse" data-target="#config" class="collapsed {{ app.request.get('_route') matches '{admin(.+)}' ? 'active' }}">
                             <a class="w-100" href="#"><i class="fa fa-wrench"></i> &nbsp; Administration <span class="arrow"></span></a>
