@@ -29,8 +29,8 @@ class EntityInstitutionsController extends AbstractController
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         //filtres à appliquer ici
-        $list = PermissionCalculator::checkList($user,"institutions",$entityInstitutionsRepository->findAll());
-        $edit = PermissionCalculator::checkEdit($user,"institutions",$list);
+        $list = PermissionCalculator::checkRight($user,"institutions",$entityInstitutionsRepository->findAll(),"read");
+        $edit = PermissionCalculator::checkRight($user,"institutions",$list,"write");
         return $this->render('entity_institutions/index.html.twig', ['entity_institutions' => $list, 'edits' => $edit]);
     }
 

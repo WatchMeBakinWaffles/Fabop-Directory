@@ -24,8 +24,8 @@ class EntityTagsController extends AbstractController
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         //filtres à appliquer ici
-        $list = PermissionCalculator::checkList($user,"tags",$entityTagsRepository->findAll());
-        $edit = PermissionCalculator::checkEdit($user,"tags",$list);
+        $list = PermissionCalculator::checkRight($user,"tags",$entityTagsRepository->findAll(),"read");
+        $edit = PermissionCalculator::checkRight($user,"tags",$list,"write");
         return $this->render('entity_tags/index.html.twig', ['entity_tags' => $list, 'edits' => $edit]);
     }
 

@@ -25,37 +25,41 @@ class PermissionCalculator
         }
     }
 
-    public static function checkList($user, $entity, $list)
+    public static function checkRight($user, $entity, $list, $action)
     {
         $allPermissions = $user->getAllPermissions();
         $response = [];
+        // $autorization permet de déterminer si l'utilisateur avait tous les droits ou aucun
         $authorization = null;
+        // Vérifie que la permission concerne la bonne entité
         foreach ($allPermissions as $permissions) {
             foreach ($permissions["permissions"] as $permission) {
                 if ($permission["entityType"] == $entity) {
                     foreach ($permission["rights"] as $right) {
+                        // Permet de fixer la variable $authorization
                         if ($right["filters"][0]["field"] == "*") {
-                            if ($right["read"] == 1) {
+                            if ($right[$action] == 1) {
                                 $response = $list;
                                 $authorization = true;
                             } else
                                 $authorization = false;
-                        }
-                        $count = 0;
-                        foreach ($list as $elem) {
-                            $temp = $right["filters"][0]["field"];
-                            $f = "get" . $temp;
-                            if ($right["filters"][0]["field"] != "*") {
-                                if (preg_match('/\b' . $right["filters"][0]["value"] . '\b/i', $elem->$f())) {
+                        } else {
+                            // Pour chaque droit, suivant $authorization, ajoute ou supprime un élément de $response
+                            $count = 0;
+                            foreach ($list as $elem) {
+                                $f = "get" . $right["filters"][0]["field"];
+                                if (preg_match('/^'.$right["filters"][0]["value"].'$/i', $elem->$f())) {
                                     if ($authorization){
-                                        if ($right["read"] == -1)
+                                        if ($right[$action] == -1) {
                                             array_splice($response, $count, 1);
+                                            $count--;
+                                        }
                                     } else
-                                        if ($right["read"] == 1)
+                                        if ($right[$action] == 1)
                                             array_push($response, $elem);
                                 }
+                                $count++;
                             }
-                            $count++;
                         }
                     }
                 }
@@ -63,71 +67,4 @@ class PermissionCalculator
         }
         return $response;
     }
-
-    public static function checkEdit($user, $entity, $list)
-    {
-        $allPermissions = $user->getAllPermissions();
-        $response = [];
-        $authorization = null;
-        foreach ($allPermissions as $permissions) {
-            foreach ($permissions["permissions"] as $permission) {
-                if ($permission["entityType"] == $entity) {
-                    foreach ($permission["rights"] as $right) {
-                        if ($right["filters"][0]["field"] == "*") {
-                            if ($right["write"] == 1) {
-                                $response = $list;
-                                $authorization = true;
-                            } else
-                                $authorization = false;
-                        }
-                        $count = 0;
-                        foreach ($list as $elem) {
-                            $temp = $right["filters"][0]["field"];
-                            $f = "get" . $temp;
-                            if ($right["filters"][0]["field"] != "*") {
-                                if (preg_match('/\b' . $right["filters"][0]["value"] . '\b/i', $elem->$f())) {
-                                    if ($authorization) {
-                                        if ($right["write"] == -1)
-                                            array_splice($response, $count, 1);
-                                    } else
-                                        if ($right["write"] == 1)
-                                            array_push($response, $elem);
-                                }
-                            }
-                            $count++;
-                        }
-                    }
-                }
-            }
-        }
-        return $response;
-    }
-
-    /*public static function checkEdit($user, $entity, $data) {
-
-        $allPermissions = $user->getAllPermissions();
-        $response = $data;
-        foreach ($allPermissions as $permissions) {
-            foreach ($permissions["permissions"] as $permission) {
-                if ($permission["entityType"] == $entity) {
-                    foreach ($permission["rights"] as $right) {
-                        $count = 0;
-                        foreach ($data as $elem) {
-                            $temp = $right["filters"][0]["field"];
-                            $f = "get" . $temp;
-                            if ($right["filters"][0]["field"] != "*") {
-                                if (preg_match('/\b' . $right["filters"][0]["value"] . '\b/i', $elem->$f())) {
-                                    if ($right["write"] == -1) {
-                                        array_splice($response, $count, 1);
-                                    }
-                                }
-                            }
-                            $count++;
-                        }
-                    }
-                }
-            }
-        }
-        return $response;
-    }*/
 }
